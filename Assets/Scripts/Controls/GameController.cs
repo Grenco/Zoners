@@ -39,6 +39,7 @@ public class GameController : MonoBehaviourPunCallbacks
     public Text redScoreText;
     public Text blueScoreText;
     public Text gameEndText;
+    public Text cooldownText;
     public GameObject gameEndPanel;
     public GameObject damageTakenPanel;
 
@@ -119,6 +120,8 @@ public class GameController : MonoBehaviourPunCallbacks
             hpText.text = "HP: " + playerControls.hitPoints.ToString();
         }
 
+        CooldownCheck();
+
         UpdateScores();
         UpdateTimer();
     }
@@ -130,10 +133,10 @@ public class GameController : MonoBehaviourPunCallbacks
         {
             playerControls.TakeDamage();
             damageTakenPanel.SetActive(true);
-            damageTakenPanel.GetComponent<Image>().color = new Color(1, 0, 0, 0.2f * (Mathf.Sin(playerControls.hitPoints * playerControls.damageSpeed / 2) + 1));
+            damageTakenPanel.GetComponent<Image>().color = new Color(1, 0, 0, 0.2f * (Mathf.Sin(playerControls.hitPoints * playerControls.damageSpeed * 5) + 1));
             if (playerControls.hitPoints <= 0)
             {
-
+                playerControls.KillPlayer();
             }
         }
         else
@@ -141,6 +144,19 @@ public class GameController : MonoBehaviourPunCallbacks
             damageTakenPanel.SetActive(false);
         }
         // If no zone is active, perform different damage check
+    }
+
+    private void CooldownCheck()
+    {
+        if (playerControls.coolDowmTime > 0.0f)
+        {
+            int coolDownTimeInt = (int)playerControls.coolDowmTime;
+            cooldownText.text = "Respawn in: " + coolDownTimeInt.ToString();
+        }
+        else if (cooldownText.text != "")
+        {
+            cooldownText.text = "";
+        }
     }
 
     private void UpdateTimer()

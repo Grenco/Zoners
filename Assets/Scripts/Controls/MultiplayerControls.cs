@@ -40,7 +40,7 @@ public class MultiplayerControls : MonoBehaviour
     public int hitPoints;
     public float damageSpeed = 10.0f; // HP/s
     private float damageTime;
-    private float coolDowmTime = 0.0f;
+    public float coolDowmTime = 0.0f;
 
     Ray ray;
     RaycastHit hit;
@@ -194,25 +194,19 @@ public class MultiplayerControls : MonoBehaviour
             hitPoints -= 1;
             damageTime = 0;
         }
+    }
 
-        if (hitPoints == 0)
-        {
-            DisableControls();
-            coolDowmTime = 5.0f;
-            hitPoints = maxHitPoints;
-
-            rb.MovePosition(startingPosition);
-
-            GameObject endingTextBox = GameObject.Find("GameEndText");
-            Text endingText = endingTextBox.GetComponent<Text>();
-            endingText.text = "GAME OVER";
-
-            photonView.RPC("KillPlayer", RpcTarget.All);
-        }
+    public void KillPlayer()
+    {
+        DisableControls();
+        coolDowmTime = 5.0f;
+        hitPoints = maxHitPoints;
+        rb.MovePosition(startingPosition);
+        photonView.RPC("KillPlayerRPC", RpcTarget.All);
     }
 
     [PunRPC]
-    private void KillPlayer()
+    private void KillPlayerRPC()
     {
         teamController.RemovePlayer(gameObject);
         enemyTeamController.score++;
@@ -257,16 +251,11 @@ public class MultiplayerControls : MonoBehaviour
     {
         if (coolDowmTime > 0)
         {
-            GameObject endingTextBox = GameObject.Find("GameEndText");
-            Text endingText = endingTextBox.GetComponent<Text>();
-            int coolDownTimeInt = (int)coolDowmTime;
-            endingText.text = "Respawn in: " + coolDownTimeInt.ToString();
             coolDowmTime -= Time.deltaTime;
             if (coolDowmTime <= 0)
             {
                 EnableControls();
                 photonView.RPC("RevivePlayer", RpcTarget.All);
-                endingText.text = "";
             }
         }
     }
