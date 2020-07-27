@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Photon;
 using Photon.Pun;
 
-public class CPUPlayerControls : MultiplayerControls
+public class CPUPlayerControls : MonoBehaviour
 {
     //CharacterController characterController;
     public Camera playerCam;

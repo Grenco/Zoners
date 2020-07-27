@@ -7,21 +7,17 @@ using Photon.Pun;
 
 public class MultiplayerControls : MonoBehaviour
 {
-    //CharacterController characterController;
     public Camera playerCam;
     private Vector3 moveDirection = Vector3.zero;
-    private float turnX;
-    private float turnY;
+    private float turnX, turnY;
     public bool movementEnabled = true;
-    Rigidbody rb;
+    private Rigidbody rb;
     public GameObject sign;
     private Vector3 startingPosition;
 
     public string teamColor;
-    GameObject team;
-    TeamController teamController;
-    GameObject enemyTeam;
-    TeamController enemyTeamController;
+    private GameObject team, enemyTeam;
+    private TeamController teamController, enemyTeamController;
 
     [Header("Movement Settings")]
     public float speed = 6.0f;
@@ -42,12 +38,12 @@ public class MultiplayerControls : MonoBehaviour
     private float damageTime;
     public float coolDowmTime = 0.0f;
 
-    Ray ray;
-    RaycastHit hit;
-    GameObject hitObject;
-    LineRenderer lr;
+    private Ray ray;
+    private RaycastHit hit;
+    private GameObject hitObject;
+    private LineRenderer lr;
 
-    PhotonView photonView;
+    private PhotonView photonView;
     private string playerName = "";
 
 
