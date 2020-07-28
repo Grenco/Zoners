@@ -283,12 +283,11 @@ GameObject:
   - component: {fileID: 8880919349663680748}
   - component: {fileID: 8880919349663680745}
   - component: {fileID: 8880919349663680744}
-  - component: {fileID: 8687326681941600135}
   - component: {fileID: 7837711942744675458}
   - component: {fileID: 511470671371913720}
   - component: {fileID: 8924131720065394106}
   m_Layer: 11
-  m_Name: BluePlayer
+  m_Name: BluePlayerCPU
   m_TagString: BlueTeamPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5093,31 +5092,6 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &8687326681941600135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8880919349663680751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51156ffa68f97e24d94985240eacd608, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCam: {fileID: 3325216316056390596}
-  movementEnabled: 1
-  sign: {fileID: 5906164960884426455}
-  teamColor: blue
-  speed: 10
-  jumpSpeed: 3
-  gravity: 9.8
-  mouseSpeed: 6
-  ammo: 10
-  fireRate: 1
-  maxHitPoints: 100
-  hitPoints: 0
-  damageSpeed: 20
 --- !u!114 &7837711942744675458
 MonoBehaviour:
   m_ObjectHideFlags: 0
