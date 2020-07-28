@@ -44,6 +44,7 @@ MonoBehaviour:
   - RevivePlayer
   - AddToBlueTeam
   - AddToRedTeam
+  - KillPlayerRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

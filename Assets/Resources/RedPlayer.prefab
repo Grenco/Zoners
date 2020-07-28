@@ -4849,6 +4849,7 @@ MonoBehaviour:
   maxHitPoints: 100
   hitPoints: 0
   damageSpeed: 20
+  coolDowmTime: 0
 --- !u!114 &118396316428677237
 MonoBehaviour:
   m_ObjectHideFlags: 0

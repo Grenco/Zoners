@@ -193,7 +193,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
         else if (PhotonNetwork.CurrentRoom.PlayerCount > 0)
         {
-            PhotonNetwork.LoadLevel("TestScene");
+            PhotonNetwork.LoadLevel("Game");
             PhotonNetwork.CurrentRoom.IsOpen = false;
         }
         else

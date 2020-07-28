@@ -210,6 +210,11 @@ public class GameController : MonoBehaviourPunCallbacks
     public void ReturnToMenu()
     {
         PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
         PhotonNetwork.LoadLevel("LoadScreen");
     }
 
