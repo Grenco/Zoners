@@ -1,14 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Windows;
 using UnityEngine;
 using System.Linq;
-using UnityEngine.UI;
 using Photon.Pun;
 
 public class TeamController : MonoBehaviour
 {
-    GameObject[] players;
+    public GameObject[] players;
     public GameObject dangerZone;
     public GameObject minimapZone;
     public string team;
@@ -29,8 +27,9 @@ public class TeamController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        transforms = new Transform[4];
-        players = new GameObject[4];
+        //transforms = new Transform[4];
+        //players = new GameObject[4];
+        transforms = players.Select(x => x.transform).ToArray();
 
         lr = gameObject.GetComponent<LineRenderer>();
 
@@ -43,7 +42,6 @@ public class TeamController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //transforms.Remove(null);
         lr.positionCount = transforms.Count(i => i != null);
         if (lr.positionCount > 0)
         {
@@ -65,6 +63,11 @@ public class TeamController : MonoBehaviour
         PhotonView playerView = player.GetPhotonView();
         int teamNumber = System.Array.IndexOf(teamList, playerView.CreatorActorNr);
 
+        if (players[teamNumber] != null)
+        {
+            players[teamNumber].SetActive(false);
+        }
+
         transforms[teamNumber] = player.transform;
         players[teamNumber] = player;
     }
@@ -74,9 +77,6 @@ public class TeamController : MonoBehaviour
         int[] teamList = (int[])PhotonNetwork.PlayerList[0].CustomProperties[team];
         PhotonView playerView = player.GetPhotonView();
         int teamNumber = System.Array.IndexOf(teamList, playerView.CreatorActorNr);
-
-        //transforms.Remove(player.transform);
-        //players.Remove(player);
 
         transforms[teamNumber] = null;
         players[teamNumber] = null;

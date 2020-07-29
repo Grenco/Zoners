@@ -122,14 +122,15 @@ public class MultiplayerControls : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!isCPUPlayer)
+        if (teamColor == Launcher.team)
+        {
+            TurnSign();
+        }
+        if (photonView.IsMine && !isCPUPlayer)
         {
             Turn();
-            if (photonView.IsMine)
-            {
-                Move();
-                CoolDownCheck();
-            }
+            Move();
+            CoolDownCheck();
         }
     }
 
@@ -150,7 +151,6 @@ public class MultiplayerControls : MonoBehaviour
             {
                 lineEnd = lineStart + gameObject.transform.forward * 1000f;
             }
-
         }
         else
         {
@@ -206,9 +206,7 @@ public class MultiplayerControls : MonoBehaviour
         DisableControls();
         coolDowmTime = 5.0f;
         hitPoints = maxHitPoints;
-
         rb.MovePosition(startingPosition);
-
         photonView.RPC("KillPlayerRPC", RpcTarget.All);
     }
 
@@ -243,7 +241,7 @@ public class MultiplayerControls : MonoBehaviour
 
     public void CPUMove(Vector3 movement)
     {
-        rb.MovePosition(rb.position + movement * Time.deltaTime);
+        rb.MovePosition(rb.position + movement * speed * Time.deltaTime);
     }
 
     private void Turn()
@@ -255,7 +253,12 @@ public class MultiplayerControls : MonoBehaviour
         {
             playerCam.transform.RotateAround(gameObject.transform.position, playerCam.transform.right, -turnY);
         }
-        sign.transform.rotation = Camera.main.transform.rotation; // Causes the text faces camera
+    }
+
+    private void TurnSign()
+    {
+        // Ensures the player names are facing the camera
+        sign.transform.rotation = Camera.main.transform.rotation; 
     }
 
 
