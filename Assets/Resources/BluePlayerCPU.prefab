@@ -286,6 +286,8 @@ GameObject:
   - component: {fileID: 7837711942744675458}
   - component: {fileID: 511470671371913720}
   - component: {fileID: 8924131720065394106}
+  - component: {fileID: 4821029123733981717}
+  - component: {fileID: 3837049602222671881}
   m_Layer: 11
   m_Name: BluePlayerCPU
   m_TagString: BlueTeamPlayer
@@ -5145,3 +5147,42 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &4821029123733981717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8880919349663680751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51156ffa68f97e24d94985240eacd608, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCam: {fileID: 3325216316056390596}
+  movementEnabled: 1
+  isCPUPlayer: 1
+  sign: {fileID: 5906164960884426455}
+  teamColor: blue
+  speed: 6
+  jumpSpeed: 8
+  gravity: 20
+  mouseSpeed: 10
+  ammo: 10
+  fireRate: 1
+  maxHitPoints: 100
+  hitPoints: 0
+  damageSpeed: 10
+  coolDowmTime: 0
+--- !u!114 &3837049602222671881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8880919349663680751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecdddf26a1b27874daff8add46d1e095, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

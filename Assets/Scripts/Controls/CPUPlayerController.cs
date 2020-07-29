@@ -11,10 +11,14 @@ public class CPUPlayerController : MonoBehaviour
     int[] path;
     HashSet<Vector2Int> blockedSpaces;
     Vector2Int endSpace;
+    MultiplayerControls playerController;
+
+    float randomMovementTimer = 0.0f;
+    Vector3 movement;
 
     public void Start()
     {
-        
+        playerController = gameObject.GetComponent<MultiplayerControls>();
     }
 
     public void Update()
@@ -27,10 +31,11 @@ public class CPUPlayerController : MonoBehaviour
 
             // Follow path
 
+            RandomMovement();
         }
     }
 
-    public void ComputePath()
+    private void ComputePath()
     {
         // Employ Djikstra's algorithm to compute path
         if (FindCurrentSpace(out Vector2Int currentSpace))
@@ -40,14 +45,14 @@ public class CPUPlayerController : MonoBehaviour
         }
     }
 
-    public void FindBlockedSpaces(int r, int c)
+    private void FindBlockedSpaces(int r, int c)
     {
         blockedSpaces = new HashSet<Vector2Int>();
         for (int i = 0; i < r; i++)
         {
             for (int j = 0; j < c; i++)
             {
-                if (mapData[i,j] == 0)
+                if (mapData[i, j] == 0)
                 {
                     blockedSpaces.Add(new Vector2Int(i, j));
                 }
@@ -55,15 +60,28 @@ public class CPUPlayerController : MonoBehaviour
         }
     }
 
-    public bool FindCurrentSpace(out Vector2Int currentSpace)
+    private bool FindCurrentSpace(out Vector2Int currentSpace)
     {
         currentSpace = new Vector2Int();
         return false;
     }
 
-    public void FollowPath()
+    private void FollowPath()
     {
 
+    }
+
+    public void RandomMovement()
+    {
+        if (randomMovementTimer <= 0)
+        {
+            float x = Random.value - 0.5f;
+            float z = Random.value - 0.5f;
+            movement = new Vector3(x, 0.0f, z).normalized;
+            randomMovementTimer = 2.0f;
+        }
+        playerController.CPUMove(movement);
+        randomMovementTimer -= Time.deltaTime;
     }
 }
 

@@ -38,6 +38,7 @@ public class GameController : MonoBehaviourPunCallbacks
     public Text cooldownText;
     public GameObject gameEndPanel;
     public GameObject damageTakenPanel;
+    public GameObject RestartButton;
 
     public Camera minimapCamera;
 
@@ -192,6 +193,14 @@ public class GameController : MonoBehaviourPunCallbacks
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         gameEndPanel.SetActive(true);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            RestartButton.SetActive(true);
+        }
+        else
+        {
+            RestartButton.SetActive(false);
+        }
 
         if (teamController.score > enemyTeamController.score)
         {
@@ -205,6 +214,11 @@ public class GameController : MonoBehaviourPunCallbacks
         {
             gameEndText.text = "You Lose";
         }
+    }
+
+    public void RestartGame()
+    {
+        PhotonNetwork.LoadLevel("Game");
     }
 
     public void ReturnToMenu()

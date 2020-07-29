@@ -7,17 +7,22 @@ using Photon.Pun;
 
 public class MultiplayerControls : MonoBehaviour
 {
+    //CharacterController characterController;
     public Camera playerCam;
     private Vector3 moveDirection = Vector3.zero;
-    private float turnX, turnY;
+    private float turnX;
+    private float turnY;
     public bool movementEnabled = true;
-    private Rigidbody rb;
+    public bool isCPUPlayer = false;
+    Rigidbody rb;
     public GameObject sign;
     private Vector3 startingPosition;
 
     public string teamColor;
-    private GameObject team, enemyTeam;
-    private TeamController teamController, enemyTeamController;
+    GameObject team;
+    TeamController teamController;
+    GameObject enemyTeam;
+    TeamController enemyTeamController;
 
     [Header("Movement Settings")]
     public float speed = 6.0f;
@@ -38,27 +43,29 @@ public class MultiplayerControls : MonoBehaviour
     private float damageTime;
     public float coolDowmTime = 0.0f;
 
-    private Ray ray;
-    private RaycastHit hit;
-    private GameObject hitObject;
-    private LineRenderer lr;
+    Ray ray;
+    RaycastHit hit;
+    GameObject hitObject;
+    LineRenderer lr;
 
-    private PhotonView photonView;
+    PhotonView photonView;
     private string playerName = "";
 
 
     void Start()
     {
         photonView = gameObject.GetComponent<PhotonView>();
-        if (photonView.IsMine)
+        if (!isCPUPlayer)
         {
-            playerCam.gameObject.SetActive(true);
-            playerCam.enabled = true;
+            if (photonView.IsMine)
+            {
+                playerCam.gameObject.SetActive(true);
+                playerCam.enabled = true;
+            }
+            AssignTeam();
+            playerName = photonView.Owner.NickName;
+            gameObject.name = playerName;
         }
-        AssignTeam();
-        playerName = photonView.Owner.NickName;
-        gameObject.name = playerName;
-
 
         lr = gameObject.GetComponent<LineRenderer>();
         rb = GetComponent<Rigidbody>();
@@ -115,12 +122,14 @@ public class MultiplayerControls : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Turn();
-        if (photonView.IsMine)
+        if (!isCPUPlayer)
         {
-            Move();
-            
-            CoolDownCheck();
+            Turn();
+            if (photonView.IsMine)
+            {
+                Move();
+                CoolDownCheck();
+            }
         }
     }
 
@@ -197,7 +206,9 @@ public class MultiplayerControls : MonoBehaviour
         DisableControls();
         coolDowmTime = 5.0f;
         hitPoints = maxHitPoints;
+
         rb.MovePosition(startingPosition);
+
         photonView.RPC("KillPlayerRPC", RpcTarget.All);
     }
 
@@ -209,7 +220,7 @@ public class MultiplayerControls : MonoBehaviour
     }
 
     [PunRPC]
-    private void RevivePlayer()
+    private void RevivePlayerRPC()
     {
         teamController.AddPlayer(gameObject);
     }
@@ -228,6 +239,11 @@ public class MultiplayerControls : MonoBehaviour
     {
         // Move the controller
         rb.MovePosition(rb.position + moveDirection * Time.deltaTime);
+    }
+
+    public void CPUMove(Vector3 movement)
+    {
+        rb.MovePosition(rb.position + movement * Time.deltaTime);
     }
 
     private void Turn()
@@ -251,7 +267,7 @@ public class MultiplayerControls : MonoBehaviour
             if (coolDowmTime <= 0)
             {
                 EnableControls();
-                photonView.RPC("RevivePlayer", RpcTarget.All);
+                photonView.RPC("RevivePlayerRPC", RpcTarget.All);
             }
         }
     }
