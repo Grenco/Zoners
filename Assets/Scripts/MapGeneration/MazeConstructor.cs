@@ -23,9 +23,6 @@ public class MazeConstructor : MonoBehaviour
     public PhotonView photonView;
 
     public int[,] data;
-    //{
-    //    get; private set;
-    //}
 
 
     void Awake()
@@ -44,11 +41,8 @@ public class MazeConstructor : MonoBehaviour
         if (PhotonNetwork.IsMasterClient)//photonView.IsMine)
         {
             GenerateNewMaze();
-            //photonView.RPC("Test", RpcTarget.All, new int[,] { { 1, 1, 1 }, { 1, 1, 1 } } as object);
             photonView.RPC("DisplayMaze", RpcTarget.All, Serialize(data));
         }
-        //DisplayMaze();
-
     }
 
     int[,] FromDimensions(int sizeRows, int sizeCols)

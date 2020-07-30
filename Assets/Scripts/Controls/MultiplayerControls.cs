@@ -19,6 +19,7 @@ public class MultiplayerControls : MonoBehaviour
     private Vector3 startingPosition;
 
     public string teamColor;
+    public int playerNumber;
     GameObject team;
     TeamController teamController;
     GameObject enemyTeam;
@@ -55,6 +56,7 @@ public class MultiplayerControls : MonoBehaviour
     void Start()
     {
         photonView = gameObject.GetComponent<PhotonView>();
+        AssignTeam();
         if (!isCPUPlayer)
         {
             if (photonView.IsMine)
@@ -62,7 +64,8 @@ public class MultiplayerControls : MonoBehaviour
                 playerCam.gameObject.SetActive(true);
                 playerCam.enabled = true;
             }
-            AssignTeam();
+
+            GetPlayerNumber();
             playerName = photonView.Owner.NickName;
             gameObject.name = playerName;
         }
@@ -132,6 +135,10 @@ public class MultiplayerControls : MonoBehaviour
             Move();
             CoolDownCheck();
         }
+        if (isCPUPlayer && PhotonNetwork.IsMasterClient)
+        {
+            CoolDownCheck();
+        }
     }
 
     void RayShot()
@@ -182,7 +189,16 @@ public class MultiplayerControls : MonoBehaviour
 
         teamController = team.GetComponent<TeamController>();
         enemyTeamController = enemyTeam.GetComponent<TeamController>();
-        teamController.AddPlayer(gameObject);
+        if (!isCPUPlayer)
+        {
+            teamController.AddPlayer(gameObject);
+        }
+    }
+
+    void GetPlayerNumber()
+    {
+        int[] teamList = (int[])PhotonNetwork.PlayerList[0].CustomProperties[teamColor + "Team"];
+        playerNumber = System.Array.IndexOf(teamList, photonView.CreatorActorNr);
     }
 
     void CreatePlayerLabel()
@@ -213,7 +229,7 @@ public class MultiplayerControls : MonoBehaviour
     [PunRPC]
     private void KillPlayerRPC()
     {
-        teamController.RemovePlayer(gameObject);
+        teamController.RemovePlayer(playerNumber);
         enemyTeamController.score++;
     }
 
@@ -258,11 +274,14 @@ public class MultiplayerControls : MonoBehaviour
     private void TurnSign()
     {
         // Ensures the player names are facing the camera
-        sign.transform.rotation = Camera.main.transform.rotation; 
+        if (Camera.main != null)
+        {
+            sign.transform.rotation = Camera.main.transform.rotation;
+        }
     }
 
 
-    private void CoolDownCheck()
+    public void CoolDownCheck()
     {
         if (coolDowmTime > 0)
         {

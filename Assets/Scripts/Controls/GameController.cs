@@ -15,6 +15,7 @@ public class GameController : MonoBehaviourPunCallbacks
 
     private GameObject player1;
     private MultiplayerControls playerControls;
+    public static bool gameActive = true;
 
     [Header("Team Settings")]
     public GameObject redTeam;
@@ -109,22 +110,29 @@ public class GameController : MonoBehaviourPunCallbacks
             Cursor.visible = false;
         }
 
-        // Check for damage on player
-        if (playerControls.movementEnabled)
+        if (gameActive)
         {
-            DamageCheck();
-            hpText.text = "HP: " + playerControls.hitPoints.ToString();
+            // Check for damage on player
+            if (playerControls.movementEnabled)
+            {
+                DamageCheck();
+                hpText.text = "HP: " + playerControls.hitPoints.ToString();
+            }
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                CPUDamageCheck();
+            }
+
+            CooldownCheck();
+
+            UpdateScores();
+            UpdateTimer();
         }
-
-        CooldownCheck();
-
-        UpdateScores();
-        UpdateTimer();
     }
 
     private void DamageCheck()
     {
-        // Check if zone is active first
         if (enemyTeamController.IsAround(player1.transform.position))
         {
             playerControls.TakeDamage();
@@ -139,7 +147,49 @@ public class GameController : MonoBehaviourPunCallbacks
         {
             damageTakenPanel.SetActive(false);
         }
-        // If no zone is active, perform different damage check
+    }
+
+    private void CPUDamageCheck()
+    {
+        foreach (GameObject player in teamController.players)
+        {
+            if (player != null)
+            {
+                MultiplayerControls controls = player.GetComponent<MultiplayerControls>();
+                if (controls.isCPUPlayer && controls.movementEnabled)
+                {
+                    if (enemyTeamController.IsAround(player.transform.position))
+                    {
+                        controls.TakeDamage();
+
+                        if (controls.hitPoints <= 0)
+                        {
+                            controls.KillPlayer();
+                        }
+                    }
+                }
+            }
+        }
+
+        foreach (GameObject player in enemyTeamController.players)
+        {
+            if (player != null)
+            {
+                MultiplayerControls controls = player.GetComponent<MultiplayerControls>();
+                if (controls.isCPUPlayer && controls.movementEnabled)
+                {
+                    if (teamController.IsAround(player.transform.position))
+                    {
+                        controls.TakeDamage();
+
+                        if (controls.hitPoints <= 0)
+                        {
+                            controls.KillPlayer();
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void CooldownCheck()
@@ -192,6 +242,9 @@ public class GameController : MonoBehaviourPunCallbacks
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         gameEndPanel.SetActive(true);
+
+        gameActive = false;
+
         if (PhotonNetwork.IsMasterClient)
         {
             RestartButton.SetActive(true);

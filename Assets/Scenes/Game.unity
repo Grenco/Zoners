@@ -270,6 +270,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1364623787}
     m_Modifications:
+    - target: {fileID: 3837049602222671881, guid: 9b4a1106aa1ab414cb07e786869db38d,
+        type: 3}
+      propertyPath: prefferedDirections.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3837049602222671881, guid: 9b4a1106aa1ab414cb07e786869db38d,
+        type: 3}
+      propertyPath: prefferedDirections.Array.data[0]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3837049602222671881, guid: 9b4a1106aa1ab414cb07e786869db38d,
+        type: 3}
+      propertyPath: prefferedDirections.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4821029123733981717, guid: 9b4a1106aa1ab414cb07e786869db38d,
+        type: 3}
+      propertyPath: playerNumber
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7837711942744675458, guid: 9b4a1106aa1ab414cb07e786869db38d,
         type: 3}
       propertyPath: viewIdField
@@ -546,7 +566,7 @@ GameObject:
   - component: {fileID: 120310419}
   - component: {fileID: 120310418}
   - component: {fileID: 120310417}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: WallLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1201,7 +1221,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: -3.2352448, z: 5.93e-43, w: 4.41e-43}
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: -3.4982712e-35}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1231,6 +1251,11 @@ PrefabInstance:
       propertyPath: viewIdField
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 1580218352305357680, guid: eae4ab524e4b7504d88689a6abe48a9b,
+        type: 3}
+      propertyPath: playerNumber
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1611963995051846680, guid: eae4ab524e4b7504d88689a6abe48a9b,
         type: 3}
       propertyPath: m_Name
@@ -1239,7 +1264,7 @@ PrefabInstance:
     - target: {fileID: 1611963995051846684, guid: eae4ab524e4b7504d88689a6abe48a9b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1611963995051846684, guid: eae4ab524e4b7504d88689a6abe48a9b,
         type: 3}
@@ -1305,6 +1330,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.10537334
+      objectReference: {fileID: 0}
+    - target: {fileID: 6315696613175010682, guid: eae4ab524e4b7504d88689a6abe48a9b,
+        type: 3}
+      propertyPath: prefferedDirections.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6315696613175010682, guid: eae4ab524e4b7504d88689a6abe48a9b,
+        type: 3}
+      propertyPath: prefferedDirections.Array.data[0]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6315696613175010682, guid: eae4ab524e4b7504d88689a6abe48a9b,
+        type: 3}
+      propertyPath: prefferedDirections.Array.data[1]
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eae4ab524e4b7504d88689a6abe48a9b, type: 3}
@@ -1516,7 +1556,7 @@ GameObject:
   - component: {fileID: 404326940}
   - component: {fileID: 404326939}
   - component: {fileID: 404326938}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: WallBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1604,6 +1644,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1420836987}
     m_Modifications:
+    - target: {fileID: 3837049602222671881, guid: 9b4a1106aa1ab414cb07e786869db38d,
+        type: 3}
+      propertyPath: prefferedDirections.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3837049602222671881, guid: 9b4a1106aa1ab414cb07e786869db38d,
+        type: 3}
+      propertyPath: prefferedDirections.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3837049602222671881, guid: 9b4a1106aa1ab414cb07e786869db38d,
+        type: 3}
+      propertyPath: prefferedDirections.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4821029123733981717, guid: 9b4a1106aa1ab414cb07e786869db38d,
+        type: 3}
+      propertyPath: playerNumber
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7837711942744675458, guid: 9b4a1106aa1ab414cb07e786869db38d,
         type: 3}
       propertyPath: viewIdField
@@ -1788,7 +1848,7 @@ GameObject:
   - component: {fileID: 522304674}
   - component: {fileID: 522304673}
   - component: {fileID: 522304672}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: WallLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2267,7 +2327,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1847
+    m_Bits: 5943
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 2f3539e8ad8a8924a9e6538605578474, type: 2}
   m_TargetDisplay: 0
@@ -2324,7 +2384,7 @@ GameObject:
   - component: {fileID: 901355186}
   - component: {fileID: 901355185}
   - component: {fileID: 901355184}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: MazeGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2551,6 +2611,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1384160310}
     m_Modifications:
+    - target: {fileID: 3837049602222671881, guid: 9b4a1106aa1ab414cb07e786869db38d,
+        type: 3}
+      propertyPath: prefferedDirections.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3837049602222671881, guid: 9b4a1106aa1ab414cb07e786869db38d,
+        type: 3}
+      propertyPath: prefferedDirections.Array.data[0]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3837049602222671881, guid: 9b4a1106aa1ab414cb07e786869db38d,
+        type: 3}
+      propertyPath: prefferedDirections.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4821029123733981717, guid: 9b4a1106aa1ab414cb07e786869db38d,
+        type: 3}
+      propertyPath: playerNumber
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7837711942744675458, guid: 9b4a1106aa1ab414cb07e786869db38d,
         type: 3}
       propertyPath: viewIdField
@@ -2973,7 +3053,7 @@ GameObject:
   - component: {fileID: 1481666904}
   - component: {fileID: 1481666903}
   - component: {fileID: 1481666902}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: WallRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3173,6 +3253,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.10537334
+      objectReference: {fileID: 0}
+    - target: {fileID: 6315696613175010682, guid: eae4ab524e4b7504d88689a6abe48a9b,
+        type: 3}
+      propertyPath: prefferedDirections.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6315696613175010682, guid: eae4ab524e4b7504d88689a6abe48a9b,
+        type: 3}
+      propertyPath: prefferedDirections.Array.data[0]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6315696613175010682, guid: eae4ab524e4b7504d88689a6abe48a9b,
+        type: 3}
+      propertyPath: prefferedDirections.Array.data[1]
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eae4ab524e4b7504d88689a6abe48a9b, type: 3}
@@ -3383,6 +3478,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2139125204}
     m_Modifications:
+    - target: {fileID: 3837049602222671881, guid: 9b4a1106aa1ab414cb07e786869db38d,
+        type: 3}
+      propertyPath: prefferedDirections.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3837049602222671881, guid: 9b4a1106aa1ab414cb07e786869db38d,
+        type: 3}
+      propertyPath: prefferedDirections.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3837049602222671881, guid: 9b4a1106aa1ab414cb07e786869db38d,
+        type: 3}
+      propertyPath: prefferedDirections.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7837711942744675458, guid: 9b4a1106aa1ab414cb07e786869db38d,
         type: 3}
       propertyPath: viewIdField
@@ -4108,6 +4218,11 @@ PrefabInstance:
       propertyPath: viewIdField
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 1580218352305357680, guid: eae4ab524e4b7504d88689a6abe48a9b,
+        type: 3}
+      propertyPath: playerNumber
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1611963995051846680, guid: eae4ab524e4b7504d88689a6abe48a9b,
         type: 3}
       propertyPath: m_Name
@@ -4183,6 +4298,21 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.10537334
       objectReference: {fileID: 0}
+    - target: {fileID: 6315696613175010682, guid: eae4ab524e4b7504d88689a6abe48a9b,
+        type: 3}
+      propertyPath: prefferedDirections.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6315696613175010682, guid: eae4ab524e4b7504d88689a6abe48a9b,
+        type: 3}
+      propertyPath: prefferedDirections.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6315696613175010682, guid: eae4ab524e4b7504d88689a6abe48a9b,
+        type: 3}
+      propertyPath: prefferedDirections.Array.data[1]
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eae4ab524e4b7504d88689a6abe48a9b, type: 3}
 --- !u!4 &1722425639 stripped
@@ -4209,7 +4339,7 @@ GameObject:
   - component: {fileID: 1726645447}
   - component: {fileID: 1726645446}
   - component: {fileID: 1726645445}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: WallBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4673,7 +4803,7 @@ GameObject:
   - component: {fileID: 1886502684}
   - component: {fileID: 1886502683}
   - component: {fileID: 1886502682}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: WallRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4832,6 +4962,11 @@ PrefabInstance:
       propertyPath: viewIdField
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 1580218352305357680, guid: eae4ab524e4b7504d88689a6abe48a9b,
+        type: 3}
+      propertyPath: playerNumber
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1611963995051846680, guid: eae4ab524e4b7504d88689a6abe48a9b,
         type: 3}
       propertyPath: m_Name
@@ -4906,6 +5041,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.10537334
+      objectReference: {fileID: 0}
+    - target: {fileID: 6315696613175010682, guid: eae4ab524e4b7504d88689a6abe48a9b,
+        type: 3}
+      propertyPath: prefferedDirections.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6315696613175010682, guid: eae4ab524e4b7504d88689a6abe48a9b,
+        type: 3}
+      propertyPath: prefferedDirections.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6315696613175010682, guid: eae4ab524e4b7504d88689a6abe48a9b,
+        type: 3}
+      propertyPath: prefferedDirections.Array.data[1]
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eae4ab524e4b7504d88689a6abe48a9b, type: 3}

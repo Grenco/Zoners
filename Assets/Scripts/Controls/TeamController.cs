@@ -59,27 +59,21 @@ public class TeamController : MonoBehaviour
 
     public void AddPlayer(GameObject player)
     {
-        int[] teamList = (int[])PhotonNetwork.PlayerList[0].CustomProperties[team];
-        PhotonView playerView = player.GetPhotonView();
-        int teamNumber = System.Array.IndexOf(teamList, playerView.CreatorActorNr);
+        int playerNumber = player.GetComponent<MultiplayerControls>().playerNumber;
 
-        if (players[teamNumber] != null)
+        if (players[playerNumber] != null)
         {
-            players[teamNumber].SetActive(false);
+            players[playerNumber].SetActive(false);
         }
 
-        transforms[teamNumber] = player.transform;
-        players[teamNumber] = player;
+        transforms[playerNumber] = player.transform;
+        players[playerNumber] = player;
     }
 
-    public void RemovePlayer(GameObject player)
+    public void RemovePlayer(int playerNumber)
     {
-        int[] teamList = (int[])PhotonNetwork.PlayerList[0].CustomProperties[team];
-        PhotonView playerView = player.GetPhotonView();
-        int teamNumber = System.Array.IndexOf(teamList, playerView.CreatorActorNr);
-
-        transforms[teamNumber] = null;
-        players[teamNumber] = null;
+        transforms[playerNumber] = null;
+        players[playerNumber] = null;
     }
 
     public int LineCrossCheck(Vector2 p, Vector2 p1, Vector2 p2)

@@ -5172,7 +5172,7 @@ MonoBehaviour:
   fireRate: 1
   maxHitPoints: 100
   hitPoints: 0
-  damageSpeed: 10
+  damageSpeed: 20
   coolDowmTime: 0
 --- !u!114 &3837049602222671881
 MonoBehaviour:
@@ -5186,3 +5186,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecdddf26a1b27874daff8add46d1e095, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefferedDirections: 
