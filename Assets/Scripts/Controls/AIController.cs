@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using Photon;
 using Photon.Pun;
 
-public class CPUPlayerController : MonoBehaviour
+public class AIController : MonoBehaviour
 {
     int[,] mapData;
     int[] path;
@@ -26,12 +26,11 @@ public class CPUPlayerController : MonoBehaviour
     int direction = 0;
     public List<int> prefferedDirections;
 
-    float preferredDirectionMultiplier = 1.2f;
+    float preferredDirectionMultiplier = 1.3f;
     float backwardsMultiplier = 0.1f;
     float repeatedStraightLineMultipier = 1.0f;
     float turnBackMultiplier = 0.9f;
-
-    Vector3 collisionOffset = new Vector3(0.01f, 0.0f, 0.01f);
+    float keepGoingStraightMultiplier = 1.2f;
 
     public void Start()
     {
@@ -49,15 +48,8 @@ public class CPUPlayerController : MonoBehaviour
 
     public void Update()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient && GameController.gameActive)
         {
-            // Check for dangers ahead
-
-            // If dangerous, recompute path
-
-            // Follow path
-
-            //RandomMovement();
             if (newDirectionMovementTimer > 0)
             {
                 newDirectionMovementTimer -= Time.deltaTime;
@@ -69,7 +61,7 @@ public class CPUPlayerController : MonoBehaviour
 
             if (playerController.movementEnabled)
             {
-                playerController.CPUMove(directions[direction] + collisionOffset);
+                playerController.AIMove(directions[direction]);
             }
         }
     }
@@ -119,32 +111,41 @@ public class CPUPlayerController : MonoBehaviour
             movement = new Vector3(x, 0.0f, z).normalized;
             randomMovementTimer = 2.0f;
         }
-        playerController.CPUMove(movement);
+        playerController.AIMove(movement);
         randomMovementTimer -= Time.deltaTime;
     }
 
+    /// <summary>
+    /// Decide a direction to travel based on the surrounding walls and players.
+    /// </summary>
     public void ChooseDirection()
     {
+        // Loop through forward, right, backward and left
         for (int i = 0; i < directions.Count; i++)
         {
+            // Perform a raycast to find how far the nearest obstacle is.
             if (Physics.Raycast(gameObject.transform.position, directions[i], out hitInfo, 1000, wallLayer))
             {
                 distances[i] = hitInfo.distance;
 
+                // Use multipliers to bias the player towards a certain direction.
                 if (prefferedDirections.Contains(i))
                 {
                     distances[i] *= preferredDirectionMultiplier;
                 }
 
+                // Influence the player against turning back on themselves.
                 if ((direction + 2) % directions.Count == i)
                 {
                     distances[i] *= backwardsMultiplier;
                     distances[i] *= repeatedStraightLineMultipier;
                 }
 
+                // Influence the player to keep going straight, unless they have been moving in that direction for too long.
                 if (direction == i)
                 {
                     distances[i] *= repeatedStraightLineMultipier;
+                    distances[i] *= keepGoingStraightMultiplier;
                 }
             }
             else
@@ -153,14 +154,17 @@ public class CPUPlayerController : MonoBehaviour
             }
         }
 
+        // Find the best (highest) distance.
         int newDirection = System.Array.IndexOf(distances, distances.Max());
 
+        // If the player turns back on itself, encourage it to turn 90deg.
         if ((direction + 2) % directions.Count == newDirection)
         {
             repeatedStraightLineMultipier *= turnBackMultiplier;
         }
         else if (newDirection != direction)
         {
+            // If the player turns 90deg, can't change direction for given time period.
             repeatedStraightLineMultipier = 1.0f;
             newDirectionMovementTimer = 0.7f;
         }

@@ -289,7 +289,7 @@ GameObject:
   - component: {fileID: 4821029123733981717}
   - component: {fileID: 3837049602222671881}
   m_Layer: 11
-  m_Name: BluePlayerCPU
+  m_Name: BluePlayerAI
   m_TagString: BlueTeamPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5161,9 +5161,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCam: {fileID: 3325216316056390596}
   movementEnabled: 1
-  isCPUPlayer: 1
+  isAIPlayer: 1
   sign: {fileID: 5906164960884426455}
   teamColor: blue
+  playerNumber: 0
   speed: 10
   jumpSpeed: 3
   gravity: 9.8

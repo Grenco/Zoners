@@ -121,7 +121,7 @@ public class GameController : MonoBehaviourPunCallbacks
 
             if (PhotonNetwork.IsMasterClient)
             {
-                CPUDamageCheck();
+                AIDamageCheck();
             }
 
             CooldownCheck();
@@ -149,14 +149,14 @@ public class GameController : MonoBehaviourPunCallbacks
         }
     }
 
-    private void CPUDamageCheck()
+    private void AIDamageCheck()
     {
         foreach (GameObject player in teamController.players)
         {
             if (player != null)
             {
                 MultiplayerControls controls = player.GetComponent<MultiplayerControls>();
-                if (controls.isCPUPlayer && controls.movementEnabled)
+                if (controls.isAIPlayer && controls.movementEnabled)
                 {
                     if (enemyTeamController.IsAround(player.transform.position))
                     {
@@ -176,7 +176,7 @@ public class GameController : MonoBehaviourPunCallbacks
             if (player != null)
             {
                 MultiplayerControls controls = player.GetComponent<MultiplayerControls>();
-                if (controls.isCPUPlayer && controls.movementEnabled)
+                if (controls.isAIPlayer && controls.movementEnabled)
                 {
                     if (teamController.IsAround(player.transform.position))
                     {

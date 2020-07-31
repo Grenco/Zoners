@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 7829744432463817807}
   - component: {fileID: 6315696613175010682}
   m_Layer: 11
-  m_Name: RedPlayerCPU
+  m_Name: RedPlayerAI
   m_TagString: RedTeamPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4839,9 +4839,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCam: {fileID: 6183776438937784086}
   movementEnabled: 1
-  isCPUPlayer: 1
+  isAIPlayer: 1
   sign: {fileID: 6907934065835182152}
   teamColor: red
+  playerNumber: 0
   speed: 10
   jumpSpeed: 3
   gravity: 9.8
@@ -4917,6 +4918,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecdddf26a1b27874daff8add46d1e095, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefferedDirections: 
 --- !u!1 &6907934065835182152
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ public class MultiplayerControls : MonoBehaviour
     private float turnX;
     private float turnY;
     public bool movementEnabled = true;
-    public bool isCPUPlayer = false;
+    public bool isAIPlayer = false;
     Rigidbody rb;
     public GameObject sign;
     private Vector3 startingPosition;
@@ -57,7 +57,7 @@ public class MultiplayerControls : MonoBehaviour
     {
         photonView = gameObject.GetComponent<PhotonView>();
         AssignTeam();
-        if (!isCPUPlayer)
+        if (!isAIPlayer)
         {
             if (photonView.IsMine)
             {
@@ -129,13 +129,13 @@ public class MultiplayerControls : MonoBehaviour
         {
             TurnSign();
         }
-        if (photonView.IsMine && !isCPUPlayer)
+        if (photonView.IsMine && !isAIPlayer)
         {
             Turn();
             Move();
             CoolDownCheck();
         }
-        if (isCPUPlayer && PhotonNetwork.IsMasterClient)
+        if (isAIPlayer && PhotonNetwork.IsMasterClient)
         {
             CoolDownCheck();
         }
@@ -189,7 +189,7 @@ public class MultiplayerControls : MonoBehaviour
 
         teamController = team.GetComponent<TeamController>();
         enemyTeamController = enemyTeam.GetComponent<TeamController>();
-        if (!isCPUPlayer)
+        if (!isAIPlayer)
         {
             teamController.AddPlayer(gameObject);
         }
@@ -255,7 +255,7 @@ public class MultiplayerControls : MonoBehaviour
         rb.MovePosition(rb.position + moveDirection * Time.deltaTime);
     }
 
-    public void CPUMove(Vector3 movement)
+    public void AIMove(Vector3 movement)
     {
         rb.MovePosition(rb.position + movement * speed * Time.deltaTime);
     }
