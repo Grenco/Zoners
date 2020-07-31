@@ -9,18 +9,17 @@ public class TeamController : MonoBehaviour
     public GameObject[] players;
     public GameObject dangerZone;
     public GameObject minimapZone;
+    private MeshFilter zoneMesh;
+    private MeshFilter minimapZoneMesh;
     public string team;
 
     public GameObject enemyTeam;
-    TeamController enemyTeamController;
+    private TeamController enemyTeamController;
 
-    Transform[] transforms;
-    Vector3[] positions;
+    private Transform[] transforms;
+    private Vector3[] positions;
 
-    LineRenderer lr;
-
-    MeshFilter zoneMesh;
-    MeshFilter minimapZoneMesh;
+    private LineRenderer lr;
 
     public int score;
 

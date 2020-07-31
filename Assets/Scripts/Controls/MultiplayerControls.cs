@@ -14,16 +14,16 @@ public class MultiplayerControls : MonoBehaviour
     private float turnY;
     public bool movementEnabled = true;
     public bool isAIPlayer = false;
-    Rigidbody rb;
+    private Rigidbody rb;
     public GameObject sign;
     private Vector3 startingPosition;
 
     public string teamColor;
     public int playerNumber;
-    GameObject team;
-    TeamController teamController;
-    GameObject enemyTeam;
-    TeamController enemyTeamController;
+    private GameObject team;
+    private TeamController teamController;
+    private GameObject enemyTeam;
+    private TeamController enemyTeamController;
 
     [Header("Movement Settings")]
     public float speed = 6.0f;
@@ -49,7 +49,7 @@ public class MultiplayerControls : MonoBehaviour
     GameObject hitObject;
     LineRenderer lr;
 
-    PhotonView photonView;
+    private PhotonView photonView;
     private string playerName = "";
 
 

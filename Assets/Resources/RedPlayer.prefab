@@ -4838,7 +4838,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCam: {fileID: 6183776438937784086}
   movementEnabled: 1
-  isCPUPlayer: 0
+  isAIPlayer: 0
   sign: {fileID: 6907934065835182152}
   teamColor: red
   playerNumber: 0
