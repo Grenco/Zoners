@@ -57,6 +57,11 @@ public class TeamController : MonoBehaviour
         UpdateZone();
     }
 
+    /// <summary>
+    /// Add a player gameobject to the team to be used in the zone.
+    /// Can be used at the beginning of hte game to replace AI players and after respawn.
+    /// </summary>
+    /// <param name="player"> GameeOject of the player ot be added. </param>
     public void AddPlayer(GameObject player)
     {
         int playerNumber = player.GetComponent<MultiplayerControls>().playerNumber;
@@ -70,12 +75,26 @@ public class TeamController : MonoBehaviour
         players[playerNumber] = player;
     }
 
+    /// <summary>
+    /// Remove a player from the teame to be left out of zone calculations while dead.
+    /// </summary>
+    /// <param name="playerNumber"> Index of the player within the team. </param>
     public void RemovePlayer(int playerNumber)
     {
         transforms[playerNumber] = null;
         players[playerNumber] = null;
     }
 
+    /// <summary>
+    /// Check if a ray from p intersects the line between p1 and p2.
+    /// The ray is projected from p, parallel to the z-axis.
+    /// Calculations are completed in 2D on the x-z plane.
+    /// </summary>
+    /// <param name="p">Emission point for the ray.</param>
+    /// <param name="p1">First point on the intersection line.</param>
+    /// <param name="p2">Second point on the intersection line.</param>
+    /// <returns>Returns 0 for no intersection, 1 if p1 or p2 lie on the ray, 
+    /// or 2 if the ray intersects the line. </returns>
     public int LineCrossCheck(Vector2 p, Vector2 p1, Vector2 p2)
     {
         p1 -= p;
@@ -112,8 +131,15 @@ public class TeamController : MonoBehaviour
         return 0;
     }
 
+    /// <summary>
+    /// Check if the team's zone lies around a given point in the x-z plane.
+    /// </summary>
+    /// <param name="point">Input value.</param>
+    /// <returns>Returns true if point lies inside the zone. False if not.</returns>
     public bool IsAround(Vector3 point)
     {
+        // If a line projected from the point intersects the zone an even number of times,
+        // the point lies outside the zone. Odd and it lies inside.
         if (players.Count(x => x != null) < 3)
         {
             return false;
@@ -128,17 +154,20 @@ public class TeamController : MonoBehaviour
             Vector2 v2 = new Vector2(positions[(i + 1) % vertCount].x, positions[(i + 1) % vertCount].z);
 
             intersections += LineCrossCheck(v0, v1, v2);
-
         }
 
+        // Checks are done to mod 4 as the line intersection checker returns 2 for a single intersection
+        // or 1 for a corner intersection, which happens twice on the corner.
         if (intersections % 4 == 0)
         {
             return false;
         }
         return true;
-
     }
 
+    /// <summary>
+    /// Update the mesh of the zone to accomodate for player movement.
+    /// </summary>
     private void UpdateZone()
     {
         Mesh mesh = new Mesh();

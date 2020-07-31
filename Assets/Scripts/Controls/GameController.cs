@@ -12,10 +12,10 @@ public class GameController : MonoBehaviourPunCallbacks
     [Header("Game Settings")]
     public float gameTime; // seconds
     private float timeRemaining; // seconds
+    public static bool gameActive = true;
 
     private GameObject player1;
     private MultiplayerControls playerControls;
-    public static bool gameActive = true;
 
     [Header("Team Settings")]
     public GameObject redTeam;
@@ -131,6 +131,9 @@ public class GameController : MonoBehaviourPunCallbacks
         }
     }
 
+    /// <summary>
+    /// Check if the local player has recieved damage and update the UI to reflect this.
+    /// </summary>
     private void DamageCheck()
     {
         if (enemyTeamController.IsAround(player1.transform.position))
@@ -149,6 +152,10 @@ public class GameController : MonoBehaviourPunCallbacks
         }
     }
 
+    /// <summary>
+    /// Perform damage checks on the AI players on both teams.
+    /// Only to be used by the Master Client.
+    /// </summary>
     private void AIDamageCheck()
     {
         foreach (GameObject player in teamController.players)
@@ -192,6 +199,9 @@ public class GameController : MonoBehaviourPunCallbacks
         }
     }
 
+    /// <summary>
+    /// Check if the local player has died and reflect this in the UI.
+    /// </summary>
     private void CooldownCheck()
     {
         if (playerControls.coolDowmTime > 0.0f)
@@ -205,6 +215,9 @@ public class GameController : MonoBehaviourPunCallbacks
         }
     }
 
+    /// <summary>
+    /// Update the game timer and check if the game has ended.
+    /// </summary>
     private void UpdateTimer()
     {
         if (timeRemaining > 0)
@@ -230,12 +243,19 @@ public class GameController : MonoBehaviourPunCallbacks
         }
     }
 
+    /// <summary>
+    /// Update the UI to reflect any changes in the score.
+    /// </summary>
     private void UpdateScores()
     {
         redScoreText.text = redTeam.GetComponent<TeamController>().score.ToString();
         blueScoreText.text = blueTeam.GetComponent<TeamController>().score.ToString();
     }
 
+    /// <summary>
+    /// To be called when the game is over.
+    /// Update the UI to show the winner.
+    /// </summary>
     private void EndGame()
     {
         playerControls.DisableControls();
@@ -268,11 +288,17 @@ public class GameController : MonoBehaviourPunCallbacks
         }
     }
 
+    /// <summary>
+    /// Give the Master client the ability to restart the gane.
+    /// </summary>
     public void RestartGame()
     {
         PhotonNetwork.LoadLevel("Game");
     }
 
+    /// <summary>
+    /// Return to the main menu at the end of the game.
+    /// </summary>
     public void ReturnToMenu()
     {
         PhotonNetwork.LeaveRoom();
@@ -284,6 +310,9 @@ public class GameController : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("LoadScreen");
     }
 
+    /// <summary>
+    /// Exit the game.
+    /// </summary>
     public void QuitGame()
     {
         Application.Quit();

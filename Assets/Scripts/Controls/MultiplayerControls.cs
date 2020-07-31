@@ -173,7 +173,9 @@ public class MultiplayerControls : MonoBehaviour
         lr.SetPosition(1, end);
     }
 
-
+    /// <summary>
+    /// Add find the team and enemy team game objects and add the aplayer to the team.
+    /// </summary>
     void AssignTeam()
     {
         if (teamColor == "red")
@@ -195,18 +197,27 @@ public class MultiplayerControls : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Find the player's reference number in the team.
+    /// </summary>
     void GetPlayerNumber()
     {
         int[] teamList = (int[])PhotonNetwork.PlayerList[0].CustomProperties[teamColor + "Team"];
         playerNumber = System.Array.IndexOf(teamList, photonView.CreatorActorNr);
     }
 
+    /// <summary>
+    /// Add the player name to the sign above the player's head.
+    /// </summary>
     void CreatePlayerLabel()
     {
         TextMesh tm = sign.GetComponent<TextMesh>();
         tm.text = gameObject.name;
     }
 
+    /// <summary>
+    /// Take damage for a single frame when inside the enemy's danger zone.
+    /// </summary>
     public void TakeDamage()
     {
         damageTime += Time.deltaTime;
@@ -217,6 +228,9 @@ public class MultiplayerControls : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Remove the player from the team and send them back to the respawn point for a cooldown time.
+    /// </summary>
     public void KillPlayer()
     {
         DisableControls();
@@ -226,6 +240,9 @@ public class MultiplayerControls : MonoBehaviour
         photonView.RPC("KillPlayerRPC", RpcTarget.All);
     }
 
+    /// <summary>
+    /// Notify the other players on the network that this player has died
+    /// </summary>
     [PunRPC]
     private void KillPlayerRPC()
     {
@@ -233,6 +250,9 @@ public class MultiplayerControls : MonoBehaviour
         enemyTeamController.score++;
     }
 
+    /// <summary>
+    /// Notify other player on the network that this plaeyr has respawned.
+    /// </summary>
     [PunRPC]
     private void RevivePlayerRPC()
     {
@@ -255,9 +275,13 @@ public class MultiplayerControls : MonoBehaviour
         rb.MovePosition(rb.position + moveDirection * Time.deltaTime);
     }
 
+    /// <summary>
+    /// Allow an external AI controller to move the player.
+    /// </summary>
+    /// <param name="movement"> Movmement direction. </param>
     public void AIMove(Vector3 movement)
     {
-        rb.MovePosition(rb.position + movement * speed * Time.deltaTime);
+        rb.MovePosition(rb.position + movement.normalized * speed * Time.deltaTime);
     }
 
     private void Turn()
@@ -271,6 +295,9 @@ public class MultiplayerControls : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Turn the player's sign to face the main camera.
+    /// </summary>
     private void TurnSign()
     {
         // Ensures the player names are facing the camera
@@ -280,7 +307,9 @@ public class MultiplayerControls : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// If the player has died, reduce the cooldown time and check if the player can respawn.
+    /// </summary>
     public void CoolDownCheck()
     {
         if (coolDowmTime > 0)
