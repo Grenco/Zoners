@@ -5107,13 +5107,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCam: {fileID: 3325216316056390596}
   movementEnabled: 1
-  isCPUPlayer: 0
+  isAIPlayer: 0
   sign: {fileID: 5906164960884426455}
   teamColor: blue
   playerNumber: 0
   speed: 10
-  jumpSpeed: 3
-  gravity: 9.8
+  jumpSpeed: 5
   mouseSpeed: 6
   ammo: 10
   fireRate: 1

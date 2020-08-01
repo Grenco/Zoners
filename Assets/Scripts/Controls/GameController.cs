@@ -86,6 +86,8 @@ public class GameController : MonoBehaviourPunCallbacks
         playerControls = player1.GetComponent<MultiplayerControls>();
         teamController = team.GetComponent<TeamController>();
         enemyTeamController = enemyTeam.GetComponent<TeamController>();
+
+        gameActive = true;
     }
 
     // Update is called once per frame

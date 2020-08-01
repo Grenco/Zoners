@@ -12,6 +12,7 @@ public class MultiplayerControls : MonoBehaviour
     private Vector3 moveDirection = Vector3.zero;
     private float turnX;
     private float turnY;
+    private bool jumpCheck;
     public bool movementEnabled = true;
     public bool isAIPlayer = false;
     private Rigidbody rb;
@@ -28,7 +29,6 @@ public class MultiplayerControls : MonoBehaviour
     [Header("Movement Settings")]
     public float speed = 6.0f;
     public float jumpSpeed = 8.0f;
-    public float gravity = 20.0f;
     public float mouseSpeed = 10.0f;
 
     [Header("Shooting Settings")]
@@ -56,7 +56,6 @@ public class MultiplayerControls : MonoBehaviour
     void Start()
     {
         photonView = gameObject.GetComponent<PhotonView>();
-        AssignTeam();
         if (!isAIPlayer)
         {
             if (photonView.IsMine)
@@ -69,6 +68,8 @@ public class MultiplayerControls : MonoBehaviour
             playerName = photonView.Owner.NickName;
             gameObject.name = playerName;
         }
+
+        AssignTeam();
 
         lr = gameObject.GetComponent<LineRenderer>();
         rb = GetComponent<Rigidbody>();
@@ -86,30 +87,18 @@ public class MultiplayerControls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (photonView.IsMine)
+        // Convert the user input into a momvemnt and turn direction.
+        if (photonView.IsMine && !isAIPlayer)
         {
             if (movementEnabled)
             {
-                //if (characterController.isGrounded)
-                //{
-                // We are grounded, so recalculate
-                // move direction directly from axes
                 Vector3 moveDirectionVertical = gameObject.transform.forward * Input.GetAxis("Vertical");
                 Vector3 moveDirectionHorizontal = gameObject.transform.right * Input.GetAxis("Horizontal");
                 moveDirection = (moveDirectionVertical + moveDirectionHorizontal).normalized;
                 moveDirection.y = 0.0f;
                 moveDirection *= speed;
 
-                if (Input.GetButton("Jump"))
-                {
-                    moveDirection.y = jumpSpeed;
-                }
-                //}
-
-                // Apply gravity. Gravity is multiplied by deltaTime twice (once here, and once below
-                // when the moveDirection is multiplied by deltaTime). This is because gravity should be applied
-                // as an acceleration (ms^-2)
-                //moveDirection.y -= gravity * Time.deltaTime;
+                jumpCheck = Input.GetButton("Jump");
             }
             else
             {
@@ -119,8 +108,6 @@ public class MultiplayerControls : MonoBehaviour
             turnX = Input.GetAxis("Mouse X") * mouseSpeed;
             turnY = Input.GetAxis("Mouse Y") * mouseSpeed;
         }
-        //RayShot();
-        //shotCoolDown -= Time.deltaTime;
     }
 
     private void FixedUpdate()
@@ -133,6 +120,10 @@ public class MultiplayerControls : MonoBehaviour
         {
             Turn();
             Move();
+            if (jumpCheck && IsGrounded())
+            {
+                Jump();
+            }
             CoolDownCheck();
         }
         if (isAIPlayer && PhotonNetwork.IsMasterClient)
@@ -275,6 +266,11 @@ public class MultiplayerControls : MonoBehaviour
         rb.MovePosition(rb.position + moveDirection * Time.deltaTime);
     }
 
+    private void Jump()
+    {
+        rb.velocity = new Vector3(0, jumpSpeed, 0);
+    }
+
     /// <summary>
     /// Allow an external AI controller to move the player.
     /// </summary>
@@ -305,6 +301,16 @@ public class MultiplayerControls : MonoBehaviour
         {
             sign.transform.rotation = Camera.main.transform.rotation;
         }
+    }
+
+    /// <summary>
+    /// Check if the character is touching the ground.
+    /// </summary>
+    /// <returns> True if the character is touching the ground. </returns>
+    private bool IsGrounded()
+    {
+        float distToGround = gameObject.GetComponent<Collider>().bounds.extents.y;
+        return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
     }
 
     /// <summary>

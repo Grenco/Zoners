@@ -11,8 +11,8 @@ public class MazeConstructor : MonoBehaviour
 
     public float placementThreshold = 0.1f;
 
-    [SerializeField] private Material mazeMat1;
-    [SerializeField] private Material mazeMat2;
+    public Material mazeMat1;
+    public Material mazeMat2;
     public int sizeRows = 15;
     public int sizeCols = 15;
     public float hallWidth = 7.5f;

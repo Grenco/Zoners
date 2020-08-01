@@ -5166,8 +5166,7 @@ MonoBehaviour:
   teamColor: blue
   playerNumber: 0
   speed: 10
-  jumpSpeed: 3
-  gravity: 9.8
+  jumpSpeed: 5
   mouseSpeed: 6
   ammo: 10
   fireRate: 1
