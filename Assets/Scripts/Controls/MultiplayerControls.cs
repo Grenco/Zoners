@@ -29,7 +29,7 @@ public class MultiplayerControls : MonoBehaviour
     [Header("Movement Settings")]
     public float mouseSpeed = 10.0f;
     public static float speed = 10.0f;
-    public static float jumpSpeed = 8.0f;
+    public static float jumpSpeed = 5.0f;
 
     [Header("Shooting Settings")]
     public int ammo = 10;

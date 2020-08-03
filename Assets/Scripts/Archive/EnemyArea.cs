@@ -145,7 +145,7 @@ public class EnemyArea : MonoBehaviour
 
         if (positions.Length == 4)
         {
-            Quadilateral quad = new Quadilateral(positions);
+            Quadrilateral quad = new Quadrilateral(positions);
 
             for (int i = 0; i < quad.points.Count; i++)
             {

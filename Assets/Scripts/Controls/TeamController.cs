@@ -179,7 +179,7 @@ public class TeamController : MonoBehaviour
         Mesh mesh = new Mesh();
         if (positions.Length == 4)
         {
-            Quadilateral quad = new Quadilateral(positions);
+            Quadrilateral quad = new Quadrilateral(positions);
 
             for (int i = 0; i < quad.points.Count; i++)
             {
@@ -220,8 +220,6 @@ public class TeamController : MonoBehaviour
         }
         zoneMesh.mesh = mesh;
         minimapZoneMesh.mesh = mesh;
-
-        Debug.Log("Zone Area: " + zoneArea.ToString());
 
         damageMultiplier = 1 - Mathf.Max(Mathf.Min((zoneArea - 56.25f) / 8000, 1), 0);
 

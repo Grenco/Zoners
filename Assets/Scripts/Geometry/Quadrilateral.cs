@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Quadilateral
+public class Quadrilateral
 {
 
     public List<Vector3> points;
@@ -101,8 +101,7 @@ public class Quadilateral
     }
 
 
-
-    public Quadilateral(Vector3[] p)
+    public Quadrilateral(Vector3[] p)
     {
         points = new List<Vector3>();
         for (int i = 0; i < p.Length; i++)

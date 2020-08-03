@@ -320,7 +320,7 @@ public class GameController : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         base.OnLeftRoom();
-        PhotonNetwork.LoadLevel("LoadScreen");
+        //PhotonNetwork.LoadLevel("LoadScreen");
     }
 
     /// <summary>
