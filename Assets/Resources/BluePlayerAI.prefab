@@ -5172,7 +5172,7 @@ MonoBehaviour:
   fireRate: 1
   maxHitPoints: 100
   hitPoints: 0
-  damageSpeed: 20
+  damageSpeed: 50
   coolDowmTime: 0
 --- !u!114 &3837049602222671881
 MonoBehaviour:

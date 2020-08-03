@@ -27,9 +27,9 @@ public class MultiplayerControls : MonoBehaviour
     private TeamController enemyTeamController;
 
     [Header("Movement Settings")]
-    public float speed = 6.0f;
-    public float jumpSpeed = 8.0f;
     public float mouseSpeed = 10.0f;
+    public static float speed = 10.0f;
+    public static float jumpSpeed = 8.0f;
 
     [Header("Shooting Settings")]
     public int ammo = 10;
@@ -38,9 +38,9 @@ public class MultiplayerControls : MonoBehaviour
     GameObject ammoUI;
 
     [Header("Player Settings")]
-    public int maxHitPoints = 100;
+    public static int maxHitPoints = 100;
     public int hitPoints;
-    public float damageSpeed = 10.0f; // HP/s
+    public static float damageSpeed = 50.0f; // HP/s
     private float damageTime;
     public float coolDowmTime = 0.0f;
 
@@ -211,7 +211,7 @@ public class MultiplayerControls : MonoBehaviour
     /// </summary>
     public void TakeDamage()
     {
-        damageTime += Time.deltaTime;
+        damageTime += Time.deltaTime * enemyTeamController.damageMultiplier;
         if (damageTime > 1 / damageSpeed)
         {
             hitPoints -= 1;

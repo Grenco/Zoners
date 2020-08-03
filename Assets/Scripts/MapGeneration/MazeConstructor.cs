@@ -79,6 +79,10 @@ public class MazeConstructor : MonoBehaviour
         return maze;
     }
 
+    /// <summary>
+    /// To be called by MasterClient after the maze data has been generated.
+    /// </summary>
+    /// <param name="mazeDataBytes">Maze data converted to binary from int array.</param>
     [PunRPC]
     void DisplayMaze(byte[] mazeDataBytes)
     {
@@ -102,6 +106,11 @@ public class MazeConstructor : MonoBehaviour
         mr.materials = new Material[2] { mazeMat1, mazeMat2 };
     }
 
+    /// <summary>
+    /// Convert object to binary format to be sent over Photon Network.
+    /// </summary>
+    /// <param name="toSerialize">Object to be serialised.</param>
+    /// <returns>Returns object in form of byte array.</returns>
     public static byte[] Serialize(object toSerialize)
     {
         BinaryFormatter bf = new BinaryFormatter();
@@ -110,6 +119,12 @@ public class MazeConstructor : MonoBehaviour
         return ms.ToArray();
     }
 
+    /// <summary>
+    /// Return binary object to original form.
+    /// </summary>
+    /// <typeparam name="T">Desired type of object.</typeparam>
+    /// <param name="toDeserialize">Binary object to be deserialised.</param>
+    /// <returns>Returns object.</returns>
     public static T Deserialize<T>(byte[] toDeserialize)
     {
         BinaryFormatter bf = new BinaryFormatter();

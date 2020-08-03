@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Quadilateral
@@ -10,6 +11,16 @@ public class Quadilateral
     public List<int> trirefs;
     public List<Triangle> triangles;
     public List<Vector3> normals;
+
+    public float area
+    {
+        get
+        {
+            float area = triangles.Sum(x => x.area);
+            return area;
+        }
+    }
+
 
     void Triangulate()
     {

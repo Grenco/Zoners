@@ -5111,14 +5111,10 @@ MonoBehaviour:
   sign: {fileID: 5906164960884426455}
   teamColor: blue
   playerNumber: 0
-  speed: 10
-  jumpSpeed: 5
   mouseSpeed: 6
   ammo: 10
   fireRate: 1
-  maxHitPoints: 100
   hitPoints: 0
-  damageSpeed: 20
   coolDowmTime: 0
 --- !u!114 &7837711942744675458
 MonoBehaviour:

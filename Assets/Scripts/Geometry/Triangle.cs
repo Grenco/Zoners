@@ -9,6 +9,16 @@ public class Triangle
     public bool colinear = false;
     public bool cw = true;
 
+    public float area
+    {
+        get
+        {
+            List<Vector3> p = points;
+            float area = Mathf.Abs(p[0].x * (p[1].z - p[2].z) + p[1].x * (p[2].z - p[0].z) + p[2].x * (p[0].z - p[1].z));
+            return area;
+        }
+    }
+
     public Vector3 CentrePoint()
     {
         Vector3 centre = new Vector3();

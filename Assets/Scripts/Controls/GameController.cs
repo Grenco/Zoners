@@ -40,6 +40,8 @@ public class GameController : MonoBehaviourPunCallbacks
     public GameObject gameEndPanel;
     public GameObject damageTakenPanel;
     public GameObject RestartButton;
+    public HealthBarControl zoneStrengthBar;
+    public GameObject minimap;
 
     public Camera minimapCamera;
 
@@ -69,6 +71,8 @@ public class GameController : MonoBehaviourPunCallbacks
             spawnPositions = blueSpawnPositions;
             teamList = (int[])PhotonNetwork.PlayerList[0].CustomProperties["blueTeam"];
             minimapCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("RedTeamMinimap"));
+            zoneStrengthBar.SetBarColor(new Color(0, 1, 1));
+            minimap.transform.Rotate(new Vector3(0, 0, 1), 180);
         }
         else
         {
@@ -78,6 +82,7 @@ public class GameController : MonoBehaviourPunCallbacks
             spawnPositions = redSpawnPositions;
             teamList = (int[])PhotonNetwork.PlayerList[0].CustomProperties["redTeam"];
             minimapCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("BlueTeamMinimap"));
+            zoneStrengthBar.SetBarColor(new Color(1, 0, 0));
         }
 
         int teamNumber = Array.IndexOf(teamList, PhotonNetwork.LocalPlayer.ActorNumber);
@@ -130,6 +135,7 @@ public class GameController : MonoBehaviourPunCallbacks
 
             UpdateScores();
             UpdateTimer();
+            UpdateZoneBar();
         }
     }
 
@@ -142,7 +148,7 @@ public class GameController : MonoBehaviourPunCallbacks
         {
             playerControls.TakeDamage();
             damageTakenPanel.SetActive(true);
-            damageTakenPanel.GetComponent<Image>().color = new Color(1, 0, 0, 0.2f * (Mathf.Sin(playerControls.hitPoints * playerControls.damageSpeed * 5) + 1));
+            damageTakenPanel.GetComponent<Image>().color = new Color(1, 0, 0, 0.2f * (Mathf.Sin(playerControls.hitPoints * MultiplayerControls.damageSpeed * 5) + 1));
             if (playerControls.hitPoints <= 0)
             {
                 playerControls.KillPlayer();
@@ -252,6 +258,11 @@ public class GameController : MonoBehaviourPunCallbacks
     {
         redScoreText.text = redTeam.GetComponent<TeamController>().score.ToString();
         blueScoreText.text = blueTeam.GetComponent<TeamController>().score.ToString();
+    }
+
+    public void UpdateZoneBar()
+    {
+        zoneStrengthBar.SetBarFill(teamController.damageMultiplier);
     }
 
     /// <summary>

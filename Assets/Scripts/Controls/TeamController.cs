@@ -9,7 +9,10 @@ public class TeamController : MonoBehaviour
     public GameObject[] players;
     public GameObject dangerZone;
     public GameObject minimapZone;
+    public Color teamZoneColor;
+
     private MeshFilter zoneMesh;
+    private MeshRenderer zoneMeshRenderer;
     private MeshFilter minimapZoneMesh;
     public string team;
 
@@ -23,6 +26,9 @@ public class TeamController : MonoBehaviour
 
     public int score;
 
+    private float zoneArea;
+    public float damageMultiplier;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +40,7 @@ public class TeamController : MonoBehaviour
 
         zoneMesh = dangerZone.GetComponent<MeshFilter>();
         minimapZoneMesh = minimapZone.GetComponent<MeshFilter>();
+        zoneMeshRenderer = dangerZone.GetComponent<MeshRenderer>();
 
         enemyTeamController = enemyTeam.GetComponent<TeamController>();
     }
@@ -179,6 +186,8 @@ public class TeamController : MonoBehaviour
                 quad.points[i] -= zoneMesh.transform.position;
             }
 
+            zoneArea = quad.area;
+
             mesh.SetVertices(quad.points);
             mesh.SetTriangles(quad.trirefs, 0);
             mesh.SetColors(new List<Color>(quad.triangles.Count));
@@ -193,6 +202,8 @@ public class TeamController : MonoBehaviour
                 tri.points[i] -= zoneMesh.transform.position;
             }
 
+            zoneArea = tri.area;
+
             mesh.SetVertices(tri.points);
             mesh.SetTriangles(tri.refs, 0);
             mesh.SetColors(new List<Color>(tri.refs.Count));
@@ -204,9 +215,18 @@ public class TeamController : MonoBehaviour
             mesh.SetTriangles(new List<int>(), 0);
             mesh.SetColors(new List<Color>());
             mesh.RecalculateNormals();
+
+            zoneArea = 0;
         }
         zoneMesh.mesh = mesh;
         minimapZoneMesh.mesh = mesh;
+
+        Debug.Log("Zone Area: " + zoneArea.ToString());
+
+        damageMultiplier = 1 - Mathf.Max(Mathf.Min((zoneArea - 56.25f) / 8000, 1), 0);
+
+        zoneMeshRenderer.material.color = Color.Lerp(Color.clear, teamZoneColor, Mathf.Max(damageMultiplier - 0.05f, 0f));
+        zoneMeshRenderer.material.SetColor("_EmissionColor", teamZoneColor * damageMultiplier * 2);
     }
 
 }
