@@ -87,7 +87,10 @@ public class Launcher : MonoBehaviourPunCallbacks
                 playerList.text += player.NickName + "\n";
             }
         }
-        spinner.transform.Rotate(0, 0, spinnerSpeed * Time.deltaTime);
+        if (spinner.IsActive())
+        {
+            spinner.transform.Rotate(0, 0, spinnerSpeed * Time.deltaTime);
+        }
     }
 
     // Helper Methods
