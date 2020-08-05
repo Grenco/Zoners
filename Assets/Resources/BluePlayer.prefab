@@ -5109,7 +5109,7 @@ MonoBehaviour:
   movementEnabled: 1
   isAIPlayer: 0
   sign: {fileID: 5906164960884426455}
-  teamColor: blue
+  teamColor: 1
   playerNumber: 0
   mouseSpeed: 6
   ammo: 10

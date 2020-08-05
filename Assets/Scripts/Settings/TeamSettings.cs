@@ -13,7 +13,7 @@ public class TeamSettings : MonoBehaviourPunCallbacks
     public TeamController blueTeamController;
     public static TeamController myTeamController;
     public static TeamController enemyTeamController;
-    public Dictionary<Team, TeamController> teamControllers = new Dictionary<Team, TeamController>();
+    public static Dictionary<Team, TeamController> teamControllers = new Dictionary<Team, TeamController>();
 
     public static List<Player> redTeamPlayers = new List<Player>();
     public static List<Player> blueTeamPlayers = new List<Player>();
@@ -34,7 +34,7 @@ public class TeamSettings : MonoBehaviourPunCallbacks
         { Team.blue, Color.cyan }
     };
 
-    public int MyIndex
+    public static int MyIndex
     {
         get
         {
@@ -62,6 +62,7 @@ public class TeamSettings : MonoBehaviourPunCallbacks
             myTeamController = blueTeamController;
             enemyTeamController = redTeamController;
         }
+        teamControllers = new Dictionary<Team, TeamController>();
         teamControllers.Add(Team.red, redTeamController);
         teamControllers.Add(Team.blue, blueTeamController);
     }
@@ -86,7 +87,7 @@ public class TeamSettings : MonoBehaviourPunCallbacks
         }
     }
 
-    private static Team OtherTeam(Team team)
+    public static Team OtherTeam(Team team)
     {
         if (team == Team.red)
         {
@@ -99,6 +100,12 @@ public class TeamSettings : MonoBehaviourPunCallbacks
         return Team.none;
     }
 
+
+    public static int PositionInTeam(Player player, Team team)
+    {
+        return teamPlayers[team].IndexOf(player);
+    }
+
     [PunRPC]
     public void TeamJoinRequest(Team team, PhotonMessageInfo info)
     {
@@ -109,7 +116,7 @@ public class TeamSettings : MonoBehaviourPunCallbacks
         else
         {
             Launcher launcher = gameObject.GetComponent<Launcher>();
-            launcher.photonView.RPC("TeamAccessDenied",info.Sender);
+            launcher.photonView.RPC("TeamAccessDenied", info.Sender, team);
         }
     }
 
@@ -117,6 +124,9 @@ public class TeamSettings : MonoBehaviourPunCallbacks
     public void AddPlayerToTeam(Team team, Player player)
     {
         teamPlayers[team].Add(player);
+        UpdateTeams();
+        gameObject.GetComponent<Launcher>().UpdateTeamUI();
+
         if (player == PhotonNetwork.LocalPlayer)
         {
             SetTeam(team);
@@ -130,20 +140,48 @@ public class TeamSettings : MonoBehaviourPunCallbacks
         if (teamPlayers[team].Contains(player))
         {
             teamPlayers[team].Remove(player);
+            UpdateTeams();
+            gameObject.GetComponent<Launcher>().UpdateTeamUI();
 
-            if (player == PhotonNetwork.LocalPlayer)
+            if (player == PhotonNetwork.LocalPlayer && myTeam == team)
             {
-                if (myTeam == team)
-                {
-                    SetTeam(Team.none);
-                }
+                SetTeam(Team.none);
                 Debug.Log("Successfully left " + team.ToString() + " team.");
             }
         }
     }
 
-    public int PositionInTeam(Player player, Team team)
+    public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        return teamPlayers[team].IndexOf(player);
+        base.OnMasterClientSwitched(newMasterClient);
+        UpdateTeams();
+    }
+
+    public static void UpdateTeams()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable();
+            properties.Add(TeamSettings.Team.red, TeamSettings.redTeamPlayers.ToArray());
+            properties.Add(TeamSettings.Team.blue, TeamSettings.blueTeamPlayers.ToArray());
+            PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
+        }
+    }
+
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
+        Reset();
+    }
+
+    public static void Reset()
+    {
+        myTeam = Team.none;
+        enemyTeam = Team.none;
+
+        redTeamPlayers = new List<Player>();
+        blueTeamPlayers = new List<Player>();
+
+        myPlayer = "";
     }
 }

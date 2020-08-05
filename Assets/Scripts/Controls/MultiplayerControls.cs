@@ -19,12 +19,8 @@ public class MultiplayerControls : MonoBehaviour
     public GameObject sign;
     private Vector3 startingPosition;
 
-    public string teamColor;
+    public TeamSettings.Team teamColor;
     public int playerNumber;
-    private GameObject team;
-    private TeamController teamController;
-    private GameObject enemyTeam;
-    private TeamController enemyTeamController;
 
     [Header("Movement Settings")]
     public float mouseSpeed = 10.0f;
@@ -64,9 +60,9 @@ public class MultiplayerControls : MonoBehaviour
                 playerCam.enabled = true;
             }
 
-            GetPlayerNumber();
             playerName = photonView.Owner.NickName;
             gameObject.name = playerName;
+            playerNumber = TeamSettings.PositionInTeam(photonView.Owner, teamColor);
         }
 
         AssignTeam();
@@ -78,7 +74,7 @@ public class MultiplayerControls : MonoBehaviour
         hitPoints = maxHitPoints;
         damageTime = 0f;
 
-        if (teamColor == Launcher.team)
+        if (teamColor == TeamSettings.myTeam)
         {
             CreatePlayerLabel();
         }
@@ -112,7 +108,7 @@ public class MultiplayerControls : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (teamColor == Launcher.team)
+        if (teamColor == TeamSettings.myTeam)
         {
             TurnSign();
         }
@@ -169,32 +165,10 @@ public class MultiplayerControls : MonoBehaviour
     /// </summary>
     void AssignTeam()
     {
-        if (teamColor == "red")
-        {
-            team = GameObject.Find("RedTeam");
-            enemyTeam = GameObject.Find("BlueTeam");
-        }
-        else if (teamColor == "blue")
-        {
-            team = GameObject.Find("BlueTeam");
-            enemyTeam = GameObject.Find("RedTeam");
-        }
-
-        teamController = team.GetComponent<TeamController>();
-        enemyTeamController = enemyTeam.GetComponent<TeamController>();
         if (!isAIPlayer)
         {
-            teamController.AddPlayer(gameObject);
+            TeamSettings.teamControllers[teamColor].AddPlayer(gameObject);
         }
-    }
-
-    /// <summary>
-    /// Find the player's reference number in the team.
-    /// </summary>
-    void GetPlayerNumber()
-    {
-        int[] teamList = (int[])PhotonNetwork.PlayerList[0].CustomProperties[teamColor + "Team"];
-        playerNumber = System.Array.IndexOf(teamList, photonView.CreatorActorNr);
     }
 
     /// <summary>
@@ -211,7 +185,7 @@ public class MultiplayerControls : MonoBehaviour
     /// </summary>
     public void TakeDamage()
     {
-        damageTime += Time.deltaTime * enemyTeamController.damageMultiplier;
+        damageTime += Time.deltaTime * TeamSettings.teamControllers[TeamSettings.OtherTeam(teamColor)].damageMultiplier;
         if (damageTime > 1 / damageSpeed)
         {
             hitPoints -= 1;
@@ -237,8 +211,8 @@ public class MultiplayerControls : MonoBehaviour
     [PunRPC]
     private void KillPlayerRPC()
     {
-        teamController.RemovePlayer(playerNumber);
-        enemyTeamController.score++;
+        TeamSettings.teamControllers[teamColor].RemovePlayer(playerNumber);
+        TeamSettings.teamControllers[TeamSettings.OtherTeam(teamColor)].score++;
     }
 
     /// <summary>
@@ -247,7 +221,7 @@ public class MultiplayerControls : MonoBehaviour
     [PunRPC]
     private void RevivePlayerRPC()
     {
-        teamController.AddPlayer(gameObject);
+        TeamSettings.teamControllers[teamColor].AddPlayer(gameObject);
     }
 
     public void EnableControls()

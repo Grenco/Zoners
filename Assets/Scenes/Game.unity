@@ -1222,7 +1222,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 1.54335e-40, y: 5.9e-44, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: NaN, y: 8.3e-44, z: 5.93e-43, w: 0}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1512,8 +1512,7 @@ MonoBehaviour:
   dangerZone: {fileID: 2115579099}
   minimapZone: {fileID: 1559299400}
   teamZoneColor: {r: 0, g: 1, b: 0.98039216, a: 1}
-  team: blueTeam
-  enemyTeam: {fileID: 609434288}
+  team: 0
   score: 0
   damageMultiplier: 0
 --- !u!1 &386800675
@@ -2166,8 +2165,7 @@ MonoBehaviour:
   dangerZone: {fileID: 1512146687}
   minimapZone: {fileID: 1816524476}
   teamZoneColor: {r: 1, g: 0, b: 0, a: 1}
-  team: redTeam
-  enemyTeam: {fileID: 360134451}
+  team: 0
   score: 0
   damageMultiplier: 0
 --- !u!1 &669886660
@@ -5189,9 +5187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f3e01fd734fec6498219a1cb6910404, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameTime: 180
-  redTeam: {fileID: 609434288}
-  blueTeam: {fileID: 360134451}
+  gameTime: 10
   redSpawnPositions:
   - {fileID: 386800675}
   - {fileID: 2109910107}

@@ -29,12 +29,9 @@ public class Launcher : MonoBehaviourPunCallbacks
     public GameObject roomJoinUI;
     public GameObject buttonLoadArena;
 
-    private List<int> redTeam;
-    private List<int> blueTeam;
     public Text redPlayerList;
     public Text bluePlayerList;
     public Text playerList;
-    public static string team;
 
     public Image spinner;
     private float spinnerSpeed = 50;
@@ -51,10 +48,6 @@ public class Launcher : MonoBehaviourPunCallbacks
         infoInputUI.SetActive(false);
         roomJoinUI.SetActive(false);
 
-
-        redTeam = new List<int>();
-        blueTeam = new List<int>();
-
         spinner.enabled = true;
 
         //3
@@ -70,7 +63,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     void Awake()
     {
-        //4 
         PhotonNetwork.AutomaticallySyncScene = true;
     }
 
@@ -106,22 +98,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void SetTeamRed()
     {
-        //If toggle is off, player will be removed from team
-        if (redTeam.Count < 4 || !redTeamToggle.isOn)
-        {
-            if (redTeamToggle.isOn)
-            {
-                team = "red";
-            }
-            PhotonView photonView = PhotonView.Get(this);
-            photonView.RPC("AddToRedTeam", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
-        }
-        else
-        {
-            playStatus.text = "Red team has reached maximum number of players";
-            //redTeamToggle.isOn = false;
-        }
-
         if (redTeamToggle.isOn)
         {
             gameObject.GetComponent<TeamSettings>().photonView.RPC("TeamJoinRequest", RpcTarget.MasterClient, TeamSettings.Team.red);
@@ -134,22 +110,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void SetTeamBlue()
     {
-        //If toggle is off, player will be removed from team
-        if (blueTeam.Count < 4 || !blueTeamToggle.isOn)
-        {
-            if (blueTeamToggle.isOn)
-            {
-                team = "blue";
-            }
-            PhotonView photonView = PhotonView.Get(this);
-            photonView.RPC("AddToBlueTeam", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
-        }
-        else
-        {
-            playStatus.text = "Blue team has reached maximum number of players";
-            //blueTeamToggle.isOn = false;
-        }
-
         if (blueTeamToggle.isOn)
         {
             gameObject.GetComponent<TeamSettings>().photonView.RPC("TeamJoinRequest", RpcTarget.MasterClient, TeamSettings.Team.blue);
@@ -172,14 +132,14 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         redPlayerList.text = "";
         bluePlayerList.text = "";
-        foreach (int playerID in redTeam)
+        foreach (Player player in TeamSettings.redTeamPlayers)
         {
-            redPlayerList.text = redPlayerList.text + PhotonNetwork.PlayerList[playerID - 1].NickName + "\n";
+            redPlayerList.text = redPlayerList.text + player.NickName + "\n";
         }
 
-        foreach (int playerID in blueTeam)
+        foreach (Player player in TeamSettings.blueTeamPlayers)
         {
-            bluePlayerList.text = bluePlayerList.text + PhotonNetwork.PlayerList[playerID - 1].NickName + "\n";
+            bluePlayerList.text = bluePlayerList.text + player.NickName + "\n";
         }
     }
 
@@ -202,21 +162,16 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void LeaveRoom()
     {
-        if (team == "blue")
-        {
-            blueTeamToggle.isOn = false;
-        }
-        else if(team == "red")
-        {
-            redTeamToggle.isOn = false;
-        }
+        gameObject.GetComponent<TeamSettings>().photonView.RPC("RemovePlayerFromTeam", RpcTarget.All, TeamSettings.myTeam, PhotonNetwork.LocalPlayer);
+        redTeamToggle.isOn = false;
+        blueTeamToggle.isOn = false;
         PhotonNetwork.LeaveRoom();
     }
 
     public void LoadGame()
     {
         //When load button is pressed, load the level and close the room to new entrants
-        if (redTeam.Count + blueTeam.Count < PhotonNetwork.PlayerList.Length)
+        if (TeamSettings.redTeamPlayers.Count + TeamSettings.blueTeamPlayers.Count < PhotonNetwork.PlayerList.Length)
         {
             playStatus.text = "Not all players have joined a team";
         }
@@ -241,9 +196,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     // Photon Methods
     public override void OnConnected()
     {
-        // 1
         base.OnConnected();
-        // 2
+
         connectionStatus.text = "Connected to Photon!";
         connectionStatus.color = Color.green;
         infoInputUI.SetActive(true);
@@ -252,7 +206,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        // 3
         roomJoinUI.SetActive(false);
         connectionStatus.text = "Disconnected";
         connectionStatus.color = Color.red;
@@ -268,14 +221,14 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             buttonLoadArena.SetActive(true);
             playerStatus.text = "You are Lobby Leader";
-            UpdateTeams();
+            TeamSettings.UpdateTeams();
         }
         else
         {
             buttonLoadArena.SetActive(false);
             playerStatus.text = "Connected to Lobby";
-            redTeam = new List<int>((int[])PhotonNetwork.PlayerListOthers[0].CustomProperties["redTeam"]);
-            blueTeam = new List<int>((int[])PhotonNetwork.PlayerListOthers[0].CustomProperties["blueTeam"]);
+            TeamSettings.redTeamPlayers = new List<Player>((Player[])PhotonNetwork.MasterClient.CustomProperties[TeamSettings.Team.red]);
+            TeamSettings.blueTeamPlayers = new List<Player>((Player[])PhotonNetwork.MasterClient.CustomProperties[TeamSettings.Team.blue]);
             UpdateTeamUI();
         }
     }
@@ -287,61 +240,4 @@ public class Launcher : MonoBehaviourPunCallbacks
         infoInputUI.SetActive(true);
     }
 
-    [PunRPC]
-    private void AddToRedTeam(int playerID)
-    {
-        if (!redTeam.Contains(playerID))
-        {
-            redTeam.Add(playerID);
-        }
-        else
-        {
-            redTeam.Remove(playerID);
-        }
-
-        if (blueTeam.Contains(playerID))
-        {
-            blueTeam.Remove(playerID);
-        }
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            UpdateTeams();
-        }
-
-        UpdateTeamUI();
-    }
-
-    [PunRPC]
-    private void AddToBlueTeam(int playerID)
-    {
-        if (!blueTeam.Contains(playerID))
-        {
-            blueTeam.Add(playerID);
-        }
-        else
-        {
-            blueTeam.Remove(playerID);
-        }
-
-        if (redTeam.Contains(playerID))
-        {
-            redTeam.Remove(playerID);
-        }
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            UpdateTeams();
-        }
-
-        UpdateTeamUI();
-    }
-
-    private void UpdateTeams()
-    {
-        ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable();
-        properties.Add("redTeam", redTeam.ToArray());
-        properties.Add("blueTeam", blueTeam.ToArray());
-        PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
-    }
 }

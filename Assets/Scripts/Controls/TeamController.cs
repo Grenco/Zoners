@@ -14,10 +14,7 @@ public class TeamController : MonoBehaviour
     private MeshFilter zoneMesh;
     private MeshRenderer zoneMeshRenderer;
     private MeshFilter minimapZoneMesh;
-    public string team;
-
-    public GameObject enemyTeam;
-    private TeamController enemyTeamController;
+    public TeamSettings.Team team;
 
     private Transform[] transforms;
     private Vector3[] positions;
@@ -41,8 +38,6 @@ public class TeamController : MonoBehaviour
         zoneMesh = dangerZone.GetComponent<MeshFilter>();
         minimapZoneMesh = minimapZone.GetComponent<MeshFilter>();
         zoneMeshRenderer = dangerZone.GetComponent<MeshRenderer>();
-
-        enemyTeamController = enemyTeam.GetComponent<TeamController>();
     }
 
     // Update is called once per frame
