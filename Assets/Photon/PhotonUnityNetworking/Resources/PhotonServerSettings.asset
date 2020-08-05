@@ -46,6 +46,10 @@ MonoBehaviour:
   - AddToRedTeam
   - KillPlayerRPC
   - RevivePlayerRPC
+  - AddPlayerToTeam
+  - RemovePlayerFromTeam
+  - TeamJoinRequest
+  - TeamAccessDenied
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

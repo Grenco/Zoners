@@ -1866,6 +1866,7 @@ GameObject:
   - component: {fileID: 1299618655}
   - component: {fileID: 1299618656}
   - component: {fileID: 1299618657}
+  - component: {fileID: 1299618658}
   m_Layer: 0
   m_Name: LaunchManager
   m_TagString: Untagged
@@ -1936,6 +1937,20 @@ MonoBehaviour:
   viewIdField: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &1299618658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299618654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6892122eea91cfa469a16eb66d764006, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  redTeamController: {fileID: 0}
+  blueTeamController: {fileID: 0}
 --- !u!1 &1301719089
 GameObject:
   m_ObjectHideFlags: 0

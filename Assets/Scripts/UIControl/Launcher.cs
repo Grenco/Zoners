@@ -121,6 +121,15 @@ public class Launcher : MonoBehaviourPunCallbacks
             playStatus.text = "Red team has reached maximum number of players";
             //redTeamToggle.isOn = false;
         }
+
+        if (redTeamToggle.isOn)
+        {
+            gameObject.GetComponent<TeamSettings>().photonView.RPC("TeamJoinRequest", RpcTarget.MasterClient, TeamSettings.Team.red);
+        }
+        else
+        {
+            gameObject.GetComponent<TeamSettings>().photonView.RPC("RemovePlayerFromTeam", RpcTarget.All, TeamSettings.Team.red, PhotonNetwork.LocalPlayer);
+        }
     }
 
     public void SetTeamBlue()
@@ -140,6 +149,23 @@ public class Launcher : MonoBehaviourPunCallbacks
             playStatus.text = "Blue team has reached maximum number of players";
             //blueTeamToggle.isOn = false;
         }
+
+        if (blueTeamToggle.isOn)
+        {
+            gameObject.GetComponent<TeamSettings>().photonView.RPC("TeamJoinRequest", RpcTarget.MasterClient, TeamSettings.Team.blue);
+        }
+        else
+        {
+            gameObject.GetComponent<TeamSettings>().photonView.RPC("RemovePlayerFromTeam", RpcTarget.All, TeamSettings.Team.blue, PhotonNetwork.LocalPlayer);
+        }
+    }
+
+    [PunRPC]
+    public void TeamAccessDenied(TeamSettings.Team team)
+    {
+        playStatus.text = team.ToString() + " team has reached maximum number of players";
+        redTeamToggle.isOn = false;
+        blueTeamToggle.isOn = false;
     }
 
     public void UpdateTeamUI()
