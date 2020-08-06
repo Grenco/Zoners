@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 
 
 public class GameController : MonoBehaviourPunCallbacks
@@ -17,18 +18,15 @@ public class GameController : MonoBehaviourPunCallbacks
     private GameObject player1;
     private MultiplayerControls playerControls;
 
-    //[Header("Team Settings")]
-    //public GameObject redTeam;
-    //public GameObject blueTeam;
-    //private GameObject team;
-    //private GameObject enemyTeam;
-
+    [Header("Team Settings")]
     private List<GameObject> spawnPositions;
     public List<GameObject> redSpawnPositions;
     public List<GameObject> blueSpawnPositions;
 
-    //private TeamController teamController;
-    //private TeamController enemyTeamController;
+    public TeamController redTeamController;
+    public TeamController blueTeamController;
+    private TeamController teamController;
+    private TeamController enemyTeamController;
 
     [Header("UI Elements")]
     public Text hpText;
@@ -59,23 +57,28 @@ public class GameController : MonoBehaviourPunCallbacks
         }
 
         timeRemaining = gameTime;
+        string myTeam = TeamSettings.MyTeam;
 
-        if (TeamSettings.myTeam == TeamSettings.Team.blue)
+        if (myTeam == TeamSettings.blueTeam)
         {
             spawnPositions = blueSpawnPositions;
             minimapCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("RedTeamMinimap"));
             minimap.transform.Rotate(new Vector3(0, 0, 1), 180);
+            teamController = blueTeamController;
+            enemyTeamController = redTeamController;
         }
         else
         {
             spawnPositions = redSpawnPositions;
             minimapCamera.cullingMask &= ~(1 << LayerMask.NameToLayer("BlueTeamMinimap"));
+            teamController = redTeamController;
+            enemyTeamController = blueTeamController;
         }
 
-        zoneStrengthBar.SetBarColor(TeamSettings.teamColors[TeamSettings.myTeam]);
+        zoneStrengthBar.SetBarColor(TeamSettings.teamColors[myTeam]);
 
         Transform mySpawn = spawnPositions[TeamSettings.MyIndex].transform;
-        player1 = PhotonNetwork.Instantiate(TeamSettings.myPlayer, mySpawn.position, mySpawn.rotation, 0);
+        player1 = PhotonNetwork.Instantiate(TeamSettings.MyPlayer, mySpawn.position, mySpawn.rotation, 0);
         playerControls = player1.GetComponent<MultiplayerControls>();
 
         gameActive = true;
@@ -105,7 +108,7 @@ public class GameController : MonoBehaviourPunCallbacks
 
         if (gameActive)
         {
-            // Check for damage on player
+            // Check player status
             if (playerControls.movementEnabled)
             {
                 DamageCheck();
@@ -119,6 +122,7 @@ public class GameController : MonoBehaviourPunCallbacks
 
             CooldownCheck();
 
+            // Update UI
             UpdateScores();
             UpdateTimer();
             UpdateZoneBar();
@@ -130,7 +134,7 @@ public class GameController : MonoBehaviourPunCallbacks
     /// </summary>
     private void DamageCheck()
     {
-        if (TeamSettings.teamControllers[TeamSettings.enemyTeam].IsAround(player1.transform.position))
+        if (enemyTeamController.IsAround(player1.transform.position))
         {
             playerControls.TakeDamage();
             damageTakenPanel.SetActive(true);
@@ -152,14 +156,14 @@ public class GameController : MonoBehaviourPunCallbacks
     /// </summary>
     private void AIDamageCheck()
     {
-        foreach (GameObject player in TeamSettings.teamControllers[TeamSettings.Team.red].players)
+        foreach (GameObject player in redTeamController.players)
         {
             if (player != null)
             {
                 MultiplayerControls controls = player.GetComponent<MultiplayerControls>();
                 if (controls.isAIPlayer && controls.movementEnabled)
                 {
-                    if (TeamSettings.teamControllers[TeamSettings.Team.blue].IsAround(player.transform.position))
+                    if (blueTeamController.IsAround(player.transform.position))
                     {
                         controls.TakeDamage();
 
@@ -172,14 +176,14 @@ public class GameController : MonoBehaviourPunCallbacks
             }
         }
 
-        foreach (GameObject player in TeamSettings.teamControllers[TeamSettings.Team.blue].players)
+        foreach (GameObject player in blueTeamController.players)
         {
             if (player != null)
             {
                 MultiplayerControls controls = player.GetComponent<MultiplayerControls>();
                 if (controls.isAIPlayer && controls.movementEnabled)
                 {
-                    if (TeamSettings.teamControllers[TeamSettings.Team.red].IsAround(player.transform.position))
+                    if (redTeamController.IsAround(player.transform.position))
                     {
                         controls.TakeDamage();
 
@@ -242,13 +246,13 @@ public class GameController : MonoBehaviourPunCallbacks
     /// </summary>
     private void UpdateScores()
     {
-        redScoreText.text = TeamSettings.teamControllers[TeamSettings.Team.red].score.ToString();
-        blueScoreText.text = TeamSettings.teamControllers[TeamSettings.Team.blue].score.ToString();
+        redScoreText.text = redTeamController.score.ToString();
+        blueScoreText.text = blueTeamController.score.ToString();
     }
 
     public void UpdateZoneBar()
     {
-        zoneStrengthBar.SetBarFill(TeamSettings.teamControllers[TeamSettings.myTeam].damageMultiplier);
+        zoneStrengthBar.SetBarFill(teamController.damageMultiplier);
     }
 
     /// <summary>
@@ -273,11 +277,11 @@ public class GameController : MonoBehaviourPunCallbacks
             RestartButton.SetActive(false);
         }
 
-        if (TeamSettings.teamControllers[TeamSettings.myTeam].score > TeamSettings.teamControllers[TeamSettings.enemyTeam].score)
+        if (teamController.score > enemyTeamController.score)
         {
             gameEndText.text = "You Win!";
         }
-        else if (TeamSettings.teamControllers[TeamSettings.myTeam].score == TeamSettings.teamControllers[TeamSettings.enemyTeam].score)
+        else if (teamController.score == enemyTeamController.score)
         {
             gameEndText.text = "Draw";
         }
@@ -305,6 +309,7 @@ public class GameController : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
+        Destroy(GameObject.Find("TeamManager"));
         base.OnLeftRoom();
         PhotonNetwork.LoadLevel("LoadScreen");
     }

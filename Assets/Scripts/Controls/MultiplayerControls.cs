@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using Photon;
 using Photon.Pun;
 
 public class MultiplayerControls : MonoBehaviour
@@ -18,20 +16,16 @@ public class MultiplayerControls : MonoBehaviour
     private Rigidbody rb;
     public GameObject sign;
     private Vector3 startingPosition;
+    private TeamController teamController;
+    private TeamController enemyTeamController;
 
-    public TeamSettings.Team teamColor;
+    public string team;
     public int playerNumber;
 
     [Header("Movement Settings")]
     public float mouseSpeed = 10.0f;
     public static float speed = 10.0f;
     public static float jumpSpeed = 5.0f;
-
-    [Header("Shooting Settings")]
-    public int ammo = 10;
-    private float shotCoolDown;
-    public float fireRate = 1f; // shots/s
-    GameObject ammoUI;
 
     [Header("Player Settings")]
     public static int maxHitPoints = 100;
@@ -62,7 +56,7 @@ public class MultiplayerControls : MonoBehaviour
 
             playerName = photonView.Owner.NickName;
             gameObject.name = playerName;
-            playerNumber = TeamSettings.PositionInTeam(photonView.Owner, teamColor);
+            playerNumber = TeamSettings.PositionInTeam(photonView.Owner);
         }
 
         AssignTeam();
@@ -74,7 +68,7 @@ public class MultiplayerControls : MonoBehaviour
         hitPoints = maxHitPoints;
         damageTime = 0f;
 
-        if (teamColor == TeamSettings.myTeam)
+        if (team == TeamSettings.MyTeam)
         {
             CreatePlayerLabel();
         }
@@ -108,7 +102,7 @@ public class MultiplayerControls : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (teamColor == TeamSettings.myTeam)
+        if (team == TeamSettings.MyTeam)
         {
             TurnSign();
         }
@@ -128,46 +122,16 @@ public class MultiplayerControls : MonoBehaviour
         }
     }
 
-    void RayShot()
-    {
-        ray = new Ray(gameObject.transform.position, gameObject.transform.forward);
-        hit = new RaycastHit();
-        Vector3 lineStart = gameObject.transform.position;
-        Vector3 lineEnd = new Vector3();
-        if (Physics.Raycast(ray, out hit))
-        {
-            hitObject = hit.collider.gameObject;
-            if (hitObject.CompareTag("Enemy") || hitObject.CompareTag("NPC"))
-            {
-                lineEnd = hit.transform.position;
-            }
-            else
-            {
-                lineEnd = lineStart + gameObject.transform.forward * 1000f;
-            }
-        }
-        else
-        {
-            hitObject = gameObject;
-            lineEnd = lineStart + gameObject.transform.forward * 1000f;
-        }
-        DrawLine(lineStart, lineEnd, Color.red, Time.deltaTime);
-    }
-
-    void DrawLine(Vector3 start, Vector3 end, Color color, float duration = 0.2f)
-    {
-        lr.SetPosition(0, start);
-        lr.SetPosition(1, end);
-    }
-
     /// <summary>
     /// Add find the team and enemy team game objects and add the aplayer to the team.
     /// </summary>
     void AssignTeam()
     {
+        teamController = GameObject.Find(team + "Team").GetComponent<TeamController>();
+        enemyTeamController = GameObject.Find(TeamSettings.OtherTeam(team) + "Team").GetComponent<TeamController>();
         if (!isAIPlayer)
         {
-            TeamSettings.teamControllers[teamColor].AddPlayer(gameObject);
+            teamController.AddPlayer(gameObject);
         }
     }
 
@@ -185,7 +149,7 @@ public class MultiplayerControls : MonoBehaviour
     /// </summary>
     public void TakeDamage()
     {
-        damageTime += Time.deltaTime * TeamSettings.teamControllers[TeamSettings.OtherTeam(teamColor)].damageMultiplier;
+        damageTime += Time.deltaTime * enemyTeamController.damageMultiplier;
         if (damageTime > 1 / damageSpeed)
         {
             hitPoints -= 1;
@@ -211,8 +175,8 @@ public class MultiplayerControls : MonoBehaviour
     [PunRPC]
     private void KillPlayerRPC()
     {
-        TeamSettings.teamControllers[teamColor].RemovePlayer(playerNumber);
-        TeamSettings.teamControllers[TeamSettings.OtherTeam(teamColor)].score++;
+        teamController.RemovePlayer(playerNumber);
+        enemyTeamController.score++;
     }
 
     /// <summary>
@@ -221,7 +185,7 @@ public class MultiplayerControls : MonoBehaviour
     [PunRPC]
     private void RevivePlayerRPC()
     {
-        TeamSettings.teamControllers[teamColor].AddPlayer(gameObject);
+        teamController.AddPlayer(gameObject);
     }
 
     public void EnableControls()

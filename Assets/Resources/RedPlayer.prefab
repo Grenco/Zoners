@@ -4840,7 +4840,7 @@ MonoBehaviour:
   movementEnabled: 1
   isAIPlayer: 0
   sign: {fileID: 6907934065835182152}
-  teamColor: 0
+  team: Red
   playerNumber: 0
   mouseSpeed: 6
   ammo: 10

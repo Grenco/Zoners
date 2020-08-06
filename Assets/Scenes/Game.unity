@@ -1222,7 +1222,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: NaN, y: 8.3e-44, z: 5.93e-43, w: 0}
+  m_BoundingSphereOverride: {x: 6.801386e-33, y: 1.3563156e-19, z: 6.553414e+13, w: 1013334.56}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1512,7 +1512,7 @@ MonoBehaviour:
   dangerZone: {fileID: 2115579099}
   minimapZone: {fileID: 1559299400}
   teamZoneColor: {r: 0, g: 1, b: 0.98039216, a: 1}
-  team: 0
+  team: Blue
   score: 0
   damageMultiplier: 0
 --- !u!1 &386800675
@@ -2165,7 +2165,7 @@ MonoBehaviour:
   dangerZone: {fileID: 1512146687}
   minimapZone: {fileID: 1816524476}
   teamZoneColor: {r: 1, g: 0, b: 0, a: 1}
-  team: 0
+  team: Red
   score: 0
   damageMultiplier: 0
 --- !u!1 &669886660
@@ -5153,7 +5153,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1943680577}
   - component: {fileID: 1943680576}
-  - component: {fileID: 1943680575}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -5161,20 +5160,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1943680575
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1943680574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6892122eea91cfa469a16eb66d764006, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  redTeamController: {fileID: 609434291}
-  blueTeamController: {fileID: 360134454}
 --- !u!114 &1943680576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5187,7 +5172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f3e01fd734fec6498219a1cb6910404, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameTime: 10
+  gameTime: 180
   redSpawnPositions:
   - {fileID: 386800675}
   - {fileID: 2109910107}
@@ -5198,6 +5183,8 @@ MonoBehaviour:
   - {fileID: 1384160309}
   - {fileID: 1364623786}
   - {fileID: 1420836986}
+  redTeamController: {fileID: 609434291}
+  blueTeamController: {fileID: 360134454}
   hpText: {fileID: 1745942242}
   timerText: {fileID: 669886663}
   redScoreText: {fileID: 905715532}

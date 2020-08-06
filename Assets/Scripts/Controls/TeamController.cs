@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Photon.Pun;
 
 public class TeamController : MonoBehaviour
 {
@@ -14,7 +12,7 @@ public class TeamController : MonoBehaviour
     private MeshFilter zoneMesh;
     private MeshRenderer zoneMeshRenderer;
     private MeshFilter minimapZoneMesh;
-    public TeamSettings.Team team;
+    public string team;
 
     private Transform[] transforms;
     private Vector3[] positions;
@@ -29,8 +27,6 @@ public class TeamController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //transforms = new Transform[4];
-        //players = new GameObject[4];
         transforms = players.Select(x => x.transform).ToArray();
 
         lr = gameObject.GetComponent<LineRenderer>();
