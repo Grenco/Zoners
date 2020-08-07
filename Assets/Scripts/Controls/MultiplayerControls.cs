@@ -34,11 +34,6 @@ public class MultiplayerControls : MonoBehaviour
     private float damageTime;
     public float coolDowmTime = 0.0f;
 
-    Ray ray;
-    RaycastHit hit;
-    GameObject hitObject;
-    LineRenderer lr;
-
     private PhotonView photonView;
     private string playerName = "";
 
@@ -61,7 +56,6 @@ public class MultiplayerControls : MonoBehaviour
 
         AssignTeam();
 
-        lr = gameObject.GetComponent<LineRenderer>();
         rb = GetComponent<Rigidbody>();
         startingPosition = rb.position;
 
@@ -72,6 +66,8 @@ public class MultiplayerControls : MonoBehaviour
         {
             CreatePlayerLabel();
         }
+
+        mouseSpeed = PlayerSettings.MouseSensitivity;
     }
 
     // Update is called once per frame

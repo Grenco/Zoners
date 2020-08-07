@@ -43,18 +43,15 @@ public class Launcher : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        //1
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
 
         Debug.Log("Connecting to Photon Network");
 
-        //2
         infoInputUI.SetActive(false);
         roomJoinUI.SetActive(false);
 
         spinner.enabled = true;
 
-        //3
         if (PhotonNetwork.IsConnected)
         {
             OnConnected();
@@ -217,8 +214,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     void ConnectToPhoton()
     {
         connectionStatus.text = "Connecting...";
-        PhotonNetwork.GameVersion = gameVersion; //1
-        PhotonNetwork.ConnectUsingSettings(); //2
+        PhotonNetwork.GameVersion = gameVersion; 
+        PhotonNetwork.ConnectUsingSettings(); 
     }
 
     // Photon Methods
@@ -229,6 +226,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         connectionStatus.text = "Connected to Photon!";
         connectionStatus.color = Color.green;
         infoInputUI.SetActive(true);
+        playerNameField.text = PlayerSettings.Username;
         spinner.enabled = false;
     }
 
