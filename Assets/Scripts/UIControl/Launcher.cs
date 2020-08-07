@@ -65,6 +65,9 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
 
         DontDestroyOnLoad(teamManager.gameObject);
+
+        PhotonTeamsManager.PlayerLeftTeam += OnPlayerLeftTeam;
+        PhotonTeamsManager.PlayerJoinedTeam += OnPlayerJoinedTeam;
     }
 
     void Awake()
@@ -84,7 +87,7 @@ public class Launcher : MonoBehaviourPunCallbacks
             {
                 playerList.text += player.NickName + "\n";
             }
-            UpdateTeamUI();
+            //UpdateTeamUI();
         }
         if (spinner.IsActive())
         {
@@ -275,5 +278,15 @@ public class Launcher : MonoBehaviourPunCallbacks
         base.OnLeftRoom();
         roomJoinUI.SetActive(false);
         infoInputUI.SetActive(true);
+    }
+
+    private void OnPlayerLeftTeam(Player player, PhotonTeam team)
+    {
+        UpdateTeamUI();
+    }
+
+    private void OnPlayerJoinedTeam(Player player, PhotonTeam team)
+    {
+        UpdateTeamUI();
     }
 }
