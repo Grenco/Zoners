@@ -53,6 +53,10 @@ public class MultiplayerControls : MonoBehaviour
             gameObject.name = playerName;
             playerNumber = TeamSettings.PositionInTeam(photonView.Owner);
         }
+        else if (!GameSettings.IncludeAIPlayers)
+        {
+            gameObject.SetActive(false);
+        }
 
         AssignTeam();
 

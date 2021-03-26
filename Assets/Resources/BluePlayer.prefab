@@ -5112,8 +5112,6 @@ MonoBehaviour:
   team: Blue
   playerNumber: 0
   mouseSpeed: 6
-  ammo: 10
-  fireRate: 1
   hitPoints: 0
   coolDowmTime: 0
 --- !u!114 &7837711942744675458

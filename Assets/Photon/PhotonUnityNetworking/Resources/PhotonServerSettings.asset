@@ -27,7 +27,7 @@ MonoBehaviour:
     AuthMode: 0
     EnableLobbyStatistics: 0
     NetworkLogging: 1
-  DevRegion: cae
+  DevRegion: 
   PunLogging: 0
   EnableSupportLogger: 0
   RunInBackground: 1
@@ -36,20 +36,11 @@ MonoBehaviour:
   - ClickRpc
   - DestroyRpc
   - DestroySpaceship
-  - Fire
-  - RespawnSpaceship
   - DisplayMaze
-  - Test
-  - KillPlayer
-  - RevivePlayer
-  - AddToBlueTeam
-  - AddToRedTeam
+  - Fire
   - KillPlayerRPC
+  - RespawnSpaceship
   - RevivePlayerRPC
-  - AddPlayerToTeam
-  - RemovePlayerFromTeam
-  - TeamJoinRequest
-  - TeamAccessDenied
   DisableAutoOpenWizard: 1
   ShowSettings: 0
-  DevRegionSetOnce: 1
+  DevRegionSetOnce: 0

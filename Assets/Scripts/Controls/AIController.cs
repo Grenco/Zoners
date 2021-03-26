@@ -1,31 +1,28 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
-using Photon;
-using Photon.Pun;
 
 public class AIController : MonoBehaviour
 {
-    MultiplayerControls playerController;
+    private MultiplayerControls playerController;
 
-    float newDirectionMovementTimer = 0.0f;
-    Vector3 movement;
+    private float newDirectionMovementTimer = 0.0f;
+    private Vector3 movement;
 
-    Ray ray;
-    RaycastHit hitInfo;
-    int wallLayer;
-    float[] distances;
-    List<Vector3> directions;
-    int direction = 0;
+    private Ray ray;
+    private RaycastHit hitInfo;
+    private int wallLayer;
+    private float[] distances;
+    private List<Vector3> directions;
+    private int direction = 0;
     public List<int> prefferedDirections;
 
-    float preferredDirectionMultiplier = 1.3f;
-    float backwardsMultiplier = 0.1f;
-    float repeatedStraightLineMultipier = 1.0f;
-    float turnBackMultiplier = 0.9f;
-    float keepGoingStraightMultiplier = 1.2f;
+    private float preferredDirectionMultiplier = 1.3f;
+    private float backwardsMultiplier = 0.1f;
+    private float repeatedStraightLineMultipier = 1.0f;
+    private float turnBackMultiplier = 0.9f;
+    private float keepGoingStraightMultiplier = 1.2f;
 
     public void Start()
     {
@@ -118,4 +115,3 @@ public class AIController : MonoBehaviour
         direction = newDirection;
     }
 }
-

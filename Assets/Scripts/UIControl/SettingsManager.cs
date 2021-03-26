@@ -8,6 +8,7 @@ public class SettingsManager : MonoBehaviour
     public GameObject settingsPanel;
     public Slider mouseSensitivitySlider;
     public InputField nameInputField;
+    public Toggle includeAiPlayers;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +33,16 @@ public class SettingsManager : MonoBehaviour
     public void ChangeMouseSensitivity()
     {
         PlayerSettings.MouseSensitivity = mouseSensitivitySlider.value;
+    }
+
+    public void ToggleAiPlayers()
+    {
+        GameSettings.IncludeAIPlayers = includeAiPlayers.isOn;
+    }
+
+    public void SetGameTime(int time)
+    {
+        GameSettings.GameTime = time;
     }
 
     // Update is called once per frame

@@ -27,4 +27,36 @@ public class PlayerSettings
             PlayerPrefs.Save();
         }
     }
+
+    private static string winCountKey = "WinCount";
+    public static int WinCount
+    {
+        get { return PlayerPrefs.GetInt(winCountKey, 0); }
+        set
+        {
+            PlayerPrefs.SetInt(winCountKey, value);
+            PlayerPrefs.Save();
+        }
+    }
+
+    private static string lossCountKey = "LossCount";
+    public static int LossCount
+    {
+        get { return PlayerPrefs.GetInt(lossCountKey, 0); }
+        set
+        {
+            PlayerPrefs.SetInt(lossCountKey, value);
+            PlayerPrefs.Save();
+        }
+    }
+
+    public static void AddWin()
+    {
+        WinCount++;
+    }
+
+    public static void AddLoss()
+    {
+        LossCount++;
+    }
 }

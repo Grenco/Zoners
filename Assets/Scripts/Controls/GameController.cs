@@ -280,6 +280,7 @@ public class GameController : MonoBehaviourPunCallbacks
         if (teamController.score > enemyTeamController.score)
         {
             gameEndText.text = "You Win!";
+            PlayerSettings.AddWin();
         }
         else if (teamController.score == enemyTeamController.score)
         {
@@ -288,6 +289,7 @@ public class GameController : MonoBehaviourPunCallbacks
         else
         {
             gameEndText.text = "You Lose";
+            PlayerSettings.AddLoss();
         }
     }
 
@@ -311,7 +313,8 @@ public class GameController : MonoBehaviourPunCallbacks
     {
         Destroy(GameObject.Find("TeamManager"));
         base.OnLeftRoom();
-        PhotonNetwork.LoadLevel("LoadScreen");
+        // TODO: Find a way to stop this from happening when closing the game
+        //PhotonNetwork.LoadLevel("LoadScreen");
     }
 
     /// <summary>
