@@ -1509,7 +1509,7 @@ MonoBehaviour:
   - {fileID: 1021798651}
   - {fileID: 66533355}
   - {fileID: 444663267}
-  dangerZone: {fileID: 2115579099}
+  zone: {fileID: 2115579099}
   minimapZone: {fileID: 1559299400}
   teamZoneColor: {r: 0, g: 1, b: 0.98039216, a: 1}
   team: Blue
@@ -2162,7 +2162,7 @@ MonoBehaviour:
   - {fileID: 2063365820}
   - {fileID: 1722425640}
   - {fileID: 348559145}
-  dangerZone: {fileID: 1512146687}
+  zone: {fileID: 1512146687}
   minimapZone: {fileID: 1816524476}
   teamZoneColor: {r: 1, g: 0, b: 0, a: 1}
   team: Red

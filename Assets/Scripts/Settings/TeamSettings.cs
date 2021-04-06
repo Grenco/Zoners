@@ -36,7 +36,7 @@ public class TeamSettings : MonoBehaviourPunCallbacks
         }
     }
 
-    public static Dictionary<string, Color> teamColors = new Dictionary<string, Color>()
+    public static Dictionary<string, Color> teamColors = new Dictionary<string, Color>
     {
         { redTeam, Color.red },
         { blueTeam, Color.cyan }

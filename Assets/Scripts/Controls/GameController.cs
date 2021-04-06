@@ -23,10 +23,10 @@ public class GameController : MonoBehaviourPunCallbacks
     public List<GameObject> redSpawnPositions;
     public List<GameObject> blueSpawnPositions;
 
-    public TeamController redTeamController;
-    public TeamController blueTeamController;
-    private TeamController teamController;
-    private TeamController enemyTeamController;
+    public ZoneController redTeamController;
+    public ZoneController blueTeamController;
+    private ZoneController teamController;
+    private ZoneController enemyTeamController;
 
     [Header("UI Elements")]
     public Text hpText;
@@ -311,7 +311,7 @@ public class GameController : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        Destroy(GameObject.Find("TeamManager"));
+        Destroy(GameObject.Find("Settings"));
         base.OnLeftRoom();
         // TODO: Find a way to stop this from happening when closing the game
         //PhotonNetwork.LoadLevel("LoadScreen");

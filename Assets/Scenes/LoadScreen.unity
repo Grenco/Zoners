@@ -364,8 +364,8 @@ GameObject:
   - component: {fileID: 82924376}
   - component: {fileID: 82924377}
   m_Layer: 0
-  m_Name: TeamManager
-  m_TagString: Untagged
+  m_Name: Settings
+  m_TagString: Settings
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3219,7 +3219,7 @@ MonoBehaviour:
   settingsPanel: {fileID: 134062224}
   mouseSensitivitySlider: {fileID: 674054069}
   nameInputField: {fileID: 148258473}
-  includeAiPlayers: {fileID: 0}
+  includeAiPlayers: {fileID: 192330073}
 --- !u!1 &1301719089
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,10 +2,10 @@
 using UnityEngine;
 using System.Linq;
 
-public class TeamController : MonoBehaviour
+public class ZoneController : MonoBehaviour
 {
     public GameObject[] players;
-    public GameObject dangerZone;
+    public GameObject zone;
     public GameObject minimapZone;
     public Color teamZoneColor;
 
@@ -14,8 +14,8 @@ public class TeamController : MonoBehaviour
     private MeshFilter minimapZoneMesh;
     public string team;
 
-    private Transform[] transforms;
-    private Vector3[] positions;
+    private Transform[] transforms = new Transform[4] { null, null, null, null};
+    private Vector3[] positions = new Vector3[4];
 
     private LineRenderer lr;
 
@@ -27,13 +27,13 @@ public class TeamController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        transforms = players.Select(x => x.transform).ToArray();
+        //transforms = players.Where(x => x.activeSelf).Select(x => x.transform).ToArray();
 
         lr = gameObject.GetComponent<LineRenderer>();
 
-        zoneMesh = dangerZone.GetComponent<MeshFilter>();
+        zoneMesh = zone.GetComponent<MeshFilter>();
         minimapZoneMesh = minimapZone.GetComponent<MeshFilter>();
-        zoneMeshRenderer = dangerZone.GetComponent<MeshRenderer>();
+        zoneMeshRenderer = zone.GetComponent<MeshRenderer>();
     }
 
     // Update is called once per frame
@@ -56,9 +56,9 @@ public class TeamController : MonoBehaviour
 
     /// <summary>
     /// Add a player gameobject to the team to be used in the zone.
-    /// Can be used at the beginning of hte game to replace AI players and after respawn.
+    /// Can be used at the beginning of the game to replace AI players and after respawn.
     /// </summary>
-    /// <param name="player"> GameeOject of the player ot be added. </param>
+    /// <param name="player"> GameeObject of the player to be added. </param>
     public void AddPlayer(GameObject player)
     {
         int playerNumber = player.GetComponent<MultiplayerControls>().playerNumber;

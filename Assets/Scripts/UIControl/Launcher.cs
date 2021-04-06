@@ -260,6 +260,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         else
         {
             buttonLoadArena.SetActive(false);
+            gameSettingsUI.SetActive(false);
             playerStatus.text = "Connected to Lobby";
             UpdateTeamUI();
         }

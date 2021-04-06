@@ -24,29 +24,29 @@ public class GameSettings : MonoBehaviourPunCallbacks
         PhotonNetwork.SetPlayerCustomProperties(table);
     }
 
-    public override void OnJoinedRoom()
-    {
-        base.OnJoinedRoom();
-        if (PhotonNetwork.IsMasterClient)
-        {
-            SetDefaults();
-        }
-    }
+    //public override void OnJoinedRoom()
+    //{
+    //    base.OnJoinedRoom();
+    //    if (PhotonNetwork.IsMasterClient)
+    //    {
+    //        SetDefaults();
+    //    }
+    //}
 
-    private void SetDefaults()
-    {
-        IncludeAIPlayers = true;
-        UseVariableZoneStrength = true;
-        UsePowerUps = true;
-        GameTime = 120;
-        MapRows = 15;
-        MapCols = 15;
-        PlayersPerTeam = 4;
-    }
+    //private void SetDefaults()
+    //{
+    //    IncludeAIPlayers = true;
+    //    UseVariableZoneStrength = true;
+    //    UsePowerUps = true;
+    //    GameTime = 120;
+    //    MapRows = 15;
+    //    MapCols = 15;
+    //    PlayersPerTeam = 4;
+    //}
 
     public static bool IncludeAIPlayers
     {
-        get { return GetProperty("InlcudePlayers", true); }
+        get { return GetProperty("IncludePlayers", true); }
         set { SetProperty("IncludePlayers", value); }
     }
 

@@ -16,8 +16,8 @@ public class MultiplayerControls : MonoBehaviour
     private Rigidbody rb;
     public GameObject sign;
     private Vector3 startingPosition;
-    private TeamController teamController;
-    private TeamController enemyTeamController;
+    private ZoneController zoneController;
+    private ZoneController enemyZoneController;
 
     public string team;
     public int playerNumber;
@@ -41,6 +41,7 @@ public class MultiplayerControls : MonoBehaviour
     void Start()
     {
         photonView = gameObject.GetComponent<PhotonView>();
+
         if (!isAIPlayer)
         {
             if (photonView.IsMine)
@@ -56,13 +57,13 @@ public class MultiplayerControls : MonoBehaviour
         else if (!GameSettings.IncludeAIPlayers)
         {
             gameObject.SetActive(false);
+            return;
         }
 
         AssignTeam();
 
         rb = GetComponent<Rigidbody>();
         startingPosition = rb.position;
-
         hitPoints = maxHitPoints;
         damageTime = 0f;
 
@@ -127,12 +128,13 @@ public class MultiplayerControls : MonoBehaviour
     /// </summary>
     void AssignTeam()
     {
-        teamController = GameObject.Find(team + "Team").GetComponent<TeamController>();
-        enemyTeamController = GameObject.Find(TeamSettings.OtherTeam(team) + "Team").GetComponent<TeamController>();
-        if (!isAIPlayer)
-        {
-            teamController.AddPlayer(gameObject);
-        }
+        zoneController = GameObject.Find(team + "Team").GetComponent<ZoneController>();
+        enemyZoneController = GameObject.Find(TeamSettings.OtherTeam(team) + "Team").GetComponent<ZoneController>();
+        //if (!isAIPlayer)
+        //{
+        //    zoneController.AddPlayer(gameObject);
+        //}
+        zoneController.AddPlayer(gameObject);
     }
 
     /// <summary>
@@ -149,7 +151,7 @@ public class MultiplayerControls : MonoBehaviour
     /// </summary>
     public void TakeDamage()
     {
-        damageTime += Time.deltaTime * enemyTeamController.damageMultiplier;
+        damageTime += Time.deltaTime * enemyZoneController.damageMultiplier;
         if (damageTime > 1 / damageSpeed)
         {
             hitPoints -= 1;
@@ -175,8 +177,8 @@ public class MultiplayerControls : MonoBehaviour
     [PunRPC]
     private void KillPlayerRPC()
     {
-        teamController.RemovePlayer(playerNumber);
-        enemyTeamController.score++;
+        zoneController.RemovePlayer(playerNumber);
+        enemyZoneController.score++;
     }
 
     /// <summary>
@@ -185,7 +187,7 @@ public class MultiplayerControls : MonoBehaviour
     [PunRPC]
     private void RevivePlayerRPC()
     {
-        teamController.AddPlayer(gameObject);
+        zoneController.AddPlayer(gameObject);
     }
 
     public void EnableControls()
