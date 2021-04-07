@@ -13,9 +13,9 @@ public class MultiplayerControls : MonoBehaviour
     private bool jumpCheck;
     public bool movementEnabled = true;
     public bool isAIPlayer = false;
-    private Rigidbody rb;
+    protected Rigidbody rb;
     public GameObject sign;
-    private Vector3 startingPosition;
+    protected Vector3 startingPosition;
     private ZoneController zoneController;
     private ZoneController enemyZoneController;
 
@@ -31,34 +31,26 @@ public class MultiplayerControls : MonoBehaviour
     public static int maxHitPoints = 100;
     public int hitPoints;
     public static float damageSpeed = 50.0f; // HP/s
-    private float damageTime;
+    protected float damageTime;
     public float coolDowmTime = 0.0f;
 
-    private PhotonView photonView;
+    protected PhotonView photonView;
     private string playerName = "";
 
 
-    void Start()
+    private void Start()
     {
         photonView = gameObject.GetComponent<PhotonView>();
 
-        if (!isAIPlayer)
+        if (photonView.IsMine)
         {
-            if (photonView.IsMine)
-            {
-                playerCam.gameObject.SetActive(true);
-                playerCam.enabled = true;
-            }
+            playerCam.gameObject.SetActive(true);
+            playerCam.enabled = true;
+        }
 
-            playerName = photonView.Owner.NickName;
-            gameObject.name = playerName;
-            playerNumber = TeamSettings.PositionInTeam(photonView.Owner);
-        }
-        else if (!GameSettings.IncludeAIPlayers)
-        {
-            gameObject.SetActive(false);
-            return;
-        }
+        playerName = photonView.Owner.NickName;
+        gameObject.name = playerName;
+        playerNumber = TeamSettings.PositionInTeam(photonView.Owner);
 
         AssignTeam();
 
@@ -76,10 +68,10 @@ public class MultiplayerControls : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         // Convert the user input into a momvemnt and turn direction.
-        if (photonView.IsMine && !isAIPlayer)
+        if (photonView.IsMine)
         {
             if (movementEnabled)
             {
@@ -107,7 +99,7 @@ public class MultiplayerControls : MonoBehaviour
         {
             TurnSign();
         }
-        if (photonView.IsMine && !isAIPlayer)
+        if (photonView.IsMine)
         {
             Turn();
             Move();
@@ -117,30 +109,22 @@ public class MultiplayerControls : MonoBehaviour
             }
             CoolDownCheck();
         }
-        if (isAIPlayer && PhotonNetwork.IsMasterClient)
-        {
-            CoolDownCheck();
-        }
     }
 
     /// <summary>
     /// Add find the team and enemy team game objects and add the aplayer to the team.
     /// </summary>
-    void AssignTeam()
+    protected void AssignTeam()
     {
         zoneController = GameObject.Find(team + "Team").GetComponent<ZoneController>();
         enemyZoneController = GameObject.Find(TeamSettings.OtherTeam(team) + "Team").GetComponent<ZoneController>();
-        //if (!isAIPlayer)
-        //{
-        //    zoneController.AddPlayer(gameObject);
-        //}
         zoneController.AddPlayer(gameObject);
     }
 
     /// <summary>
     /// Add the player name to the sign above the player's head.
     /// </summary>
-    void CreatePlayerLabel()
+    protected void CreatePlayerLabel()
     {
         TextMesh tm = sign.GetComponent<TextMesh>();
         tm.text = gameObject.name;
@@ -234,7 +218,7 @@ public class MultiplayerControls : MonoBehaviour
     /// <summary>
     /// Turn the player's sign to face the main camera.
     /// </summary>
-    private void TurnSign()
+    protected void TurnSign()
     {
         // Ensures the player names are facing the camera
         if (Camera.main != null)

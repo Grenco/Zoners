@@ -4,7 +4,7 @@ using System.Linq;
 
 public class ZoneController : MonoBehaviour
 {
-    public GameObject[] players;
+    public GameObject[] players = new GameObject[4];
     public GameObject zone;
     public GameObject minimapZone;
     public Color teamZoneColor;
@@ -14,7 +14,7 @@ public class ZoneController : MonoBehaviour
     private MeshFilter minimapZoneMesh;
     public string team;
 
-    private Transform[] transforms = new Transform[4] { null, null, null, null};
+    private Transform[] transforms = new Transform[4] { null, null, null, null };
     private Vector3[] positions = new Vector3[4];
 
     private LineRenderer lr;
@@ -92,7 +92,7 @@ public class ZoneController : MonoBehaviour
     /// <param name="p2">Second point on the intersection line.</param>
     /// <returns>Returns 0 for no intersection, 1 if p1 or p2 lie on the ray, 
     /// or 2 if the ray intersects the line. </returns>
-    public int LineCrossCheck(Vector2 p, Vector2 p1, Vector2 p2)
+    private int LineCrossCheck(Vector2 p, Vector2 p1, Vector2 p2)
     {
         p1 -= p;
         p2 -= p;
