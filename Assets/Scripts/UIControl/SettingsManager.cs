@@ -7,6 +7,7 @@ public class SettingsManager : MonoBehaviour
     public Slider mouseSensitivitySlider;
     public InputField nameInputField;
     public Toggle includeAiPlayers;
+    public Toggle variableZoneStength;
 
     // Start is called before the first frame update
     private void Start()
@@ -36,6 +37,11 @@ public class SettingsManager : MonoBehaviour
     public void ToggleAiPlayers()
     {
         GameSettings.IncludeAIPlayers = includeAiPlayers.isOn;
+    }
+
+    public void ToggleVariableZoneStrength()
+    {
+        GameSettings.UseVariableZoneStrength = variableZoneStength.isOn;
     }
 
     public void SetGameTime(int time)

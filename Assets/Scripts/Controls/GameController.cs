@@ -81,6 +81,8 @@ public class GameController : MonoBehaviourPunCallbacks
         player1 = PhotonNetwork.Instantiate(TeamSettings.MyPlayer, mySpawn.position, mySpawn.rotation, 0);
         playerControls = player1.GetComponent<MultiplayerControls>();
 
+        zoneStrengthBar.gameObject.SetActive(GameSettings.UseVariableZoneStrength);
+
         gameActive = true;
     }
 
@@ -252,7 +254,10 @@ public class GameController : MonoBehaviourPunCallbacks
 
     public void UpdateZoneBar()
     {
-        zoneStrengthBar.SetBarFill(teamController.damageMultiplier);
+        if (zoneStrengthBar.gameObject.activeSelf)
+        {
+            zoneStrengthBar.SetBarFill(teamController.damageMultiplier);
+        }
     }
 
     /// <summary>

@@ -22,7 +22,7 @@ public class ZoneController : MonoBehaviour
     public int score;
 
     private float zoneArea;
-    public float damageMultiplier;
+    public float damageMultiplier = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -212,10 +212,12 @@ public class ZoneController : MonoBehaviour
         zoneMesh.mesh = mesh;
         minimapZoneMesh.mesh = mesh;
 
-        damageMultiplier = 1 - Mathf.Max(Mathf.Min((zoneArea - 56.25f) / 8000, 1), 0);
-
-        zoneMeshRenderer.material.color = Color.Lerp(Color.clear, teamZoneColor, Mathf.Max(damageMultiplier - 0.05f, 0f));
-        zoneMeshRenderer.material.SetColor("_EmissionColor", teamZoneColor * damageMultiplier * 2);
+        if (GameSettings.UseVariableZoneStrength)
+        {
+            damageMultiplier = 1 - Mathf.Max(Mathf.Min((zoneArea - 56.25f) / 8000, 1), 0);
+            zoneMeshRenderer.material.color = Color.Lerp(Color.clear, teamZoneColor, Mathf.Max(damageMultiplier - 0.05f, 0f));
+            zoneMeshRenderer.material.SetColor("_EmissionColor", teamZoneColor * damageMultiplier * 2);
+        }
     }
 
 }
