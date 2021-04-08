@@ -159,7 +159,7 @@ public class MultiplayerControls : MonoBehaviour
     /// Notify the other players on the network that this player has died
     /// </summary>
     [PunRPC]
-    private void KillPlayerRPC()
+    protected void KillPlayerRPC()
     {
         zoneController.RemovePlayer(playerNumber);
         enemyZoneController.score++;
@@ -169,7 +169,7 @@ public class MultiplayerControls : MonoBehaviour
     /// Notify other player on the network that this plaeyr has respawned.
     /// </summary>
     [PunRPC]
-    private void RevivePlayerRPC()
+    protected void RevivePlayerRPC()
     {
         zoneController.AddPlayer(gameObject);
     }
@@ -193,15 +193,6 @@ public class MultiplayerControls : MonoBehaviour
     private void Jump()
     {
         rb.velocity = new Vector3(0, jumpSpeed, 0);
-    }
-
-    /// <summary>
-    /// Allow an external AI controller to move the player.
-    /// </summary>
-    /// <param name="movement"> Movmement direction. </param>
-    public void AIMove(Vector3 movement)
-    {
-        rb.MovePosition(rb.position + movement.normalized * speed * Time.deltaTime);
     }
 
     private void Turn()

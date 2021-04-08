@@ -80,7 +80,7 @@ public class AIController : MultiplayerControls
 
             if (movementEnabled)
             {
-                AIMove(directions[direction]);
+                Move(directions[direction]);
             }
         }
     }
@@ -96,6 +96,15 @@ public class AIController : MultiplayerControls
         {
             CoolDownCheck();
         }
+    }
+
+    /// <summary>
+    /// Allow an external AI controller to move the player.
+    /// </summary>
+    /// <param name="movement"> Movmement direction. </param>
+    private void Move(Vector3 movement)
+    {
+        rb.MovePosition(rb.position + movement.normalized * speed * Time.deltaTime);
     }
 
     /// <summary>
