@@ -64,7 +64,7 @@ public class GameSettings : MonoBehaviourPunCallbacks
 
     public static float GameTime
     {
-        get { return GetProperty("GameTime", 120f); }
+        get { return GetProperty("GameTime", 180f); }
         set { SetProperty("GameTime", value); }
     }
 

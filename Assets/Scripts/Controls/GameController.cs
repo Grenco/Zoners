@@ -11,7 +11,6 @@ using Photon.Pun.UtilityScripts;
 public class GameController : MonoBehaviourPunCallbacks
 {
     [Header("Game Settings")]
-    public float gameTime; // seconds
     private float timeRemaining; // seconds
     public static bool gameActive = true;
 
@@ -56,7 +55,7 @@ public class GameController : MonoBehaviourPunCallbacks
             return;
         }
 
-        timeRemaining = gameTime;
+        timeRemaining = GameSettings.GameTime;
         string myTeam = TeamSettings.MyTeam;
 
         if (myTeam == TeamSettings.blueTeam)

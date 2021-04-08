@@ -4,8 +4,13 @@ using UnityEngine.UI;
 public class SettingsManager : MonoBehaviour
 {
     public GameObject settingsPanel;
+
+    [Header("Player Settings")]
     public Slider mouseSensitivitySlider;
     public InputField nameInputField;
+
+    [Header("Game Settings")]
+    public InputField gameTimeInputField;
     public Toggle includeAiPlayers;
     public Toggle variableZoneStength;
 
@@ -44,13 +49,8 @@ public class SettingsManager : MonoBehaviour
         GameSettings.UseVariableZoneStrength = variableZoneStength.isOn;
     }
 
-    public void SetGameTime(int time)
+    public void SetGameTime()
     {
-        GameSettings.GameTime = time;
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
+        GameSettings.GameTime = int.Parse(gameTimeInputField.text);
     }
 }
