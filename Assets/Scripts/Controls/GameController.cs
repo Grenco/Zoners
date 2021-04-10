@@ -42,6 +42,11 @@ public class GameController : MonoBehaviourPunCallbacks
 
     public Camera minimapCamera;
 
+    [Header("Maze")]
+    public MazeConstructor mazeConstructor;
+    public GameObject redSpawnPlatform;
+    public GameObject blueSpawnPlatform;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,13 +54,20 @@ public class GameController : MonoBehaviourPunCallbacks
         Cursor.visible = false;
         gameEndPanel.SetActive(false);
 
-        if (!PhotonNetwork.IsConnected) // 1
+        if (!PhotonNetwork.IsConnected)
         {
             SceneManager.LoadScene("LoadScreen");
             return;
         }
 
         timeRemaining = GameSettings.GameTime;
+
+        minimapCamera.orthographicSize = Math.Max(mazeConstructor.MapLength(), mazeConstructor.MapWidth()) / 2;
+
+        float spawnPos = mazeConstructor.MapLength() / 2;
+        redSpawnPlatform.transform.position = new Vector3(0, -3.5f, -spawnPos);
+        blueSpawnPlatform.transform.position = new Vector3(0, -3.5f, spawnPos);
+
         string myTeam = TeamSettings.MyTeam;
 
         if (myTeam == TeamSettings.blueTeam)
@@ -142,7 +154,7 @@ public class GameController : MonoBehaviourPunCallbacks
             damageTakenPanel.GetComponent<Image>().color = new Color(1, 0, 0, 0.2f * (Mathf.Sin(playerControls.hitPoints * MultiplayerControls.damageSpeed * 5) + 1));
             if (playerControls.hitPoints <= 0)
             {
-                playerControls.KillPlayer();
+                playerControls.KillPlayer(spawnPositions);
             }
         }
         else
@@ -170,7 +182,7 @@ public class GameController : MonoBehaviourPunCallbacks
 
                         if (controls.hitPoints <= 0)
                         {
-                            controls.KillPlayer();
+                            controls.KillPlayer(redSpawnPositions);
                         }
                     }
                 }
@@ -190,7 +202,7 @@ public class GameController : MonoBehaviourPunCallbacks
 
                         if (controls.hitPoints <= 0)
                         {
-                            controls.KillPlayer();
+                            controls.KillPlayer(blueSpawnPositions);
                         }
                     }
                 }

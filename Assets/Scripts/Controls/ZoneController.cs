@@ -24,6 +24,8 @@ public class ZoneController : MonoBehaviour
     private float zoneArea;
     public float damageMultiplier = 1;
 
+    public MazeConstructor maze;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -214,7 +216,9 @@ public class ZoneController : MonoBehaviour
 
         if (GameSettings.UseVariableZoneStrength)
         {
-            damageMultiplier = 1 - Mathf.Max(Mathf.Min((zoneArea - 56.25f) / 8000, 1), 0);
+            float zeroStrengthArea = maze.MazeInnerArea() * 2 / 3; // Area when the  zone strength reaches 0 (two-thirds of the max size)
+            float fullStengthArea = Mathf.Pow(maze.hallWidth, 2); // Area when the zone is at full strength (one tile)
+            damageMultiplier = 1 - Mathf.Max(Mathf.Min((zoneArea - fullStengthArea) / zeroStrengthArea, 1), 0); // Limit value between 0 and 1 (can maybe replace this with a sigmoid function in the future?)
             zoneMeshRenderer.material.color = Color.Lerp(Color.clear, teamZoneColor, Mathf.Max(damageMultiplier - 0.05f, 0f));
             zoneMeshRenderer.material.SetColor("_EmissionColor", teamZoneColor * damageMultiplier * 2);
         }

@@ -11,6 +11,8 @@ public class SettingsManager : MonoBehaviour
 
     [Header("Game Settings")]
     public InputField gameTimeInputField;
+    public InputField mapRowsInputField;
+    public InputField mapColsInputField;
     public Toggle includeAiPlayers;
     public Toggle variableZoneStength;
 
@@ -52,5 +54,11 @@ public class SettingsManager : MonoBehaviour
     public void SetGameTime()
     {
         GameSettings.GameTime = int.Parse(gameTimeInputField.text);
+    }
+
+    public void SetMapSize()
+    {
+        GameSettings.MapRows = int.Parse(mapRowsInputField.text);
+        GameSettings.MapCols = int.Parse(mapColsInputField.text);
     }
 }

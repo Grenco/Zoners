@@ -15,7 +15,6 @@ public class MultiplayerControls : MonoBehaviour
     public bool isAIPlayer = false;
     protected Rigidbody rb;
     public GameObject sign;
-    protected Vector3 startingPosition;
     private ZoneController zoneController;
     private ZoneController enemyZoneController;
 
@@ -55,7 +54,6 @@ public class MultiplayerControls : MonoBehaviour
         AssignTeam();
 
         rb = GetComponent<Rigidbody>();
-        startingPosition = rb.position;
         hitPoints = maxHitPoints;
         damageTime = 0f;
 
@@ -146,12 +144,12 @@ public class MultiplayerControls : MonoBehaviour
     /// <summary>
     /// Remove the player from the team and send them back to the respawn point for a cooldown time.
     /// </summary>
-    public void KillPlayer()
+    public void KillPlayer(List<GameObject> spawnPositions)
     {
         DisableControls();
         coolDowmTime = 5.0f;
         hitPoints = maxHitPoints;
-        rb.MovePosition(startingPosition);
+        rb.MovePosition(spawnPositions[playerNumber].transform.position);
         photonView.RPC("KillPlayerRPC", RpcTarget.All);
     }
 

@@ -224,7 +224,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         base.OnConnected();
 
-        connectionStatus.text = "Connected to Photon!";
+        connectionStatus.text = "Connected!";
         connectionStatus.color = Color.green;
         infoInputUI.SetActive(true);
         playerNameField.text = PlayerSettings.Username;
@@ -287,6 +287,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             gameSettingsUI.SetActive(true);
+            playerStatus.text = "You are Lobby Leader";
         }
         else
         {

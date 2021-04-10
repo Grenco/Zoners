@@ -40,6 +40,8 @@ public class MazeConstructor : MonoBehaviour
 
         if (PhotonNetwork.IsMasterClient)//photonView.IsMine)
         {
+            sizeRows = GameSettings.MapRows + (GameSettings.MapRows + 1) % 2; //Must be odd
+            sizeCols = GameSettings.MapCols + (GameSettings.MapCols + 1) % 2; //Must be odd
             GenerateNewMaze();
             photonView.RPC("DisplayMaze", RpcTarget.All, Serialize(data));
         }
@@ -47,7 +49,7 @@ public class MazeConstructor : MonoBehaviour
 
     int[,] FromDimensions(int sizeRows, int sizeCols)
     {
-        // Use maze gereration algrithm to create randomised maze
+        // Use maze gereration algorithm to create randomised maze
         int[,] maze = new int[sizeRows, sizeCols];
         int rMax = maze.GetUpperBound(0);
         int cMax = maze.GetUpperBound(1);
@@ -135,5 +137,37 @@ public class MazeConstructor : MonoBehaviour
     public void GenerateNewMaze()
     {
         data = FromDimensions(sizeRows, sizeCols);
+    }
+
+    /// <summary> Length of the whole map,from outer wall to outer wall parallel to the spawn platforms </summary>
+    public float MapLength()
+    {
+        return (sizeRows + 2) * hallWidth;
+    }
+
+    /// <summary> Width of the whole map,from outer wall to outer wall perpendicular to the spawn platforms </summary>
+    public float MapWidth()
+    {
+        return (sizeCols + 2) * hallWidth;
+    }
+
+    /// <summary> Length of the maze,from inner wall to inner wall parallel to the spawn platforms </summary>
+    public float MazeInnerLength()
+    {
+        return sizeRows * hallWidth;
+    }
+
+    /// <summary> Width of the maze,from inner wall to inner wall perpendicular to the spawn platforms </summary>
+    public float MazeInnerWidth()
+    {
+        return sizeCols * hallWidth;
+    }
+
+    public float MazeInnerArea()
+    {
+        float l = MazeInnerLength();
+        float w = MazeInnerWidth();
+        float a = MazeInnerWidth() * MazeInnerLength();
+        return MazeInnerLength() * MazeInnerWidth();
     }
 }

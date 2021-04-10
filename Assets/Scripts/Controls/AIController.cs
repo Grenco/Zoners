@@ -49,7 +49,6 @@ public class AIController : MultiplayerControls
         AssignTeam();
 
         rb = GetComponent<Rigidbody>();
-        startingPosition = rb.position;
         hitPoints = maxHitPoints;
         damageTime = 0f;
 
