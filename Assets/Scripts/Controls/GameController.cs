@@ -11,7 +11,6 @@ using Photon.Pun.UtilityScripts;
 public class GameController : MonoBehaviourPunCallbacks
 {
     [Header("Game Settings")]
-    public float gameTime; // seconds
     private float timeRemaining; // seconds
     public static bool gameActive = true;
 
@@ -23,10 +22,10 @@ public class GameController : MonoBehaviourPunCallbacks
     public List<GameObject> redSpawnPositions;
     public List<GameObject> blueSpawnPositions;
 
-    public TeamController redTeamController;
-    public TeamController blueTeamController;
-    private TeamController teamController;
-    private TeamController enemyTeamController;
+    public ZoneController redTeamController;
+    public ZoneController blueTeamController;
+    private ZoneController teamController;
+    private ZoneController enemyTeamController;
 
     [Header("UI Elements")]
     public Text hpText;
@@ -43,6 +42,11 @@ public class GameController : MonoBehaviourPunCallbacks
 
     public Camera minimapCamera;
 
+    [Header("Maze")]
+    public MazeConstructor mazeConstructor;
+    public GameObject redSpawnPlatform;
+    public GameObject blueSpawnPlatform;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,13 +54,20 @@ public class GameController : MonoBehaviourPunCallbacks
         Cursor.visible = false;
         gameEndPanel.SetActive(false);
 
-        if (!PhotonNetwork.IsConnected) // 1
+        if (!PhotonNetwork.IsConnected)
         {
             SceneManager.LoadScene("LoadScreen");
             return;
         }
 
-        timeRemaining = gameTime;
+        timeRemaining = GameSettings.GameTime;
+
+        minimapCamera.orthographicSize = Math.Max(mazeConstructor.MapLength(), mazeConstructor.MapWidth()) / 2;
+
+        float spawnPos = mazeConstructor.MapLength() / 2;
+        redSpawnPlatform.transform.position = new Vector3(0, -3.5f, -spawnPos);
+        blueSpawnPlatform.transform.position = new Vector3(0, -3.5f, spawnPos);
+
         string myTeam = TeamSettings.MyTeam;
 
         if (myTeam == TeamSettings.blueTeam)
@@ -80,6 +91,8 @@ public class GameController : MonoBehaviourPunCallbacks
         Transform mySpawn = spawnPositions[TeamSettings.MyIndex].transform;
         player1 = PhotonNetwork.Instantiate(TeamSettings.MyPlayer, mySpawn.position, mySpawn.rotation, 0);
         playerControls = player1.GetComponent<MultiplayerControls>();
+
+        zoneStrengthBar.gameObject.SetActive(GameSettings.UseVariableZoneStrength);
 
         gameActive = true;
     }
@@ -141,7 +154,7 @@ public class GameController : MonoBehaviourPunCallbacks
             damageTakenPanel.GetComponent<Image>().color = new Color(1, 0, 0, 0.2f * (Mathf.Sin(playerControls.hitPoints * MultiplayerControls.damageSpeed * 5) + 1));
             if (playerControls.hitPoints <= 0)
             {
-                playerControls.KillPlayer();
+                playerControls.KillPlayer(spawnPositions);
             }
         }
         else
@@ -169,7 +182,7 @@ public class GameController : MonoBehaviourPunCallbacks
 
                         if (controls.hitPoints <= 0)
                         {
-                            controls.KillPlayer();
+                            controls.KillPlayer(redSpawnPositions);
                         }
                     }
                 }
@@ -189,7 +202,7 @@ public class GameController : MonoBehaviourPunCallbacks
 
                         if (controls.hitPoints <= 0)
                         {
-                            controls.KillPlayer();
+                            controls.KillPlayer(blueSpawnPositions);
                         }
                     }
                 }
@@ -252,7 +265,10 @@ public class GameController : MonoBehaviourPunCallbacks
 
     public void UpdateZoneBar()
     {
-        zoneStrengthBar.SetBarFill(teamController.damageMultiplier);
+        if (zoneStrengthBar.gameObject.activeSelf)
+        {
+            zoneStrengthBar.SetBarFill(teamController.damageMultiplier);
+        }
     }
 
     /// <summary>
@@ -280,6 +296,7 @@ public class GameController : MonoBehaviourPunCallbacks
         if (teamController.score > enemyTeamController.score)
         {
             gameEndText.text = "You Win!";
+            PlayerSettings.AddWin();
         }
         else if (teamController.score == enemyTeamController.score)
         {
@@ -288,6 +305,7 @@ public class GameController : MonoBehaviourPunCallbacks
         else
         {
             gameEndText.text = "You Lose";
+            PlayerSettings.AddLoss();
         }
     }
 
@@ -309,9 +327,10 @@ public class GameController : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        Destroy(GameObject.Find("TeamManager"));
+        Destroy(GameObject.Find("Settings"));
         base.OnLeftRoom();
-        PhotonNetwork.LoadLevel("LoadScreen");
+        // TODO: Find a way to stop this from happening when closing the game
+        //PhotonNetwork.LoadLevel("LoadScreen");
     }
 
     /// <summary>

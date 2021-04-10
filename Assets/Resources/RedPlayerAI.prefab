@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 1611963995051846683}
   - component: {fileID: 1611963995051846686}
   - component: {fileID: 1611963995051846687}
-  - component: {fileID: 1580218352305357680}
   - component: {fileID: 118396316428677237}
   - component: {fileID: 7672056183199853839}
   - component: {fileID: 7829744432463817807}
@@ -4825,29 +4824,6 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &1580218352305357680
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1611963995051846680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51156ffa68f97e24d94985240eacd608, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCam: {fileID: 6183776438937784086}
-  movementEnabled: 1
-  isAIPlayer: 1
-  sign: {fileID: 6907934065835182152}
-  team: Red
-  playerNumber: 0
-  mouseSpeed: 6
-  ammo: 10
-  fireRate: 1
-  hitPoints: 0
-  coolDowmTime: 0
 --- !u!114 &118396316428677237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4913,7 +4889,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecdddf26a1b27874daff8add46d1e095, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefferedDirections: 
+  playerCam: {fileID: 6183776438937784086}
+  movementEnabled: 1
+  isAIPlayer: 1
+  sign: {fileID: 6907934065835182152}
+  team: Red
+  playerNumber: 0
+  mouseSpeed: 10
+  hitPoints: 0
+  coolDowmTime: 0
 --- !u!1 &6907934065835182152
 GameObject:
   m_ObjectHideFlags: 0

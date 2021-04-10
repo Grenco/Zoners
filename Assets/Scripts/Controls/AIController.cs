@@ -1,43 +1,66 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
-using Photon;
-using Photon.Pun;
 
-public class AIController : MonoBehaviour
+public class AIController : MultiplayerControls
 {
-    MultiplayerControls playerController;
+    private float newDirectionMovementTimer = 0.0f;
 
-    float newDirectionMovementTimer = 0.0f;
-    Vector3 movement;
+    private RaycastHit hitInfo;
+    private int wallLayer;
+    private float[] distances;
 
-    Ray ray;
-    RaycastHit hitInfo;
-    int wallLayer;
-    float[] distances;
-    List<Vector3> directions;
-    int direction = 0;
-    public List<int> prefferedDirections;
+    private List<Vector3> directions = new List<Vector3>
+    {
+        Vector3.forward,
+        Vector3.right,
+        -Vector3.forward,
+        -Vector3.right
+    };
 
-    float preferredDirectionMultiplier = 1.3f;
-    float backwardsMultiplier = 0.1f;
-    float repeatedStraightLineMultipier = 1.0f;
-    float turnBackMultiplier = 0.9f;
-    float keepGoingStraightMultiplier = 1.2f;
+    private int direction = 0;
+    private List<int> preferredDirections;
+
+    private Dictionary<int, List<int>> perferredDirectionDictionary = new Dictionary<int, List<int>>
+    {
+        { 0, new List<int>{2, 3} },
+        { 1, new List<int>{0, 3} },
+        { 2, new List<int>{0, 1} },
+        { 3, new List<int>{2, 1} },
+    };
+
+    private float preferredDirectionMultiplier = 1.3f;
+    private float backwardsMultiplier = 0.1f;
+    private float repeatedStraightLineMultipier = 1.0f;
+    private float turnBackMultiplier = 0.9f;
+    private float keepGoingStraightMultiplier = 1.2f;
 
     public void Start()
     {
-        playerController = gameObject.GetComponent<MultiplayerControls>();
+        photonView = gameObject.GetComponent<PhotonView>();
+
+        if (!GameSettings.IncludeAIPlayers)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
+        AssignTeam();
+
+        rb = GetComponent<Rigidbody>();
+        hitPoints = maxHitPoints;
+        damageTime = 0f;
+
+        if (team == TeamSettings.MyTeam)
+        {
+            CreatePlayerLabel();
+        }
+
+        mouseSpeed = PlayerSettings.MouseSensitivity;
+
+        preferredDirections = perferredDirectionDictionary[playerNumber];
         wallLayer = LayerMask.GetMask("Walls", "ExcludeFromMinimap");
-
-        directions = new List<Vector3>();
-        directions.Add(Vector3.forward);
-        directions.Add(Vector3.right);
-        directions.Add(-Vector3.forward);
-        directions.Add(-Vector3.right);
-
         distances = new float[4];
     }
 
@@ -54,11 +77,33 @@ public class AIController : MonoBehaviour
                 ChooseDirection();
             }
 
-            if (playerController.movementEnabled)
+            if (movementEnabled)
             {
-                playerController.AIMove(directions[direction]);
+                Move(directions[direction]);
             }
         }
+    }
+
+    public void FixedUpdate()
+    {
+        if (team == TeamSettings.MyTeam)
+        {
+            TurnSign();
+        }
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            CoolDownCheck();
+        }
+    }
+
+    /// <summary>
+    /// Allow an external AI controller to move the player.
+    /// </summary>
+    /// <param name="movement"> Movmement direction. </param>
+    private void Move(Vector3 movement)
+    {
+        rb.MovePosition(rb.position + movement.normalized * speed * Time.deltaTime);
     }
 
     /// <summary>
@@ -75,7 +120,7 @@ public class AIController : MonoBehaviour
                 distances[i] = hitInfo.distance;
 
                 // Use multipliers to bias the player towards a certain direction.
-                if (prefferedDirections.Contains(i))
+                if (preferredDirections.Contains(i))
                 {
                     distances[i] *= preferredDirectionMultiplier;
                 }
@@ -118,4 +163,3 @@ public class AIController : MonoBehaviour
         direction = newDirection;
     }
 }
-

@@ -29,6 +29,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public GameObject infoInputUI;
     public GameObject roomJoinUI;
+    public GameObject gameSettingsUI;
     public GameObject buttonLoadArena;
 
     public Text redPlayerList;
@@ -43,18 +44,15 @@ public class Launcher : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        //1
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
 
         Debug.Log("Connecting to Photon Network");
 
-        //2
         infoInputUI.SetActive(false);
         roomJoinUI.SetActive(false);
 
         spinner.enabled = true;
 
-        //3
         if (PhotonNetwork.IsConnected)
         {
             OnConnected();
@@ -217,8 +215,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     void ConnectToPhoton()
     {
         connectionStatus.text = "Connecting...";
-        PhotonNetwork.GameVersion = gameVersion; //1
-        PhotonNetwork.ConnectUsingSettings(); //2
+        PhotonNetwork.GameVersion = gameVersion; 
+        PhotonNetwork.ConnectUsingSettings(); 
     }
 
     // Photon Methods
@@ -226,9 +224,10 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         base.OnConnected();
 
-        connectionStatus.text = "Connected to Photon!";
+        connectionStatus.text = "Connected!";
         connectionStatus.color = Color.green;
         infoInputUI.SetActive(true);
+        playerNameField.text = PlayerSettings.Username;
         spinner.enabled = false;
     }
 
@@ -255,11 +254,13 @@ public class Launcher : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             buttonLoadArena.SetActive(true);
+            gameSettingsUI.SetActive(true);
             playerStatus.text = "You are Lobby Leader";
         }
         else
         {
             buttonLoadArena.SetActive(false);
+            gameSettingsUI.SetActive(false);
             playerStatus.text = "Connected to Lobby";
             UpdateTeamUI();
         }
@@ -278,6 +279,20 @@ public class Launcher : MonoBehaviourPunCallbacks
         base.OnLeftRoom();
         roomJoinUI.SetActive(false);
         infoInputUI.SetActive(true);
+    }
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        base.OnMasterClientSwitched(newMasterClient);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            gameSettingsUI.SetActive(true);
+            playerStatus.text = "You are Lobby Leader";
+        }
+        else
+        {
+            gameSettingsUI.SetActive(false);
+        }
     }
 
     private void OnPlayerLeftTeam(Player player, PhotonTeam team)

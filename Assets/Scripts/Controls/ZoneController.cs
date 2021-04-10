@@ -2,10 +2,10 @@
 using UnityEngine;
 using System.Linq;
 
-public class TeamController : MonoBehaviour
+public class ZoneController : MonoBehaviour
 {
-    public GameObject[] players;
-    public GameObject dangerZone;
+    public GameObject[] players = new GameObject[4];
+    public GameObject zone;
     public GameObject minimapZone;
     public Color teamZoneColor;
 
@@ -14,26 +14,28 @@ public class TeamController : MonoBehaviour
     private MeshFilter minimapZoneMesh;
     public string team;
 
-    private Transform[] transforms;
-    private Vector3[] positions;
+    private Transform[] transforms = new Transform[4] { null, null, null, null };
+    private Vector3[] positions = new Vector3[4];
 
     private LineRenderer lr;
 
     public int score;
 
     private float zoneArea;
-    public float damageMultiplier;
+    public float damageMultiplier = 1;
+
+    public MazeConstructor maze;
 
     // Start is called before the first frame update
     void Start()
     {
-        transforms = players.Select(x => x.transform).ToArray();
+        //transforms = players.Where(x => x.activeSelf).Select(x => x.transform).ToArray();
 
         lr = gameObject.GetComponent<LineRenderer>();
 
-        zoneMesh = dangerZone.GetComponent<MeshFilter>();
+        zoneMesh = zone.GetComponent<MeshFilter>();
         minimapZoneMesh = minimapZone.GetComponent<MeshFilter>();
-        zoneMeshRenderer = dangerZone.GetComponent<MeshRenderer>();
+        zoneMeshRenderer = zone.GetComponent<MeshRenderer>();
     }
 
     // Update is called once per frame
@@ -56,9 +58,9 @@ public class TeamController : MonoBehaviour
 
     /// <summary>
     /// Add a player gameobject to the team to be used in the zone.
-    /// Can be used at the beginning of hte game to replace AI players and after respawn.
+    /// Can be used at the beginning of the game to replace AI players and after respawn.
     /// </summary>
-    /// <param name="player"> GameeOject of the player ot be added. </param>
+    /// <param name="player"> GameeObject of the player to be added. </param>
     public void AddPlayer(GameObject player)
     {
         int playerNumber = player.GetComponent<MultiplayerControls>().playerNumber;
@@ -92,7 +94,7 @@ public class TeamController : MonoBehaviour
     /// <param name="p2">Second point on the intersection line.</param>
     /// <returns>Returns 0 for no intersection, 1 if p1 or p2 lie on the ray, 
     /// or 2 if the ray intersects the line. </returns>
-    public int LineCrossCheck(Vector2 p, Vector2 p1, Vector2 p2)
+    private int LineCrossCheck(Vector2 p, Vector2 p1, Vector2 p2)
     {
         p1 -= p;
         p2 -= p;
@@ -212,10 +214,14 @@ public class TeamController : MonoBehaviour
         zoneMesh.mesh = mesh;
         minimapZoneMesh.mesh = mesh;
 
-        damageMultiplier = 1 - Mathf.Max(Mathf.Min((zoneArea - 56.25f) / 8000, 1), 0);
-
-        zoneMeshRenderer.material.color = Color.Lerp(Color.clear, teamZoneColor, Mathf.Max(damageMultiplier - 0.05f, 0f));
-        zoneMeshRenderer.material.SetColor("_EmissionColor", teamZoneColor * damageMultiplier * 2);
+        if (GameSettings.UseVariableZoneStrength)
+        {
+            float zeroStrengthArea = maze.MazeInnerArea() * 2 / 3; // Area when the  zone strength reaches 0 (two-thirds of the max size)
+            float fullStengthArea = Mathf.Pow(maze.hallWidth, 2); // Area when the zone is at full strength (one tile)
+            damageMultiplier = 1 - Mathf.Max(Mathf.Min((zoneArea - fullStengthArea) / zeroStrengthArea, 1), 0); // Limit value between 0 and 1 (can maybe replace this with a sigmoid function in the future?)
+            zoneMeshRenderer.material.color = Color.Lerp(Color.clear, teamZoneColor, Mathf.Max(damageMultiplier - 0.05f, 0f));
+            zoneMeshRenderer.material.SetColor("_EmissionColor", teamZoneColor * damageMultiplier * 2);
+        }
     }
 
 }

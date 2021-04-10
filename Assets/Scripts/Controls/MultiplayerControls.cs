@@ -13,11 +13,10 @@ public class MultiplayerControls : MonoBehaviour
     private bool jumpCheck;
     public bool movementEnabled = true;
     public bool isAIPlayer = false;
-    private Rigidbody rb;
+    protected Rigidbody rb;
     public GameObject sign;
-    private Vector3 startingPosition;
-    private TeamController teamController;
-    private TeamController enemyTeamController;
+    private ZoneController zoneController;
+    private ZoneController enemyZoneController;
 
     public string team;
     public int playerNumber;
@@ -31,40 +30,30 @@ public class MultiplayerControls : MonoBehaviour
     public static int maxHitPoints = 100;
     public int hitPoints;
     public static float damageSpeed = 50.0f; // HP/s
-    private float damageTime;
+    protected float damageTime;
     public float coolDowmTime = 0.0f;
 
-    Ray ray;
-    RaycastHit hit;
-    GameObject hitObject;
-    LineRenderer lr;
-
-    private PhotonView photonView;
+    protected PhotonView photonView;
     private string playerName = "";
 
 
-    void Start()
+    private void Start()
     {
         photonView = gameObject.GetComponent<PhotonView>();
-        if (!isAIPlayer)
-        {
-            if (photonView.IsMine)
-            {
-                playerCam.gameObject.SetActive(true);
-                playerCam.enabled = true;
-            }
 
-            playerName = photonView.Owner.NickName;
-            gameObject.name = playerName;
-            playerNumber = TeamSettings.PositionInTeam(photonView.Owner);
+        if (photonView.IsMine)
+        {
+            playerCam.gameObject.SetActive(true);
+            playerCam.enabled = true;
         }
+
+        playerName = photonView.Owner.NickName;
+        gameObject.name = playerName;
+        playerNumber = TeamSettings.PositionInTeam(photonView.Owner);
 
         AssignTeam();
 
-        lr = gameObject.GetComponent<LineRenderer>();
         rb = GetComponent<Rigidbody>();
-        startingPosition = rb.position;
-
         hitPoints = maxHitPoints;
         damageTime = 0f;
 
@@ -72,13 +61,15 @@ public class MultiplayerControls : MonoBehaviour
         {
             CreatePlayerLabel();
         }
+
+        mouseSpeed = PlayerSettings.MouseSensitivity;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         // Convert the user input into a momvemnt and turn direction.
-        if (photonView.IsMine && !isAIPlayer)
+        if (photonView.IsMine)
         {
             if (movementEnabled)
             {
@@ -106,7 +97,7 @@ public class MultiplayerControls : MonoBehaviour
         {
             TurnSign();
         }
-        if (photonView.IsMine && !isAIPlayer)
+        if (photonView.IsMine)
         {
             Turn();
             Move();
@@ -116,29 +107,22 @@ public class MultiplayerControls : MonoBehaviour
             }
             CoolDownCheck();
         }
-        if (isAIPlayer && PhotonNetwork.IsMasterClient)
-        {
-            CoolDownCheck();
-        }
     }
 
     /// <summary>
     /// Add find the team and enemy team game objects and add the aplayer to the team.
     /// </summary>
-    void AssignTeam()
+    protected void AssignTeam()
     {
-        teamController = GameObject.Find(team + "Team").GetComponent<TeamController>();
-        enemyTeamController = GameObject.Find(TeamSettings.OtherTeam(team) + "Team").GetComponent<TeamController>();
-        if (!isAIPlayer)
-        {
-            teamController.AddPlayer(gameObject);
-        }
+        zoneController = GameObject.Find(team + "Team").GetComponent<ZoneController>();
+        enemyZoneController = GameObject.Find(TeamSettings.OtherTeam(team) + "Team").GetComponent<ZoneController>();
+        zoneController.AddPlayer(gameObject);
     }
 
     /// <summary>
     /// Add the player name to the sign above the player's head.
     /// </summary>
-    void CreatePlayerLabel()
+    protected void CreatePlayerLabel()
     {
         TextMesh tm = sign.GetComponent<TextMesh>();
         tm.text = gameObject.name;
@@ -149,7 +133,7 @@ public class MultiplayerControls : MonoBehaviour
     /// </summary>
     public void TakeDamage()
     {
-        damageTime += Time.deltaTime * enemyTeamController.damageMultiplier;
+        damageTime += Time.deltaTime * enemyZoneController.damageMultiplier;
         if (damageTime > 1 / damageSpeed)
         {
             hitPoints -= 1;
@@ -160,12 +144,12 @@ public class MultiplayerControls : MonoBehaviour
     /// <summary>
     /// Remove the player from the team and send them back to the respawn point for a cooldown time.
     /// </summary>
-    public void KillPlayer()
+    public void KillPlayer(List<GameObject> spawnPositions)
     {
         DisableControls();
         coolDowmTime = 5.0f;
         hitPoints = maxHitPoints;
-        rb.MovePosition(startingPosition);
+        rb.MovePosition(spawnPositions[playerNumber].transform.position);
         photonView.RPC("KillPlayerRPC", RpcTarget.All);
     }
 
@@ -173,19 +157,19 @@ public class MultiplayerControls : MonoBehaviour
     /// Notify the other players on the network that this player has died
     /// </summary>
     [PunRPC]
-    private void KillPlayerRPC()
+    protected void KillPlayerRPC()
     {
-        teamController.RemovePlayer(playerNumber);
-        enemyTeamController.score++;
+        zoneController.RemovePlayer(playerNumber);
+        enemyZoneController.score++;
     }
 
     /// <summary>
     /// Notify other player on the network that this plaeyr has respawned.
     /// </summary>
     [PunRPC]
-    private void RevivePlayerRPC()
+    protected void RevivePlayerRPC()
     {
-        teamController.AddPlayer(gameObject);
+        zoneController.AddPlayer(gameObject);
     }
 
     public void EnableControls()
@@ -209,15 +193,6 @@ public class MultiplayerControls : MonoBehaviour
         rb.velocity = new Vector3(0, jumpSpeed, 0);
     }
 
-    /// <summary>
-    /// Allow an external AI controller to move the player.
-    /// </summary>
-    /// <param name="movement"> Movmement direction. </param>
-    public void AIMove(Vector3 movement)
-    {
-        rb.MovePosition(rb.position + movement.normalized * speed * Time.deltaTime);
-    }
-
     private void Turn()
     {
         gameObject.transform.Rotate(0, turnX, 0); // Player rotates on Y axis, your Cam is child, then rotates too
@@ -232,7 +207,7 @@ public class MultiplayerControls : MonoBehaviour
     /// <summary>
     /// Turn the player's sign to face the main camera.
     /// </summary>
-    private void TurnSign()
+    protected void TurnSign()
     {
         // Ensures the player names are facing the camera
         if (Camera.main != null)
