@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class LineSegment
 {
     public Vector3[] points;
 
-    float Cross(Vector2 p1, Vector2 p2)
+    private float Cross(Vector2 p1, Vector2 p2)
     {
         return p1.x * p2.y - p1.y * p2.x;
     }
@@ -19,7 +17,7 @@ public class LineSegment
         r -= p;
 
         Vector2 q = new Vector2(l2.points[0].x, l2.points[0].z);
-        Vector2 s = new Vector2(l2.points[1].x,l2.points[1].z);
+        Vector2 s = new Vector2(l2.points[1].x, l2.points[1].z);
         s -= q;
 
         float rs = Cross(r, s);
@@ -38,7 +36,7 @@ public class LineSegment
         else if (0 <= t && t <= 1 && 0 <= u && u <= 1)
         {
             Vector2 intersect = p + t * r;
-            intersection = new Vector3(intersect.x, points[0].y , intersect.y);
+            intersection = new Vector3(intersect.x, points[0].y, intersect.y);
             return true;
         }
 
@@ -60,7 +58,7 @@ public class LineSegment
         return false;
     }
 
-    public LineSegment(Vector3 p1,Vector3 p2)
+    public LineSegment(Vector3 p1, Vector3 p2)
     {
         points = new Vector3[2];
         points[0] = p1;

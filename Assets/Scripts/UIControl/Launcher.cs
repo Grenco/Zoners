@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Photon.Pun;
+using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
-using Photon.Realtime;
-using Photon.Pun;
-using Photon.Pun.UtilityScripts;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
     [Header("Custom Variables")]
     public InputField playerNameField;
+
     public InputField roomNameField;
 
-    string gameVersion = "1";
+    private string gameVersion = "1";
 
     private string playerName;
     private string roomName;
@@ -42,7 +40,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public PhotonTeamsManager teamManager;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         //PlayerPrefs.DeleteAll();
 
@@ -68,7 +66,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         PhotonTeamsManager.PlayerJoinedTeam += OnPlayerJoinedTeam;
     }
 
-    void Awake()
+    private void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
     }
@@ -111,7 +109,7 @@ public class Launcher : MonoBehaviourPunCallbacks
             PhotonNetwork.LocalPlayer.LeaveCurrentTeam();
             return;
         }
-        
+
         if (team == TeamSettings.redTeam && !redTeamToggle.isOn)
         {
             return;
@@ -212,11 +210,11 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
     }
 
-    void ConnectToPhoton()
+    private void ConnectToPhoton()
     {
         connectionStatus.text = "Connecting...";
-        PhotonNetwork.GameVersion = gameVersion; 
-        PhotonNetwork.ConnectUsingSettings(); 
+        PhotonNetwork.GameVersion = gameVersion;
+        PhotonNetwork.ConnectUsingSettings();
     }
 
     // Photon Methods
@@ -244,7 +242,6 @@ public class Launcher : MonoBehaviourPunCallbacks
         connectionStatus.text = "Room: " + PhotonNetwork.CurrentRoom.Name;
         roomJoinUI.SetActive(true);
         spinner.enabled = false;
-
 
         if (PhotonNetwork.LocalPlayer.GetPhotonTeam() != null)
         {

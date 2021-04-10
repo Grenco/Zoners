@@ -1,19 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class HealthBarControl : MonoBehaviour
 {
     public GameObject bar;
     public Color barColor;
-    float barHeight;
-    float barWidth;
-    float maxHeight;
-    float width;
+    private float barHeight;
+    private float barWidth;
+    private float maxHeight;
+    private float width;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         maxHeight = gameObject.GetComponent<RectTransform>().rect.height;
         barWidth = gameObject.GetComponent<RectTransform>().rect.height - 2;
@@ -27,7 +25,7 @@ public class HealthBarControl : MonoBehaviour
         UpdateBar();
     }
 
-    void UpdateBar()
+    private void UpdateBar()
     {
         //bar.transform.lossyScale.Set(barWidth, barHeight, 0);
         bar.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, barHeight);

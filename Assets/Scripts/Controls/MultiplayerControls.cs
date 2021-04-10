@@ -1,12 +1,12 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 
 public class MultiplayerControls : MonoBehaviour
 {
     //CharacterController characterController;
     public Camera playerCam;
+
     private Vector3 moveDirection = Vector3.zero;
     private float turnX;
     private float turnY;
@@ -23,11 +23,13 @@ public class MultiplayerControls : MonoBehaviour
 
     [Header("Movement Settings")]
     public float mouseSpeed = 10.0f;
+
     public static float speed = 10.0f;
     public static float jumpSpeed = 5.0f;
 
     [Header("Player Settings")]
     public static int maxHitPoints = 100;
+
     public int hitPoints;
     public static float damageSpeed = 50.0f; // HP/s
     protected float damageTime;
@@ -35,7 +37,6 @@ public class MultiplayerControls : MonoBehaviour
 
     protected PhotonView photonView;
     private string playerName = "";
-
 
     private void Start()
     {
@@ -197,7 +198,7 @@ public class MultiplayerControls : MonoBehaviour
     {
         gameObject.transform.Rotate(0, turnX, 0); // Player rotates on Y axis, your Cam is child, then rotates too
 
-        // Security check to not rotate 360º 
+        // Security check to not rotate 360º
         if (playerCam.transform.eulerAngles.x + (-turnY) <= 80 || playerCam.transform.eulerAngles.x + (-turnY) >= 280)
         {
             playerCam.transform.RotateAround(gameObject.transform.position, playerCam.transform.right, -turnY);
@@ -242,4 +243,3 @@ public class MultiplayerControls : MonoBehaviour
         }
     }
 }
-

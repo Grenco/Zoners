@@ -1,17 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Photon.Pun;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
-using Photon.Pun;
-using Photon.Pun.UtilityScripts;
-
 
 public class GameController : MonoBehaviourPunCallbacks
 {
     [Header("Game Settings")]
     private float timeRemaining; // seconds
+
     public static bool gameActive = true;
 
     private GameObject player1;
@@ -19,6 +17,7 @@ public class GameController : MonoBehaviourPunCallbacks
 
     [Header("Team Settings")]
     private List<GameObject> spawnPositions;
+
     public List<GameObject> redSpawnPositions;
     public List<GameObject> blueSpawnPositions;
 
@@ -29,6 +28,7 @@ public class GameController : MonoBehaviourPunCallbacks
 
     [Header("UI Elements")]
     public Text hpText;
+
     public Text timerText;
     public Text redScoreText;
     public Text blueScoreText;
@@ -44,11 +44,12 @@ public class GameController : MonoBehaviourPunCallbacks
 
     [Header("Maze")]
     public MazeConstructor mazeConstructor;
+
     public GameObject redSpawnPlatform;
     public GameObject blueSpawnPlatform;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -98,9 +99,9 @@ public class GameController : MonoBehaviourPunCallbacks
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        // Exit Sample  
+        // Exit Sample
         if (Input.GetKey(KeyCode.Escape))
         {
             QuitGame();

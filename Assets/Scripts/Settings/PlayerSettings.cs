@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerSettings
 {
     private static string mouseSensitivityKey = "MouseSensitivity";
     public static float minMouseSensitivity = 5f;
     public static float maxMouseSensitivity = 15f;
+
     public static float MouseSensitivity
     {
         get { return PlayerPrefs.GetFloat(mouseSensitivityKey, 10f); }
@@ -18,6 +17,7 @@ public class PlayerSettings
     }
 
     private static string nameKey = "Username";
+
     public static string Username
     {
         get { return PlayerPrefs.GetString(nameKey, ""); }
@@ -29,6 +29,7 @@ public class PlayerSettings
     }
 
     private static string winCountKey = "WinCount";
+
     public static int WinCount
     {
         get { return PlayerPrefs.GetInt(winCountKey, 0); }
@@ -40,6 +41,7 @@ public class PlayerSettings
     }
 
     private static string lossCountKey = "LossCount";
+
     public static int LossCount
     {
         get { return PlayerPrefs.GetInt(lossCountKey, 0); }

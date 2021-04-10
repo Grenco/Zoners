@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using Photon.Pun;
+using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Realtime;
-using Photon.Pun;
-using Photon.Pun.UtilityScripts;
-using System.Linq;
 
 public class TeamSettings : MonoBehaviourPunCallbacks
 {
@@ -21,6 +19,7 @@ public class TeamSettings : MonoBehaviourPunCallbacks
             return PhotonNetwork.LocalPlayer.GetPhotonTeam().Name;
         }
     }
+
     public static string MyPlayer
     {
         get
@@ -51,7 +50,7 @@ public class TeamSettings : MonoBehaviourPunCallbacks
     }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         teamManager = gameObject.GetComponent<PhotonTeamsManager>();
     }
@@ -68,7 +67,6 @@ public class TeamSettings : MonoBehaviourPunCallbacks
         }
         return "";
     }
-
 
     public static int PositionInTeam(Player player)
     {

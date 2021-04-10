@@ -7,7 +7,6 @@ public class GameSettings : MonoBehaviourPunCallbacks
         ExitGames.Client.Photon.Hashtable table = PhotonNetwork.CurrentRoom.CustomProperties;
         if (table.ContainsKey(key)) return (T)table[key];
         else return deafult;
-
     }
 
     private static void SetProperty(string key, object value)

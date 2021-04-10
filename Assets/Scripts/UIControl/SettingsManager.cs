@@ -7,10 +7,12 @@ public class SettingsManager : MonoBehaviour
 
     [Header("Player Settings")]
     public Slider mouseSensitivitySlider;
+
     public InputField nameInputField;
 
     [Header("Game Settings")]
     public InputField gameTimeInputField;
+
     public InputField mapRowsInputField;
     public InputField mapColsInputField;
     public Toggle includeAiPlayers;

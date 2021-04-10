@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 public class ZoneController : MonoBehaviour
 {
@@ -27,7 +27,7 @@ public class ZoneController : MonoBehaviour
     public MazeConstructor maze;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         //transforms = players.Where(x => x.activeSelf).Select(x => x.transform).ToArray();
 
@@ -39,7 +39,7 @@ public class ZoneController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         lr.positionCount = transforms.Count(i => i != null);
         if (lr.positionCount > 0)
@@ -92,7 +92,7 @@ public class ZoneController : MonoBehaviour
     /// <param name="p">Emission point for the ray.</param>
     /// <param name="p1">First point on the intersection line.</param>
     /// <param name="p2">Second point on the intersection line.</param>
-    /// <returns>Returns 0 for no intersection, 1 if p1 or p2 lie on the ray, 
+    /// <returns>Returns 0 for no intersection, 1 if p1 or p2 lie on the ray,
     /// or 2 if the ray intersects the line. </returns>
     private int LineCrossCheck(Vector2 p, Vector2 p1, Vector2 p2)
     {
@@ -223,5 +223,4 @@ public class ZoneController : MonoBehaviour
             zoneMeshRenderer.material.SetColor("_EmissionColor", teamZoneColor * damageMultiplier * 2);
         }
     }
-
 }

@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class MazeMeshGenerator
 {
     public float width;     // Hallway width
     public float height;    // Hallway height
-
 
     public MazeMeshGenerator(float w, float h)
     {
@@ -53,11 +51,10 @@ public class MazeMeshGenerator
                     //    new Vector3(width, width, 1)
                     //), ref newVertices, ref newUVs, ref floorTriangles);
 
-
                     // walls on sides next to blocked grid cells
 
                     if (i - 1 < 0 || data[i - 1, j] == 1)
-                    { 
+                    {
                         AddQuad(Matrix4x4.TRS(
                             new Vector3(posj * width, halfH, (posi - .5f) * width),
                             Quaternion.LookRotation(Vector3.forward),

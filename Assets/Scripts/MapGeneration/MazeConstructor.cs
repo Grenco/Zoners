@@ -1,14 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters.Binary;
+﻿using Photon.Pun;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-using Photon;
-using Photon.Pun;
 
 public class MazeConstructor : MonoBehaviour
 {
-
     public float placementThreshold = 0.1f;
 
     public Material mazeMat1;
@@ -24,8 +20,7 @@ public class MazeConstructor : MonoBehaviour
 
     public int[,] data;
 
-
-    void Awake()
+    private void Awake()
     {
         photonView = gameObject.GetComponent<PhotonView>();
         // default to walls surrounding a single empty cell
@@ -47,7 +42,7 @@ public class MazeConstructor : MonoBehaviour
         }
     }
 
-    int[,] FromDimensions(int sizeRows, int sizeCols)
+    private int[,] FromDimensions(int sizeRows, int sizeCols)
     {
         // Use maze gereration algorithm to create randomised maze
         int[,] maze = new int[sizeRows, sizeCols];
@@ -86,9 +81,8 @@ public class MazeConstructor : MonoBehaviour
     /// </summary>
     /// <param name="mazeDataBytes">Maze data converted to binary from int array.</param>
     [PunRPC]
-    void DisplayMaze(byte[] mazeDataBytes)
+    private void DisplayMaze(byte[] mazeDataBytes)
     {
-
         Debug.Log("Generating Maze");
 
         int[,] mazeData = Deserialize<int[,]>(mazeDataBytes);

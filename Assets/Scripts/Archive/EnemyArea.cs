@@ -1,33 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Windows;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class EnemyArea : MonoBehaviour
 {
-    GameObject[] enemies;
-    GameObject dangerZone;
-    GameObject player;
-    PlayerControls playerControls;
+    private GameObject[] enemies;
+    private GameObject dangerZone;
+    private GameObject player;
+    private PlayerControls playerControls;
 
-    HashSet<Transform> transforms;
-    Vector3[] positions;
+    private HashSet<Transform> transforms;
+    private Vector3[] positions;
 
-    LineRenderer lr;
+    private LineRenderer lr;
 
-    MeshFilter zoneMesh;
-    bool zoneActive;
+    private MeshFilter zoneMesh;
+    private bool zoneActive;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-
         transforms = new HashSet<Transform>(GetComponentsInChildren<Transform>());
         transforms.Remove(transform);
         enemies = transforms.Select(x => x.gameObject).ToArray();
-
 
         foreach (GameObject enemy in enemies)
         {
@@ -100,7 +96,7 @@ public class EnemyArea : MonoBehaviour
         return 0;
     }
 
-    bool IsAround(Vector3 point)
+    private bool IsAround(Vector3 point)
     {
         int vertCount = positions.Length;
         int intersections = 0;
@@ -112,7 +108,6 @@ public class EnemyArea : MonoBehaviour
             Vector2 v2 = new Vector2(positions[(i + 1) % vertCount].x, positions[(i + 1) % vertCount].z);
 
             intersections += LineCrossCheck(v0, v1, v2);
-
         }
 
         if (intersections % 4 == 0)
@@ -120,12 +115,10 @@ public class EnemyArea : MonoBehaviour
             return false;
         }
         return true;
-
     }
 
-
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         transforms.Remove(null);
         positions = transforms.Select(x => x.position).ToArray();
@@ -141,7 +134,6 @@ public class EnemyArea : MonoBehaviour
         //Mesh mesh = zoneMesh.mesh;
 
         Mesh mesh = new Mesh();
-
 
         if (positions.Length == 4)
         {

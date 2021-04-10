@@ -1,23 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour
 {
-    ParticleSystem ps;
-    ParticleSystem.EmissionModule em;
-    CharacterController controller;
-    float movementSpeed = 5f;
-    System.Random random;
-    Vector3 moveDir;
-    float gravity = 20.0f;
+    private ParticleSystem ps;
+    private ParticleSystem.EmissionModule em;
+    private CharacterController controller;
+    private float movementSpeed = 5f;
+    private System.Random random;
+    private Vector3 moveDir;
+    private float gravity = 20.0f;
 
-    float moveTime;
+    private float moveTime;
 
-    EnemyArea enemyArea;
+    private EnemyArea enemyArea;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         ps = gameObject.GetComponent<ParticleSystem>();
         controller = gameObject.GetComponent<CharacterController>();
@@ -35,12 +33,12 @@ public class EnemyBehaviour : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (moveTime < 0)
         {
-            moveDir.x = Random.Range(-50,50);
-            moveDir.z = Random.Range(-50,50);
+            moveDir.x = Random.Range(-50, 50);
+            moveDir.z = Random.Range(-50, 50);
 
             moveTime = 1;
         }

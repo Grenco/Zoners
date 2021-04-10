@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEditor;
-using System.Collections;
 using UnityEngine.UI;
 
 // This script moves the character controller forward
@@ -11,37 +9,39 @@ using UnityEngine.UI;
 
 public class PlayerControls : MonoBehaviour
 {
-    CharacterController characterController;
-    GameObject player;
-    GameObject playerCam;
+    private CharacterController characterController;
+    private GameObject player;
+    private GameObject playerCam;
     private Vector3 moveDirection = Vector3.zero;
-    bool movementEnabled = true;
+    private bool movementEnabled = true;
 
     [Header("Movement Settings")]
     public float speed = 6.0f;
+
     public float jumpSpeed = 5.0f;
     public float gravity = 20.0f;
     public float mouseSpeed = 5.0f;
 
     [Header("Shooting Settings")]
     public int ammo = 10;
-    float shotCoolDown;
+
+    private float shotCoolDown;
     public float fireRate = 1f; // shots/s
-    GameObject ammoUI;
+    private GameObject ammoUI;
 
     [Header("Player Settings")]
     public int maxHitPoints = 100;
+
     public int hitPoints;
     public float damageSpeed = 10; // HP/s
-    float damageTime;
+    private float damageTime;
 
-    Ray ray;
-    RaycastHit hit;
-    GameObject hitObject;
-    LineRenderer lr;
+    private Ray ray;
+    private RaycastHit hit;
+    private GameObject hitObject;
+    private LineRenderer lr;
 
-
-    void Start()
+    private void Start()
     {
         characterController = GetComponent<CharacterController>();
         //player = GameObject.FindWithTag("Player");
@@ -55,7 +55,7 @@ public class PlayerControls : MonoBehaviour
         damageTime = 0;
     }
 
-    void Shoot()
+    private void Shoot()
     {
         if (ammo > 0 && shotCoolDown <= 0)
         {
@@ -71,7 +71,7 @@ public class PlayerControls : MonoBehaviour
         }
     }
 
-    void Action()
+    private void Action()
     {
         if (hitObject.CompareTag("NPC") && hit.distance < 5)
         {
@@ -85,13 +85,13 @@ public class PlayerControls : MonoBehaviour
         }
     }
 
-    void DrawLine(Vector3 start, Vector3 end, Color color, float duration = 0.2f)
+    private void DrawLine(Vector3 start, Vector3 end, Color color, float duration = 0.2f)
     {
         lr.SetPosition(0, start);
         lr.SetPosition(1, end);
     }
 
-    void RayShot()
+    private void RayShot()
     {
         ray = new Ray(player.transform.position, player.transform.forward);
         hit = new RaycastHit();
@@ -108,7 +108,6 @@ public class PlayerControls : MonoBehaviour
             {
                 lineEnd = lineStart + player.transform.forward * 1000f;
             }
-
         }
         else
         {
@@ -164,9 +163,9 @@ public class PlayerControls : MonoBehaviour
         movementEnabled = false;
     }
 
-    void Update()
+    private void Update()
     {
-        // Exit Sample  
+        // Exit Sample
         if (Input.GetKey(KeyCode.Escape))
         {
             Application.Quit();
@@ -200,11 +199,8 @@ public class PlayerControls : MonoBehaviour
             // as an acceleration (ms^-2)
             //moveDirection.y -= gravity * Time.deltaTime;
 
-
-
             // Move the controller
             characterController.Move(moveDirection * Time.deltaTime);
-
 
             if (Input.GetAxis("Fire1") > 0)
             {
@@ -222,8 +218,7 @@ public class PlayerControls : MonoBehaviour
 
         player.transform.Rotate(0, X, 0); // Player rotates on Y axis, your Cam is child, then rotates too
 
-
-        // Security check to not rotate 360º 
+        // Security check to not rotate 360º
         if (playerCam.transform.eulerAngles.x + (-Y) > 80 && playerCam.transform.eulerAngles.x + (-Y) < 280)
         { }
         else

@@ -1,18 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class TalkingText : MonoBehaviour
 {
-    GameObject panel;
-    GameObject textBox;
-    GameObject player;
+    private GameObject panel;
+    private GameObject textBox;
+    private GameObject player;
     public float coolDownTime = 0.5f;
-    float timeRemaining = 0.0f;
+    private float timeRemaining = 0.0f;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         panel = gameObject;//GameObject.Find("TalkingTextPanel");
         textBox = GameObject.Find("TalkingText");
@@ -29,7 +27,7 @@ public class TalkingText : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (panel.activeSelf && timeRemaining <= 0)
         {

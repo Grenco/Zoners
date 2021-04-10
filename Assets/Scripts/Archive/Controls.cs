@@ -1,33 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Controls : MonoBehaviour
 {
-    GameObject player;
-    Vector3 translation;
-    Vector3 rotation;
-    public float moveSpeed =  10; // m/s
+    private GameObject player;
+    private Vector3 translation;
+    private Vector3 rotation;
+    public float moveSpeed = 10; // m/s
     public float rotationSpeed = 0.01f;// deg/s
-    GameObject playerCamera;
-    Ray ray;
+    private GameObject playerCamera;
+    private Ray ray;
     public int ammo = 10;
-    float shotCoolDown;
+    private float shotCoolDown;
     public float fireRate = 1f; // shot/s
 
-    CharacterController characterController;
+    private CharacterController characterController;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         player = GameObject.FindWithTag("Player");
         playerCamera = GameObject.FindWithTag("MainCamera");
         characterController = GetComponent<CharacterController>();
     }
 
-    void Shoot()
+    private void Shoot()
     {
-
         if (ammo > 0 && shotCoolDown < 0)
         {
             ray = new Ray(player.transform.position, player.transform.forward);
@@ -41,11 +38,10 @@ public class Controls : MonoBehaviour
 
             shotCoolDown = 1 / fireRate;
         }
-
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");

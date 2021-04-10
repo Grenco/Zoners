@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Triangle
@@ -29,7 +28,7 @@ public class Triangle
         return centre / points.Count;
     }
 
-    void CWCheck()
+    private void CWCheck()
     {
         List<Vector3> p = points;
         float A = p[1].x * p[0].z + p[2].x * p[1].z + p[0].x * p[2].z;

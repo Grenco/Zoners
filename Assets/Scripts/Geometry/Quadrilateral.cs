@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class Quadrilateral
 {
-
     public List<Vector3> points;
-    List<LineSegment> lines;
+    private List<LineSegment> lines;
     public List<int> trirefs;
     public List<Triangle> triangles;
     public List<Vector3> normals;
@@ -21,8 +19,7 @@ public class Quadrilateral
         }
     }
 
-
-    void Triangulate()
+    private void Triangulate()
     {
         trirefs = new List<int>();
         triangles = new List<Triangle>();
@@ -43,7 +40,7 @@ public class Quadrilateral
             trirefs.AddRange(triangles[0].refs);
             trirefs.AddRange(triangles[1].refs);
         }
-        else if(points.Count == 5)
+        else if (points.Count == 5)
         {
             Triangle tri;
 
@@ -59,7 +56,6 @@ public class Quadrilateral
                     trirefs.AddRange(tri.refs);
                 }
             }
-
         }
         else
         {
@@ -67,7 +63,7 @@ public class Quadrilateral
         }
     }
 
-    void IntersectionCheck()
+    private void IntersectionCheck()
     {
         foreach (LineSegment l1 in lines)
         {
@@ -86,7 +82,7 @@ public class Quadrilateral
         }
     }
 
-    void CreateLines()
+    private void CreateLines()
     {
         lines = new List<LineSegment>();
         for (int i = 0; i < points.Count; i++)
@@ -100,7 +96,6 @@ public class Quadrilateral
         IntersectionCheck();
     }
 
-
     public Quadrilateral(Vector3[] p)
     {
         points = new List<Vector3>();
@@ -112,6 +107,5 @@ public class Quadrilateral
         CreateLines();
 
         Triangulate();
-
     }
 }
