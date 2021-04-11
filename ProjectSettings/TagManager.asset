@@ -11,6 +11,7 @@ TagManager:
   - RedTeamPlayer
   - BlueTeamPlayer
   - Settings
+  - Collectible
   layers:
   - Default
   - TransparentFX
