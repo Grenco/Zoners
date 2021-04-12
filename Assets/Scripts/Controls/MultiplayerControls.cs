@@ -24,8 +24,8 @@ public class MultiplayerControls : MonoBehaviour
     [Header("Movement Settings")]
     public float mouseSpeed = 10.0f;
 
-    public static float speed = 10.0f;
-    public static float jumpSpeed = 5.0f;
+    public float speed = 10.0f;
+    public float jumpSpeed = 5.0f;
 
     [Header("Player Settings")]
     public static int maxHitPoints = 100;
