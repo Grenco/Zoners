@@ -66,7 +66,7 @@ public class AIController : MultiplayerControls
 
     public void Update()
     {
-        if (PhotonNetwork.IsMasterClient && GameController.gameActive)
+        if (PhotonNetwork.IsMasterClient && GameSettings.GameActive)
         {
             if (newDirectionMovementTimer > 0)
             {

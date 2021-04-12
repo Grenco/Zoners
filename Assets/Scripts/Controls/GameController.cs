@@ -8,7 +8,8 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviourPunCallbacks
 {
     [Header("Game Settings")]
-    private float timeRemaining; // seconds
+    public float timeRemaining; // seconds
+    private double startTime;
 
     public static bool gameActive = true;
 
@@ -95,7 +96,18 @@ public class GameController : MonoBehaviourPunCallbacks
 
         zoneStrengthBar.gameObject.SetActive(GameSettings.UseVariableZoneStrength);
 
-        gameActive = true;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            GameSettings.StartTime = PhotonNetwork.Time;
+            startTime = GameSettings.StartTime;
+            GameSettings.GameActive = true;
+        }
+        else
+        {
+            while(!GameSettings.GameActive) { }
+            startTime = GameSettings.StartTime;
+        }
+        
     }
 
     // Update is called once per frame
@@ -120,7 +132,7 @@ public class GameController : MonoBehaviourPunCallbacks
             Cursor.visible = false;
         }
 
-        if (gameActive)
+        if (GameSettings.GameActive)
         {
             // Check player status
             if (playerControls.movementEnabled)
@@ -234,7 +246,7 @@ public class GameController : MonoBehaviourPunCallbacks
     {
         if (timeRemaining > 0)
         {
-            timeRemaining -= Time.deltaTime;
+            timeRemaining = (float)(startTime - PhotonNetwork.Time) + GameSettings.GameTime;
             int minutes = (int)timeRemaining / 60;
             string minuteString = minutes.ToString();
             if (minutes < 10)
@@ -283,7 +295,7 @@ public class GameController : MonoBehaviourPunCallbacks
         Cursor.visible = true;
         gameEndPanel.SetActive(true);
 
-        gameActive = false;
+        GameSettings.GameActive = false;
 
         if (PhotonNetwork.IsMasterClient)
         {

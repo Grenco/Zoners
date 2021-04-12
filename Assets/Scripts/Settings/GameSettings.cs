@@ -1,4 +1,6 @@
-﻿using Photon.Pun;
+﻿using System;
+using System.Collections.Generic;
+using Photon.Pun;
 
 public class GameSettings : MonoBehaviourPunCallbacks
 {
@@ -83,5 +85,17 @@ public class GameSettings : MonoBehaviourPunCallbacks
     {
         get { return GetProperty("PlayersPerTeam", 4); }
         set { SetProperty("PlayersPerTeam", value); }
+    }
+
+    public static bool GameActive
+    {
+        get { return GetProperty("GameActive", false); }
+        set { SetProperty("GameActive", value); }
+    }
+
+    public static double StartTime
+    {
+        get { return GetProperty("StartTime", PhotonNetwork.Time); }
+        set { SetProperty("GameActive", value); }
     }
 }
