@@ -1,5 +1,8 @@
 ﻿using Photon.Pun;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
@@ -62,12 +65,12 @@ public class MazeConstructor : MonoBehaviour
                 // Add walls to every other space and a random adjoining space
                 else if (i % 2 == 0 && j % 2 == 0)
                 {
-                    if (Random.value > placementThreshold)
+                    if (UnityEngine.Random.value > placementThreshold)
                     {
                         maze[i, j] = 1;
 
-                        int a = Random.value < .5 ? 0 : (Random.value < .5 ? -1 : 1);
-                        int b = a != 0 ? 0 : (Random.value < .5 ? -1 : 1);
+                        int a = UnityEngine.Random.value < .5 ? 0 : (UnityEngine.Random.value < .5 ? -1 : 1);
+                        int b = a != 0 ? 0 : (UnityEngine.Random.value < .5 ? -1 : 1);
                         maze[i + a, j + b] = 1;
                     }
                 }
@@ -157,11 +160,44 @@ public class MazeConstructor : MonoBehaviour
         return sizeCols * hallWidth;
     }
 
+    /// <summary> Area of maze from inner wall to inner wall </summary>
+    /// <returns></returns>
     public float MazeInnerArea()
     {
         float l = MazeInnerLength();
         float w = MazeInnerWidth();
         float a = MazeInnerWidth() * MazeInnerLength();
         return MazeInnerLength() * MazeInnerWidth();
+    }
+
+    /// <summary> Get the world position of a given row/col in the maze </summary>
+    public Vector3 Position(int row, int col)
+    {
+        float x = (col - (sizeCols - 1) / 2) * hallWidth;
+        float y = 0f;
+        float z = (row - (sizeRows - 1) / 2) * hallWidth;
+        return new Vector3(x, y, z);
+    }
+
+    public Vector3 RandomEmptySpace()
+    {
+        System.Random r = new System.Random();
+
+        List<Vector2Int> freeSpaces = new List<Vector2Int>();
+
+        for (int i = 0; i < sizeRows; i++)
+        {
+            for (int j = 0; j < sizeCols; j++)
+            {
+                if (data[i, j] == 0)
+                {
+                    freeSpaces.Add(new Vector2Int(i, j));
+                }
+            }
+        }
+
+        Vector2Int space = freeSpaces[r.Next(freeSpaces.Count - 1)];
+        
+        return Position(space.x, space.y);
     }
 }

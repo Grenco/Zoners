@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 
 namespace Assets.Scripts.PowerUps
@@ -28,10 +29,16 @@ namespace Assets.Scripts.PowerUps
 
         private void OnCollisionEnter(Collision collision)
         {
-            player = collision.gameObject.GetComponent<MultiplayerControls>();
-            ApplyPowerUp(player);
-            isActive = true;
-            gameObject.transform.localScale = new Vector3(0, 0, 0);
+            if (collision.gameObject.TryGetComponent(out player))
+            {
+                if ((player.isAIPlayer && PhotonNetwork.IsMasterClient) ||
+                    collision.gameObject.GetComponent<PhotonView>().IsMine)
+                {
+                    ApplyPowerUp(player);
+                    isActive = true;
+                    gameObject.transform.localScale = new Vector3(0, 0, 0);
+                }
+            }
         }
 
         protected virtual void ApplyPowerUp(MultiplayerControls player)

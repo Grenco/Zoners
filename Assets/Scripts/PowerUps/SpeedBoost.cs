@@ -9,14 +9,16 @@ namespace Assets.Scripts.PowerUps
 {
     class SpeedBoost : PowerUp
     {
+        public float SpeedMultiplier = 1.5f;
+
         protected override void ApplyPowerUp(MultiplayerControls player)
         {
-            player.speed *= 2;
+            player.speed *= SpeedMultiplier;
         }
 
         protected override void ReversePowerUp(MultiplayerControls player)
         {
-            player.speed /= 2;
+            player.speed /= SpeedMultiplier;
         }
     }
 }

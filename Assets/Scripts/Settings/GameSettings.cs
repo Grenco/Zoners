@@ -6,8 +6,10 @@ public class GameSettings : MonoBehaviourPunCallbacks
 {
     private static T GetProperty<T>(string key, T deafult)
     {
-        ExitGames.Client.Photon.Hashtable table = PhotonNetwork.CurrentRoom.CustomProperties;
-        if (table.ContainsKey(key)) return (T)table[key];
+        if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(key, out object value))
+        {
+            return (T)value;
+        }
         else return deafult;
     }
 
@@ -22,7 +24,10 @@ public class GameSettings : MonoBehaviourPunCallbacks
         {
             table.Add(key, value);
         }
-        PhotonNetwork.SetPlayerCustomProperties(table);
+        if (!PhotonNetwork.CurrentRoom.SetCustomProperties(table))
+        {
+            int test = 1;
+        }
     }
 
     //public override void OnJoinedRoom()
@@ -96,6 +101,6 @@ public class GameSettings : MonoBehaviourPunCallbacks
     public static double StartTime
     {
         get { return GetProperty("StartTime", PhotonNetwork.Time); }
-        set { SetProperty("GameActive", value); }
+        set { SetProperty("StartTime", value); }
     }
 }

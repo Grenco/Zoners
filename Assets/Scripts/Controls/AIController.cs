@@ -46,6 +46,12 @@ public class AIController : MultiplayerControls
             return;
         }
 
+        if (TeamSettings.GetPlayers(team).Length > playerNumber)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
         AssignTeam();
 
         rb = GetComponent<Rigidbody>();

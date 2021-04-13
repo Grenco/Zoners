@@ -98,13 +98,13 @@ public class GameController : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient)
         {
-            GameSettings.StartTime = PhotonNetwork.Time;
+            //GameSettings.StartTime = PhotonNetwork.Time;
             startTime = GameSettings.StartTime;
-            GameSettings.GameActive = true;
+            //GameSettings.GameActive = true;
         }
         else
         {
-            while(!GameSettings.GameActive) { }
+            while (!GameSettings.GameActive) { }
             startTime = GameSettings.StartTime;
         }
         
@@ -295,11 +295,10 @@ public class GameController : MonoBehaviourPunCallbacks
         Cursor.visible = true;
         gameEndPanel.SetActive(true);
 
-        GameSettings.GameActive = false;
-
         if (PhotonNetwork.IsMasterClient)
         {
             RestartButton.SetActive(true);
+            GameSettings.GameActive = false;
         }
         else
         {

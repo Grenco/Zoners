@@ -201,6 +201,8 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
         else if (PhotonNetwork.CurrentRoom.PlayerCount > 0)
         {
+            GameSettings.StartTime = PhotonNetwork.Time;
+            GameSettings.GameActive = true;
             PhotonNetwork.LoadLevel("Game");
             PhotonNetwork.CurrentRoom.IsOpen = false;
         }
