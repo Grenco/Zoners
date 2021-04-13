@@ -13,6 +13,18 @@ namespace Assets.Scripts.PowerUps
         protected bool isActive = false;
         protected MultiplayerControls player;
 
+        protected void Start()
+        {
+            // NOTE:
+            // Unity or the PhotonTransformView do not save the editor tick boxes for these sync settings
+            // so I'll have to manually set them here...
+            PhotonTransformView ptv = GetComponent<PhotonTransformView>();
+            ptv.m_SynchronizePosition = true;
+            ptv.m_SynchronizeRotation = false;
+            ptv.m_SynchronizeScale = false;
+            //ptv.m_SynchronizeGlobal = true;
+        }
+
         protected void Update()
         {
             if (isActive)
@@ -37,6 +49,7 @@ namespace Assets.Scripts.PowerUps
                     ApplyPowerUp(player);
                     isActive = true;
                     gameObject.transform.localScale = new Vector3(0, 0, 0);
+                    gameObject.GetComponent<PhotonView>().RPC("RemovePowerUp", RpcTarget.Others);
                 }
             }
         }
@@ -49,6 +62,12 @@ namespace Assets.Scripts.PowerUps
         protected virtual void ReversePowerUp(MultiplayerControls player)
         {
             player.EnableControls();
+        }
+
+        [PunRPC]
+        protected void RemovePowerUp()
+        {
+            gameObject.SetActive(false);
         }
     }
 }
