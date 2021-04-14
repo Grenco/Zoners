@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class MultiplayerControls : MonoBehaviour
 {
-    //CharacterController characterController;
     public Camera playerCam;
+    public GameObject plyaerMinimapMarker;
 
     private Vector3 moveDirection = Vector3.zero;
     private float turnX;
@@ -45,6 +45,7 @@ public class MultiplayerControls : MonoBehaviour
         if (photonView.IsMine)
         {
             playerCam.gameObject.SetActive(true);
+            plyaerMinimapMarker.gameObject.SetActive(true);
             playerCam.enabled = true;
         }
 
