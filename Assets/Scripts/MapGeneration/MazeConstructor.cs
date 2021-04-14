@@ -101,6 +101,20 @@ public class MazeConstructor : MonoBehaviour
         MeshCollider mc = gameObject.AddComponent<MeshCollider>();
         mc.sharedMesh = mf.mesh;
 
+        // Add box filters to prevent the player clipping through the walls at high speeds
+        for (int i = 0; i < sizeRows; i++)
+        {
+            for (int j = 0; j < sizeCols; j++)
+            {
+                if (data[i, j] == 1)
+                {
+                    BoxCollider bc = gameObject.AddComponent<BoxCollider>();
+                    bc.center = Position(i, j) + new Vector3(0, hallHeight / 2, 0);
+                    bc.size = new Vector3(hallWidth, hallHeight, hallWidth);
+                }
+            }
+        }
+
         MeshRenderer mr = gameObject.AddComponent<MeshRenderer>();
         mr.materials = new Material[2] { mazeMat1, mazeMat2 };
     }
@@ -197,7 +211,7 @@ public class MazeConstructor : MonoBehaviour
         }
 
         Vector2Int space = freeSpaces[r.Next(freeSpaces.Count - 1)];
-        
+
         return Position(space.x, space.y);
     }
 }

@@ -302,7 +302,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8880919349663680751}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 68.637794, y: 1, z: 32.960358}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1.5806, y: 1.5806, z: 1.5806}
   m_Children:
   - {fileID: 1133313359320793889}
@@ -5165,5 +5165,7 @@ MonoBehaviour:
   team: Blue
   playerNumber: 0
   mouseSpeed: 10
+  speed: 10
+  jumpSpeed: 5
   hitPoints: 0
   coolDowmTime: 0
