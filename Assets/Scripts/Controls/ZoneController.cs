@@ -23,6 +23,7 @@ public class ZoneController : MonoBehaviour
 
     private float zoneArea;
     public float damageMultiplier = 1;
+    private float strengthBoost = 1;
 
     public MazeConstructor maze;
 
@@ -82,6 +83,11 @@ public class ZoneController : MonoBehaviour
     {
         transforms[playerNumber] = null;
         players[playerNumber] = null;
+    }
+
+    public void BoostStrength(float multiplier)
+    {
+        strengthBoost = multiplier;
     }
 
     /// <summary>
@@ -222,5 +228,7 @@ public class ZoneController : MonoBehaviour
             zoneMeshRenderer.material.color = Color.Lerp(Color.clear, teamZoneColor, Mathf.Max(damageMultiplier - 0.05f, 0f));
             zoneMeshRenderer.material.SetColor("_EmissionColor", teamZoneColor * damageMultiplier * 2);
         }
+
+        damageMultiplier *= strengthBoost;
     }
 }

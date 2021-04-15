@@ -214,12 +214,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1830651764669263286}
-  - component: {fileID: 2861355043020693252}
   - component: {fileID: 3676231138918402669}
   - component: {fileID: 660574096157981064}
   - component: {fileID: 3576682608775192628}
+  - component: {fileID: 7688778831525744814}
   m_Layer: 0
-  m_Name: SpeedBoost
+  m_Name: ZonePowerBoost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -241,20 +241,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2861355043020693252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3919564850772909101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5e6327af5af4da4a99e051d7dd031b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  effectTime: 5
-  SpeedMultiplier: 1.5
 --- !u!136 &3676231138918402669
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -306,6 +292,22 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
+--- !u!114 &7688778831525744814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3919564850772909101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10a7d1b9b2f35cc44a8d4fbb279cf6de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectTime: 5
+  PowerMultiplier: 2
+  redZone: {fileID: 0}
+  blueZone: {fileID: 0}
 --- !u!1 &5060316493114404797
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,17 +13,20 @@ namespace Assets.Scripts.PowerUps
         protected bool isActive = false;
         protected MultiplayerControls player;
 
-        protected void Start()
-        {
-            // NOTE:
-            // Unity or the PhotonTransformView do not save the editor tick boxes for these sync settings
-            // so I'll have to manually set them here...
-            PhotonTransformView ptv = GetComponent<PhotonTransformView>();
-            ptv.m_SynchronizePosition = true;
-            ptv.m_SynchronizeRotation = false;
-            ptv.m_SynchronizeScale = false;
-            //ptv.m_SynchronizeGlobal = true;
-        }
+        //protected void Start()
+        //{
+        //    // NOTE:
+        //    // Unity or the PhotonTransformView do not save the editor tick boxes for these sync settings
+        //    // so I'll have to manually set them here...
+
+        //    if (PhotonNetwork.IsMasterClient)
+        //    {
+        //        PhotonTransformView ptv = GetComponent<PhotonTransformView>();
+        //        //ptv.m_SynchronizePosition = true;
+        //        ptv.m_SynchronizeRotation = false;
+        //        //ptv.m_SynchronizeScale = false;
+        //    }
+        //}
 
         protected void Update()
         {
@@ -33,33 +36,33 @@ namespace Assets.Scripts.PowerUps
                 if (activeTime > effectTime)
                 {
                     isActive = false;
-                    ReversePowerUp(player);
+                    ReversePowerUp();
                     gameObject.SetActive(false);
+                    gameObject.GetComponent<PhotonView>().RPC("RemovePowerUp", RpcTarget.All);
                 }
             }
         }
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.TryGetComponent(out player))
+            if (!isActive && collision.gameObject.TryGetComponent(out player))
             {
                 if ((player.isAIPlayer && PhotonNetwork.IsMasterClient) ||
                     collision.gameObject.GetComponent<PhotonView>().IsMine)
                 {
-                    ApplyPowerUp(player);
+                    ApplyPowerUp();
                     isActive = true;
-                    gameObject.transform.localScale = new Vector3(0, 0, 0);
-                    gameObject.GetComponent<PhotonView>().RPC("RemovePowerUp", RpcTarget.Others);
+                    gameObject.GetComponent<PhotonView>().RPC("MovePowerUp", RpcTarget.All, new object[] { 0f, -500f, 0f });
                 }
             }
         }
 
-        protected virtual void ApplyPowerUp(MultiplayerControls player)
+        protected virtual void ApplyPowerUp()
         {
             player.DisableControls();
         }
 
-        protected virtual void ReversePowerUp(MultiplayerControls player)
+        protected virtual void ReversePowerUp()
         {
             player.EnableControls();
         }
@@ -68,6 +71,12 @@ namespace Assets.Scripts.PowerUps
         protected void RemovePowerUp()
         {
             gameObject.SetActive(false);
+        }
+
+        [PunRPC]
+        protected void MovePowerUp(float x, float y, float z)
+        {
+            gameObject.transform.localPosition = new Vector3(x, y, z);
         }
     }
 }

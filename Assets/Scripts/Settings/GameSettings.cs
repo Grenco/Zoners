@@ -24,10 +24,6 @@ public class GameSettings : MonoBehaviourPunCallbacks
         {
             table.Add(key, value);
         }
-        if (!PhotonNetwork.CurrentRoom.SetCustomProperties(table))
-        {
-            int test = 1;
-        }
     }
 
     //public override void OnJoinedRoom()
