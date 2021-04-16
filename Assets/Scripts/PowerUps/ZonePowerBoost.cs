@@ -6,8 +6,6 @@ namespace Assets.Scripts.PowerUps
     class ZonePowerBoost : PowerUp
     {
         public float PowerMultiplier = 2f;
-        public ZoneController redZone;
-        public ZoneController blueZone;
 
         protected override void ApplyPowerUp()
         {

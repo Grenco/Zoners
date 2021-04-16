@@ -172,12 +172,12 @@ public class Launcher : MonoBehaviourPunCallbacks
         SetRoomName(roomNameField.text);
         if (PhotonNetwork.IsConnected)
         {
-            PhotonNetwork.LocalPlayer.NickName = playerName; //1
+            PhotonNetwork.LocalPlayer.NickName = playerName;
             Debug.Log("PhotonNetwork.IsConnected! | Trying to Create/Join Room " + roomNameField.text);
-            RoomOptions roomOptions = new RoomOptions(); //2
+            RoomOptions roomOptions = new RoomOptions();
             roomOptions.MaxPlayers = 8;
-            TypedLobby typedLobby = new TypedLobby(roomName, LobbyType.Default); //3
-            PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, typedLobby); //4
+            TypedLobby typedLobby = new TypedLobby(roomName, LobbyType.Default);
+            PhotonNetwork.JoinOrCreateRoom(roomName, roomOptions, typedLobby);
             infoInputUI.SetActive(false);
             spinner.enabled = true;
             roomStatus.text = "";
@@ -201,8 +201,6 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
         else if (PhotonNetwork.CurrentRoom.PlayerCount > 0)
         {
-            GameSettings.StartTime = PhotonNetwork.Time;
-            GameSettings.GameActive = true;
             PhotonNetwork.LoadLevel("Game");
             PhotonNetwork.CurrentRoom.IsOpen = false;
         }

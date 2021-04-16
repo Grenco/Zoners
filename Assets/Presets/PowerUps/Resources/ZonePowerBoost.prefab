@@ -272,9 +272,10 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
+  observableSearch: 0
   ObservedComponents:
   - {fileID: 3576682608775192628}
-  viewIdField: 0
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &3576682608775192628
@@ -292,6 +293,7 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
+  m_UseLocal: 0
 --- !u!114 &7688778831525744814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -306,8 +308,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectTime: 5
   PowerMultiplier: 2
-  redZone: {fileID: 0}
-  blueZone: {fileID: 0}
 --- !u!1 &5060316493114404797
 GameObject:
   m_ObjectHideFlags: 0

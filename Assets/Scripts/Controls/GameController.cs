@@ -1,4 +1,5 @@
-﻿using Photon.Pun;
+﻿using ExitGames.Client.Photon;
+using Photon.Pun;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,8 @@ public class GameController : MonoBehaviourPunCallbacks
     public float timeRemaining; // seconds
     private double startTime;
 
-    public static bool gameActive = true;
+    private bool gameStarted = false;
+    private int countdown = 4;
 
     private GameObject player1;
     private MultiplayerControls playerControls;
@@ -34,7 +36,7 @@ public class GameController : MonoBehaviourPunCallbacks
     public Text redScoreText;
     public Text blueScoreText;
     public Text gameEndText;
-    public Text cooldownText;
+    public Text centreScreenText;
     public GameObject gameEndPanel;
     public GameObject damageTakenPanel;
     public GameObject RestartButton;
@@ -93,26 +95,20 @@ public class GameController : MonoBehaviourPunCallbacks
         Transform mySpawn = spawnPositions[TeamSettings.MyIndex].transform;
         player1 = PhotonNetwork.Instantiate(TeamSettings.MyPlayer, mySpawn.position, mySpawn.rotation, 0);
         playerControls = player1.GetComponent<MultiplayerControls>();
+        playerControls.DisableControls();
 
         zoneStrengthBar.gameObject.SetActive(GameSettings.UseVariableZoneStrength);
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            //GameSettings.StartTime = PhotonNetwork.Time;
-            startTime = GameSettings.StartTime;
-            //GameSettings.GameActive = true;
-        }
-        else
-        {
-            while (!GameSettings.GameActive) { }
-            startTime = GameSettings.StartTime;
-        }
         
     }
 
     // Update is called once per frame
     private void Update()
     {
+        if (!gameStarted)
+        {
+            Countdown();
+        }
+
         // Exit Sample
         if (Input.GetKey(KeyCode.Escape))
         {
@@ -132,7 +128,7 @@ public class GameController : MonoBehaviourPunCallbacks
             Cursor.visible = false;
         }
 
-        if (GameSettings.GameActive)
+        if (GameSettings.GameActive && gameStarted)
         {
             // Check player status
             if (playerControls.movementEnabled)
@@ -152,6 +148,43 @@ public class GameController : MonoBehaviourPunCallbacks
             UpdateScores();
             UpdateTimer();
             UpdateZoneBar();
+        }
+    }
+
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    {
+        base.OnRoomPropertiesUpdate(propertiesThatChanged);
+        if (!propertiesThatChanged.ContainsKey((System.Byte)253))
+        {
+            int test = 0;
+        }
+    }
+
+    private void Countdown()
+    {
+        Animation animation = centreScreenText.gameObject.GetComponent<Animation>();
+
+        if (!animation.isPlaying && countdown > 0)
+        {
+            countdown--;
+            centreScreenText.text = countdown == 0 ? "GO!" : countdown.ToString();
+            animation.Play("TextZoom");
+        }
+        else if (!animation.isPlaying && countdown == 0)
+        {
+            centreScreenText.text = "";
+            centreScreenText.gameObject.transform.localScale = new Vector3(1, 1, 1);
+            if (GameSettings.GameActive)
+            {
+                gameStarted = true;
+                startTime = GameSettings.StartTime;
+                playerControls.EnableControls();
+            }
+            else if (PhotonNetwork.IsMasterClient)
+            {
+                GameSettings.StartTime = PhotonNetwork.Time;
+                GameSettings.GameActive = true;
+            }
         }
     }
 
@@ -231,11 +264,11 @@ public class GameController : MonoBehaviourPunCallbacks
         if (playerControls.coolDowmTime > 0.0f)
         {
             int coolDownTimeInt = (int)playerControls.coolDowmTime;
-            cooldownText.text = "Respawn in: " + coolDownTimeInt.ToString();
+            centreScreenText.text = "Respawn in: " + coolDownTimeInt.ToString();
         }
-        else if (cooldownText.text != "")
+        else if (centreScreenText.text != "")
         {
-            cooldownText.text = "";
+            centreScreenText.text = "";
         }
     }
 
