@@ -186,13 +186,12 @@ public class MultiplayerControls : MonoBehaviour
 
     private void Move()
     {
-        // Move the controller
-        rb.MovePosition(rb.position + moveDirection * Time.deltaTime);
+        rb.velocity = moveDirection + new Vector3(0, rb.velocity.y, 0);
     }
 
     private void Jump()
     {
-        rb.velocity = new Vector3(0, jumpSpeed, 0);
+        rb.velocity += new Vector3(0, jumpSpeed, 0);
     }
 
     private void Turn()

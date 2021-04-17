@@ -4847,7 +4847,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: ec739259ec61f5d4ba3ed6d34fd802a6, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4914,7 +4913,7 @@ MonoBehaviour:
   playerNumber: 0
   mouseSpeed: 6
   speed: 10
-  jumpSpeed: 5
+  jumpSpeed: 3
   hitPoints: 0
   coolDowmTime: 0
 --- !u!114 &118396316428677237

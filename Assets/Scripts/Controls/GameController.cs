@@ -151,15 +151,6 @@ public class GameController : MonoBehaviourPunCallbacks
         }
     }
 
-    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
-    {
-        base.OnRoomPropertiesUpdate(propertiesThatChanged);
-        if (!propertiesThatChanged.ContainsKey((System.Byte)253))
-        {
-            int test = 0;
-        }
-    }
-
     private void Countdown()
     {
         Animation animation = centreScreenText.gameObject.GetComponent<Animation>();
