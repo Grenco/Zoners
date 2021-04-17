@@ -1661,9 +1661,10 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 0
   OwnershipTransfer: 0
+  observableSearch: 0
   ObservedComponents:
   - {fileID: 0}
-  viewIdField: 2
+  sceneViewId: 2
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &901355185
@@ -3266,7 +3267,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerUpSpawnTime: 20
   powerUps:
-  - ZonePowerBoost
+  - SpeedBoost
   - ZonePowerBoost
   mazeConstructor: {fileID: 901355185}
 --- !u!114 &1943680576
