@@ -91,6 +91,12 @@ public class MultiplayerControls : MonoBehaviour
             turnX = Input.GetAxis("Mouse X") * mouseSpeed;
             turnY = Input.GetAxis("Mouse Y") * mouseSpeed;
         }
+
+        // There seems to be a glitch where opposing players sometimes fall through the floor for no reason when playing online, check if the player is below 0 and bring them above it
+        if (transform.position.y < 0)
+        {
+            transform.position -= new Vector3(0, transform.position.y - 0.2f,  0);
+        }
     }
 
     private void FixedUpdate()
@@ -151,7 +157,7 @@ public class MultiplayerControls : MonoBehaviour
         DisableControls();
         coolDowmTime = 5.0f;
         hitPoints = maxHitPoints;
-        rb.MovePosition(spawnPositions[playerNumber].transform.position);
+        gameObject.transform.position = spawnPositions[playerNumber].transform.position;
         photonView.RPC("KillPlayerRPC", RpcTarget.All);
     }
 
