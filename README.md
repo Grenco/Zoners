@@ -1,5 +1,7 @@
 # Zoners
-A 4v4 online game which challenges players to trap the opposing team in your danger zone.
+This is a Unity project I have been working on for fun in my free time. I have decided to no longer work on the game, all of the source code is now available for anyone to play around with or work on.
+
+Zoners is a 4v4 online game which challenges players to trap the opposing team in your danger zone.
 ![Zoners](Images/Screenshot_Gameplay1.png)
 
 ## Gameplay
